@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EditActivity">
+
+    <EditText
+        android:id="@+id/targetBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Слово на изучаемом языке"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/nativeBox"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nativeBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Слово на родном языке"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/targetBox" />
+<Button
+    android:id="@+id/saveButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Сохранить"
+    android:onClick="save"
+    app:layout_constraintHorizontal_weight="1"
+    app:layout_constraintTop_toBottomOf="@+id/nativeBox"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toLeftOf="@+id/deleteButton"
+    />
+<Button
+    android:id="@+id/deleteButton"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Удалить"
+    android:onClick="delete"
+    app:layout_constraintHorizontal_weight="1"
+    app:layout_constraintTop_toBottomOf="@+id/nativeBox"
+    app:layout_constraintLeft_toRightOf="@+id/saveButton"
+    app:layout_constraintRight_toRightOf="parent"
+    />
+
+    <Switch
+        android:id="@+id/toggleBtn"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:checked="false"
+        android:showText="true"
+        android:text="Включить в обучение"
+        android:textOff="НЕТ"
+        android:textOn="ДА"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

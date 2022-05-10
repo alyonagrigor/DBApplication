@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/swapLangs"
+        android:orderInCategory="1"
+        android:title="Поменять языки местами" />
+    <item
+        android:id="@+id/editIntent"
+        android:orderInCategory="2"
+        android:title="Редактировать/удалить" />
+    <item
+        android:id="@+id/exclude"
+        android:orderInCategory="3"
+        android:title="Исключить из обучения" />
+
+    <item
+        android:id="@+id/toList"
+        android:orderInCategory="4"
+        android:title="Список слов" />
+</menu>
