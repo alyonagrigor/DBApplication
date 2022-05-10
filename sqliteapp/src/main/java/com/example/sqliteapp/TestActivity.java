@@ -1,7 +1,7 @@
 package com.example.sqliteapp;
 
 /**
- * 1.  протестировать случай если не хватает слов с таким же окончанием
+ * 1.  в функции шоуопшенс избежать дублирования неправильных ответов
  * */
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -147,7 +147,7 @@ public class TestActivity extends AppCompatActivity {
         //правильного ответа в отдельную строку, последние 3 буквы, например, soledad - -dad
 
         // перебираем строки в курсоре циклом и записываем подходящие варианты в список
-        for (int i = 1; i < linesCount; i++) {
+        for (int i = 0; i < linesCount; i++) {
             wordsCursor.moveToPosition(i);
             if (getLastThreeChars(wordsCursor.getString(1)).equals(rightWordEnding)
                     && !wordsCursor.getString(1).equals(rightWord)){
@@ -161,7 +161,7 @@ public class TestActivity extends AppCompatActivity {
         //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 2 буквы в конце
         if (wrongWords.size() < 3) {
             String rightWordEnding2 = getLastTwoChars(rightWord);
-            for (int i = 1; i < linesCount; i++) {
+            for (int i = 0; i < linesCount; i++) {
                 wordsCursor.moveToPosition(i);
                 if (getLastTwoChars(wordsCursor.getString(1)).equals(rightWordEnding2)
                         && !wordsCursor.getString(1).equals(rightWord)) {
@@ -175,7 +175,7 @@ public class TestActivity extends AppCompatActivity {
 //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 1 буква в конце
         if (wrongWords.size()<3) {
             String rightWordEnding3 = getOneLastChar(rightWord);
-            for (int i = 1; i < linesCount; i++) {
+            for (int i = 0; i < linesCount; i++) {
                 wordsCursor.moveToPosition(i);
                 if (getOneLastChar(wordsCursor.getString(1)).equals(rightWordEnding3)
                         && !wordsCursor.getString(1).equals(rightWord)) {
