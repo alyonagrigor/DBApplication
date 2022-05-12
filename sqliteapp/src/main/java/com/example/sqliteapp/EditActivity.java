@@ -24,7 +24,7 @@ public class EditActivity extends AppCompatActivity implements
     EditText nativeBox;
     Button delButton;
     Button saveButton;
-    String t, n;
+    String t, n, targetLangWord;
     Switch toggleBtn;
     int checkedDigit;
     DatabaseHelper sqlHelper;
@@ -57,7 +57,8 @@ public class EditActivity extends AppCompatActivity implements
                 editCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " where " +
                         DatabaseHelper.COLUMN_ID + "=?", new String[]{String.valueOf(wordId)});
                 editCursor.moveToFirst();
-                targetBox.setText(editCursor.getString(1));
+                targetLangWord = editCursor.getString(1);
+                targetBox.setText(targetLangWord);
                 nativeBox.setText(editCursor.getString(2));
                 //получаем и выставляем булево значение учить/не учить
                if (editCursor.getInt(3) == 1) {
@@ -79,7 +80,19 @@ public class EditActivity extends AppCompatActivity implements
                 // скрываем кнопку удаления
                 delButton.setVisibility(View.GONE);
             }
+
+        delButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomDialogFragment dialog = new CustomDialogFragment();
+                Bundle args = new Bundle();
+                args.putString("word", targetLangWord);
+                dialog.setArguments(args);
+                dialog.show(getSupportFragmentManager(), "custom");
+            }
+        });
         }
+
         public void save(View view){
             t = targetBox.getText().toString();
             n = nativeBox.getText().toString();
@@ -102,11 +115,12 @@ public class EditActivity extends AppCompatActivity implements
                         Toast.LENGTH_SHORT).show();
             }
         }
+
         public void delete(View view){
             db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
             goHome();
         }
-        private void goHome(){
+        private void goHome() {
             // закрываем подключение
             db.close();
             // переход к списку слов ??? добавить переход обратно в учить??? если пришел из учить
@@ -114,6 +128,7 @@ public class EditActivity extends AppCompatActivity implements
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         }
+
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
