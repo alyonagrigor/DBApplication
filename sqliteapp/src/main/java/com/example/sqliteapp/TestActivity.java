@@ -1,7 +1,7 @@
 package com.example.sqliteapp;
 
 /**
- * 1.  в функции шоуопшенс избежать дублирования неправильных ответов
+ * 1.  протестировать случай если не хватает слов с таким же окончанием
  * */
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,14 +39,14 @@ public class TestActivity extends AppCompatActivity {
     Random r = new Random(); //объект для генерации рандомных чисел
     RadioGroup radGrp;
     RadioButton rBtn1, rBtn2, rBtn3, rBtn4;
-    String rightWord, rightWordEnding;
+    String rightWord, rightWordEnding, curWord;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-       // btnShow = findViewById(R.id.btnShow);
+        // btnShow = findViewById(R.id.btnShow);
         btnNext = findViewById(R.id.btnNext);
         radGrp = findViewById(R.id.radioGroup);
         fieldTop = findViewById(R.id.fieldTop);
@@ -78,7 +78,7 @@ public class TestActivity extends AppCompatActivity {
 
 // ***********************************************!!!НАЧАЛО СЛУШАТЕЛЕЙ!!!**************************
 
-       radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radGrp, int id) {
 
@@ -101,7 +101,7 @@ public class TestActivity extends AppCompatActivity {
 
             }});
 
-                //временная задержка
+        //временная задержка
           /*      try {
                     Thread.sleep(5 * 1000);
                 } catch (InterruptedException ie) {
@@ -111,7 +111,7 @@ public class TestActivity extends AppCompatActivity {
 
         // по нажатию кнопки получаем следующую строку
 
-       btnNext.setOnClickListener(new View.OnClickListener() {
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // переходим на случайную строку
@@ -121,14 +121,14 @@ public class TestActivity extends AppCompatActivity {
                     checkExclusion();
                 } while (isExcluded);
 
-               //выводим полученное слово
+                //выводим полученное слово
                 fieldTop.setText(wordsCursor.getString(2));
                 currentCount++;
                 counterBox.setText(currentCount + " / " + linesCount);
                 radGrp.clearCheck();
                 wrongWords.clear();
 
-                 //выводим варианты ответа
+                //выводим варианты ответа
                 showOptions();
 
             }
@@ -149,9 +149,12 @@ public class TestActivity extends AppCompatActivity {
         // перебираем строки в курсоре циклом и записываем подходящие варианты в список
         for (int i = 0; i < linesCount; i++) {
             wordsCursor.moveToPosition(i);
-            if (getLastThreeChars(wordsCursor.getString(1)).equals(rightWordEnding)
-                    && !wordsCursor.getString(1).equals(rightWord)){
-                wrongWords.add(wordsCursor.getString(1));
+            curWord = wordsCursor.getString(1);
+            if (getLastThreeChars(curWord).equals(rightWordEnding)
+                    && !curWord.equals(rightWord)
+            //        && !wrongWords.contains(curWord)
+                    ){
+                wrongWords.add(curWord);
             }
             if (wrongWords.size() == 3) {
                 break;
@@ -160,12 +163,15 @@ public class TestActivity extends AppCompatActivity {
 
         //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 2 буквы в конце
         if (wrongWords.size() < 3) {
-            String rightWordEnding2 = getLastTwoChars(rightWord);
+            rightWordEnding = getLastTwoChars(rightWord);
             for (int i = 0; i < linesCount; i++) {
                 wordsCursor.moveToPosition(i);
-                if (getLastTwoChars(wordsCursor.getString(1)).equals(rightWordEnding2)
-                        && !wordsCursor.getString(1).equals(rightWord)) {
-                    wrongWords.add(wordsCursor.getString(1));
+                curWord = wordsCursor.getString(1);
+                if (getLastTwoChars(curWord).equals(rightWordEnding)
+                        && !curWord.equals(rightWord)
+                //        && !wrongWords.contains(curWord)
+                ) {
+                    wrongWords.add(curWord);
                 }
                 if (wrongWords.size() == 3) {
                     break;
@@ -174,12 +180,15 @@ public class TestActivity extends AppCompatActivity {
         }
 //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 1 буква в конце
         if (wrongWords.size()<3) {
-            String rightWordEnding3 = getOneLastChar(rightWord);
+            rightWordEnding = getOneLastChar(rightWord);
             for (int i = 0; i < linesCount; i++) {
                 wordsCursor.moveToPosition(i);
-                if (getOneLastChar(wordsCursor.getString(1)).equals(rightWordEnding3)
-                        && !wordsCursor.getString(1).equals(rightWord)) {
-                    wrongWords.add(wordsCursor.getString(1));
+                curWord = wordsCursor.getString(1);
+                if (getOneLastChar(curWord).equals(rightWordEnding)
+                        && !curWord.equals(rightWord)
+                //        && !wrongWords.contains(curWord)
+                ) {
+                    wrongWords.add(curWord);
                 }
                 if (wrongWords.size() == 3) {
                     break;
@@ -191,6 +200,7 @@ public class TestActivity extends AppCompatActivity {
         if (wrongWords.size()<3) {
             do {
                 wordsCursor.moveToPosition(r.nextInt(linesCount));
+            //    if (!wrongWords.contains(wordsCursor.getString(1)))
                 wrongWords.add(wordsCursor.getString(1));
             } while (wrongWords.size()==3);
         }
@@ -313,10 +323,8 @@ public class TestActivity extends AppCompatActivity {
         return str.substring(str.length() - 2);
     }
 
-    public String getOneLastChar (String str) {
-        return str.substring(str.length() - 1);
+    public String getOneLastChar (String str) { return str.substring(str.length() - 1); }
 
-    }
     @Override
     public void onDestroy() {
         super.onDestroy();
