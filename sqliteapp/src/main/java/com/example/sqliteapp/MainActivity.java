@@ -34,14 +34,14 @@ import org.apache.commons.lang3.StringUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText targetBox;
+/*    EditText targetBox;
     EditText nativeBox;
     Button saveButton;
     Button studyButton;
     Button listButton;
     String t, n;
     DatabaseHelper sqlHelper;
-    SQLiteDatabase db;
+    SQLiteDatabase db; */
 
 
     @Override
@@ -49,7 +49,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        saveButton = findViewById(R.id.saveButton);
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_add_container_view, AddFragment.class, null)
+                    .commit();
+        }
+    }
+ /*       saveButton = findViewById(R.id.saveButton);
         studyButton = findViewById(R.id.studyButton);
         listButton = findViewById(R.id.listButton);
         targetBox = findViewById(R.id.targetBox);
@@ -105,5 +111,5 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
       super.onDestroy();
       db.close();
-  }
+  } */
 }
