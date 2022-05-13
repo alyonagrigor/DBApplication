@@ -49,7 +49,7 @@
     app:layout_constraintRight_toRightOf="parent"
     />
 
-    <Switch
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/toggleBtn"
         android:layout_width="0dp"
         android:layout_height="48dp"

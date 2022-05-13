@@ -1,6 +1,9 @@
 package com.example.sqliteapp;
+/*      не работает функция удаления
 
+ **/
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -18,14 +21,14 @@ import android.widget.Toast;
 import org.apache.commons.lang3.StringUtils;
 
 public class EditActivity extends AppCompatActivity implements
-        CompoundButton.OnCheckedChangeListener {
+        CompoundButton.OnCheckedChangeListener, Removable {
 
     EditText targetBox;
     EditText nativeBox;
     Button delButton;
     Button saveButton;
     String t, n, targetLangWord;
-    Switch toggleBtn;
+    SwitchCompat toggleBtn;
     int checkedDigit;
     DatabaseHelper sqlHelper;
     SQLiteDatabase db;
@@ -87,6 +90,7 @@ public class EditActivity extends AppCompatActivity implements
                 CustomDialogFragment dialog = new CustomDialogFragment();
                 Bundle args = new Bundle();
                 args.putString("word", targetLangWord);
+                args.putLong("wordId", wordId);
                 dialog.setArguments(args);
                 dialog.show(getSupportFragmentManager(), "custom");
             }
@@ -116,18 +120,26 @@ public class EditActivity extends AppCompatActivity implements
             }
         }
 
-        public void delete(View view){
+    /*    public void delete(View view){
             db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
             goHome();
-        }
-        private void goHome() {
+        }*/
+
+
+    @Override
+    public void remove(long deleteWordId2) {
+        db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(deleteWordId2)});
+        goHome();
+    }
+
+    private void goHome() {
             // закрываем подключение
             db.close();
             // переход к списку слов ??? добавить переход обратно в учить??? если пришел из учить
             Intent intent = new Intent(this, ListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-        }
+    }
 
 
     @Override
