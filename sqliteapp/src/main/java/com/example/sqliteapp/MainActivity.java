@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.fragment_add_container_view, AddFragment.class, null)
                     .commit();
         }
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_edit_container_view, EditFragment.class, null)
+                    .commit();
+        }
     }
  /*       saveButton = findViewById(R.id.saveButton);
         studyButton = findViewById(R.id.studyButton);

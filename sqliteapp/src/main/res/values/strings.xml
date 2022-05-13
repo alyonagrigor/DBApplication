@@ -3,7 +3,14 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enterTarget">Введите cлово на изучаемом языке</string>
     <string name="enterNative">Введите cлово на родном языке</string>
+    <string name="targetWord">Слово на изучаемом языке</string>
+    <string name="nativeWord">Слово на родном языке</string>
     <string name="toList">К списку слов</string>
     <string name="save">Сохранить</string>
     <string name="study">Учить</string>
+    <string name="delete">Удалить</string>
+    <string name="addToStudy">Включить в обучение</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+
 </resources>
