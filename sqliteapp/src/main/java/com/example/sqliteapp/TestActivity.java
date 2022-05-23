@@ -5,6 +5,8 @@ package com.example.sqliteapp;
  * 2. сделать кнопку след. слово неактивной, пока не выбран правильный ответ
  * */
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -56,6 +58,14 @@ public class TestActivity extends AppCompatActivity {
         rBtn2 = findViewById(R.id.rBtn2);
         rBtn3 = findViewById(R.id.rBtn3);
         rBtn4 = findViewById(R.id.rBtn4);
+
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+        // showing the back button in action bar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Test");
+        }
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
         // открываем подключение
@@ -257,7 +267,20 @@ public class TestActivity extends AppCompatActivity {
         return true;
     }
 
+
+    // this event will enable the back
+    // function to the button on press
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.swapLangs) {
@@ -274,7 +297,7 @@ public class TestActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void goToEdit() {
     //    long id = wordsCursor.getInt(0);
