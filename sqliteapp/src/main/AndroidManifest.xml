@@ -24,12 +24,6 @@
             android:name=".TestActivity"
             android:exported="false" />
         <activity
-            android:name=".ListActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EditActivity"
-            android:exported="false" />
-        <activity
             android:name=".StudyActivity"
             android:exported="false" />
     </application>
