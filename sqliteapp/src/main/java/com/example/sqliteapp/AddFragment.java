@@ -69,7 +69,7 @@ public class AddFragment extends Fragment {
             }
         });
 
-        listButton.setOnClickListener(new View.OnClickListener() {
+ /*       listButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
@@ -83,7 +83,7 @@ public class AddFragment extends Fragment {
             Intent intent = new Intent(getActivity(), StudyActivity.class);
             startActivity(intent);
         }
-    });
+    });*/
 }
 
     @Override

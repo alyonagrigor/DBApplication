@@ -143,21 +143,21 @@ public class StudyActivity extends AppCompatActivity {
     }
 
 
- public void swapLangs() {
-       Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-       startActivity(intent);
+    public void swapLangs() {
+    //   Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+    //   startActivity(intent);
     }
 
     public void goToEdit() {
-        long id = wordsCursor.getInt(0);
-        Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-        intent.putExtra("id", id);
-        startActivity(intent);
+    //    long id = wordsCursor.getInt(0);
+    //    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+    //    intent.putExtra("id", id);
+    //    startActivity(intent);
     }
 
     public void goToList() {
-        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-        startActivity(intent);
+    //    Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+    //    startActivity(intent);
     }
 
     public void  exclude() {

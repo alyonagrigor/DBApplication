@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/addFragment"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="add" />
+        <item
+            android:id="@+id/studyActivity"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="study" />
+        <item
+            android:id="@+id/testActivity"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="test" />
+        <item
+            android:id="@+id/listFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="list" />
+    </group>
+</menu>

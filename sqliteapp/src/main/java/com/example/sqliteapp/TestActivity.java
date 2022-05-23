@@ -277,15 +277,15 @@ public class TestActivity extends AppCompatActivity {
     }
 
     public void goToEdit() {
-        long id = wordsCursor.getInt(0);
-        Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-        intent.putExtra("id", id);
-        startActivity(intent);
+    //    long id = wordsCursor.getInt(0);
+    //    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+    //    intent.putExtra("id", id);
+    //    startActivity(intent);
     }
 
     public void goToList() {
-        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-        startActivity(intent);
+    //    Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+    //    startActivity(intent);
     }
 
     public void exclude() {

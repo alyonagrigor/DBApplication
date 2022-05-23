@@ -1,3 +1,24 @@
+/** не работает диалоговое окно, крашится при открытии
+ * добавить (нвыерное) в графе в xml
+ *         <action
+ *             android:id="@+id/action_editFragment_to_customDialogFragment"
+ *             app:destination="@id/customDialogFragment" />
+ *
+ *                 <dialog
+ *         android:id="@+id/customDialogFragment"
+ *         android:name="com.example.sqliteapp.CustomDialogFragment" >
+ *         <argument
+ *             android:name="word"
+ *             app:argType="string" />
+ *         <argument
+ *             android:name="wordId"
+ *             app:argType="long" />
+ *         <action
+ *             android:id="@+id/myaction"
+ *             app:destination="@+id/studyActivity"/>
+ *     </dialog>
+ */
+
 package com.example.sqliteapp;
 
 import android.content.ContentValues;
@@ -9,6 +30,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +44,7 @@ import android.widget.Toast;
 import org.apache.commons.lang3.StringUtils;
 
 public class EditFragment extends Fragment implements CompoundButton.OnCheckedChangeListener
-        //, Removable
+       //  , Removable
 {
     EditText targetBox,nativeBox;
     Button delButton, saveButton;
@@ -31,7 +54,8 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
     DatabaseHelper sqlHelper;
     SQLiteDatabase db;
     Cursor editCursor;
-    long wordId = 0;
+    long wordId;
+    private NavController navController;
 
     public EditFragment() {
     }
@@ -56,15 +80,15 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         saveButton = view.findViewById(R.id.saveButton);
         toggleBtn = view.findViewById(R.id.toggleBtn);
         toggleBtn.setOnCheckedChangeListener(this);
+        this.navController = Navigation.findNavController(view);
 
         sqlHelper = new DatabaseHelper(getActivity());
         db = sqlHelper.open();
-    //доделать передачу данных после того, как ListActivity переделаю во фрагмент
-    /*   Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            wordId = extras.getLong("id");
+        if (getArguments() != null) {
+            wordId = getArguments().getLong("id");
         }
-        // если 0, то добавление
+        // если wordId = 0, то производим добавление нового слова, оно происходит при нажатии на
+        // кнопку сохранить. Если же wordId > 0, то выполняем редактирование/удаление слова с этим id
         if (wordId > 0) {
             // получаем элемент по id из бд
             editCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " where " +
@@ -93,7 +117,7 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         } else {
             // скрываем кнопку удаления
             delButton.setVisibility(View.GONE);
-        }*/
+        }
 
         delButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +125,11 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
                 db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
                 goHome();
             /*    CustomDialogFragment dialog = new CustomDialogFragment();
-                Bundle args = new Bundle();
-                args.putString("word", targetLangWord);
-                args.putLong("wordId", wordId);
-                dialog.setArguments(args);
-                dialog.show(getSupportFragmentManager(), "custom");*/
+                Bundle bundle = new Bundle();
+                bundle.putString("word", targetLangWord);
+                bundle.putLong("wordId", wordId);
+                dialog.setArguments(bundle);
+                navController.navigate(R.id.action_editFragment_to_customDialogFragment, bundle);*/
             }
         });
 
@@ -134,29 +158,24 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
                 }
             }
         });
-
     }
 
 
- /*   public void delete(View view){
-        db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
-        goHome();
-    }*/
-
-
-/*    @Override
+   /*     @Override
     public void remove(long deleteWordId2) {
         db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(deleteWordId2)});
         goHome();
+    }
     }*/
 
     private void goHome() {
         // закрываем подключение
         db.close();
+        navController.navigate(R.id.action_global_listFragment);
         // переход к списку слов ??? добавить переход обратно в учить??? если пришел из учить
-        Intent intent = new Intent(getActivity(), ListActivity.class);
+    /*    Intent intent = new Intent(getActivity(), ListActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
 

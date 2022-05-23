@@ -10,6 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DBApplication">
         <activity
+            android:name=".NavdrawerActivity"
+            android:exported="true"
+            android:label="@string/title_activity_navdrawer"
+            android:theme="@style/Theme.DBApplication.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".TestActivity"
             android:exported="false" />
         <activity
@@ -21,15 +32,6 @@
         <activity
             android:name=".StudyActivity"
             android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
