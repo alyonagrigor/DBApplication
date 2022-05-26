@@ -24,6 +24,7 @@
         android:name="com.example.sqliteapp.TestActivity"
         android:label="TestActivity" />
     <action android:id="@+id/action_global_testActivity" app:destination="@id/testActivity" />
+
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.sqliteapp.EditFragment"
@@ -32,6 +33,9 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_editFragment_to_customDialogFragment"
+            app:destination="@id/customDialogFragment" />
     </fragment>
 
     <fragment
@@ -43,5 +47,17 @@
             app:destination="@id/editFragment" />
     </fragment>
     <action android:id="@+id/action_global_listFragment" app:destination="@id/listFragment" />
+    <dialog
+        android:id="@+id/customDialogFragment"
+        android:name="com.example.sqliteapp.CustomDialogFragment"
+        android:label="CustomDialogFragment">
+    <argument
+        android:name="wordId"
+        app:argType="long" />
+    <argument
+        android:name="word"
+        app:argType="string" />
+    </dialog>
+
 
 </navigation>

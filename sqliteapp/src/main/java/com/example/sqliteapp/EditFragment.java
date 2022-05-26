@@ -44,7 +44,7 @@ import android.widget.Toast;
 import org.apache.commons.lang3.StringUtils;
 
 public class EditFragment extends Fragment implements CompoundButton.OnCheckedChangeListener
-       //  , Removable
+       , Removable
 {
     EditText targetBox,nativeBox;
     Button delButton, saveButton;
@@ -122,14 +122,14 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
-                goHome();
-            /*    CustomDialogFragment dialog = new CustomDialogFragment();
+            //    db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
+            //    goHome();
+                CustomDialogFragment dialog = new CustomDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("word", targetLangWord);
                 bundle.putLong("wordId", wordId);
                 dialog.setArguments(bundle);
-                navController.navigate(R.id.action_editFragment_to_customDialogFragment, bundle);*/
+                navController.navigate(R.id.action_editFragment_to_customDialogFragment, bundle);
             }
         });
 
@@ -161,12 +161,12 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
     }
 
 
-   /*     @Override
+       @Override
     public void remove(long deleteWordId2) {
         db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(deleteWordId2)});
         goHome();
     }
-    }*/
+
 
     private void goHome() {
         // закрываем подключение
