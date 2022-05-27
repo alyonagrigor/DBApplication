@@ -33,9 +33,6 @@
             android:name="id"
             app:argType="long"
             android:defaultValue="0L" />
-        <action
-            android:id="@+id/action_editFragment_to_customDialogFragment"
-            app:destination="@id/customDialogFragment" />
     </fragment>
 
     <fragment
@@ -58,6 +55,5 @@
         android:name="word"
         app:argType="string" />
     </dialog>
-
 
 </navigation>

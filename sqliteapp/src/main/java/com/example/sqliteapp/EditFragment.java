@@ -124,12 +124,10 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
             public void onClick(View view) {
             //    db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
             //    goHome();
-                CustomDialogFragment dialog = new CustomDialogFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("word", targetLangWord);
                 bundle.putLong("wordId", wordId);
-                dialog.setArguments(bundle);
-                navController.navigate(R.id.action_editFragment_to_customDialogFragment, bundle);
+                navController.navigate(R.id.customDialogFragment, bundle);
             }
         });
 
@@ -172,10 +170,6 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         // закрываем подключение
         db.close();
         navController.navigate(R.id.action_global_listFragment);
-        // переход к списку слов ??? добавить переход обратно в учить??? если пришел из учить
-    /*    Intent intent = new Intent(getActivity(), ListActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(intent);*/
     }
 
 

@@ -5,18 +5,34 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import android.content.Context;
+import androidx.fragment.app.DialogFragment;
 
-public class CustomDialogFragment extends androidx.fragment.app.DialogFragment {
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+public class CustomDialogFragment extends DialogFragment {
 
     private Removable removable;
     String word;
     long deleteWordId;
 
-    @Override
+ /*   @Override
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
         removable = (Removable) context;
+    }*/
+
+    public CustomDialogFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.dialog, container, false);
     }
 
     @NonNull
@@ -24,7 +40,7 @@ public class CustomDialogFragment extends androidx.fragment.app.DialogFragment {
 
         if (getArguments() != null) {
             word = getArguments().getString("word");
-            deleteWordId = getArguments().getLong ("wordId");
+            long deleteWordId = getArguments().getLong ("wordId");
         }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -35,7 +51,7 @@ public class CustomDialogFragment extends androidx.fragment.app.DialogFragment {
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            removable.remove(deleteWordId);
+                        //    removable.remove(deleteWordId);
                         }
                     })
                     .setNegativeButton("Отмена", null)
