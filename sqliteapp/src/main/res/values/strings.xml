@@ -12,6 +12,8 @@
     <string name="addToStudy">Включить в обучение</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
+    <string name="add">Добавить</string>
+    <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
     <string name="title_activity_navdrawer">NavdrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

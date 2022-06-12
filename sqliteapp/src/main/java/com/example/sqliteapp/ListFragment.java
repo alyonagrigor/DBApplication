@@ -15,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class ListFragment extends Fragment {
 
@@ -24,6 +27,8 @@ public class ListFragment extends Fragment {
     SQLiteDatabase db;
     Cursor wordsCursor;
     NavController navController;
+    TextView textViewList;
+    Button listButton;
     Bundle bundle = new Bundle();
 
     public ListFragment() {
@@ -40,7 +45,8 @@ public class ListFragment extends Fragment {
 
     public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
         this.navController = Navigation.findNavController(view);
-
+        textViewList = view.findViewById(R.id.textViewList);
+        listButton = view.findViewById(R.id.listButton);;
         wordList = view.findViewById(R.id.list);
         wordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -66,7 +72,14 @@ public class ListFragment extends Fragment {
                 DatabaseHelper.COLUMN_STUDY};*/
         WordsAdapter wordsAdapter = new WordsAdapter(getActivity(), wordsCursor);
         wordList.setAdapter(wordsAdapter);
+        //если в таблице БД нет записей, то показываем текствью и кнопку с предложением добавить слово
+        if (wordsCursor.getCount() == 0) {
+            textViewList.setVisibility(View.VISIBLE);
+            listButton.setVisibility(View.VISIBLE);
+        }
     }
+
+
 
     @Override
     public void onDestroy() {
