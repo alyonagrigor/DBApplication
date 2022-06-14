@@ -1,16 +1,12 @@
 package com.example.sqliteapp;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ListFragment extends Fragment {
 
@@ -76,10 +71,14 @@ public class ListFragment extends Fragment {
         if (wordsCursor.getCount() == 0) {
             textViewList.setVisibility(View.VISIBLE);
             listButton.setVisibility(View.VISIBLE);
+            listButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    navController.navigate(R.id.addFragment);
+                }
+            });
         }
     }
-
-
 
     @Override
     public void onDestroy() {

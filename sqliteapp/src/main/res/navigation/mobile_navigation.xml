@@ -44,16 +44,5 @@
             app:destination="@id/editFragment" />
     </fragment>
     <action android:id="@+id/action_global_listFragment" app:destination="@id/listFragment" />
-    <dialog
-        android:id="@+id/customDialogFragment"
-        android:name="com.example.sqliteapp.CustomDialogFragment"
-        android:label="CustomDialogFragment">
-    <argument
-        android:name="wordId"
-        app:argType="long" />
-    <argument
-        android:name="word"
-        app:argType="string" />
-    </dialog>
 
 </navigation>

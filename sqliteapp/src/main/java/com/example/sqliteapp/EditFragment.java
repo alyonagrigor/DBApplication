@@ -1,38 +1,14 @@
-/** не работает диалоговое окно, крашится при открытии
- * добавить (нвыерное) в графе в xml
- *         <action
- *             android:id="@+id/action_editFragment_to_customDialogFragment"
- *             app:destination="@id/customDialogFragment" />
- *
- *                 <dialog
- *         android:id="@+id/customDialogFragment"
- *         android:name="com.example.sqliteapp.CustomDialogFragment" >
- *         <argument
- *             android:name="word"
- *             app:argType="string" />
- *         <argument
- *             android:name="wordId"
- *             app:argType="long" />
- *         <action
- *             android:id="@+id/myaction"
- *             app:destination="@+id/studyActivity"/>
- *     </dialog>
- */
-
 package com.example.sqliteapp;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,13 +16,11 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.apache.commons.lang3.StringUtils;
 
-public class EditFragment extends Fragment implements CompoundButton.OnCheckedChangeListener
-       , Removable
-{
-    EditText targetBox,nativeBox;
+public class EditFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+    EditText targetBox, nativeBox;
     Button delButton, saveButton;
     String targetLangWord;
     SwitchCompat toggleBtn;
@@ -72,7 +46,7 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
     }
 
     @Override
-    public void onViewCreated (@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         targetBox = view.findViewById(R.id.targetBox);
         nativeBox = view.findViewById(R.id.nativeBox);
@@ -122,12 +96,7 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         delButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //    db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
-            //    goHome();
-                Bundle bundle = new Bundle();
-                bundle.putString("word", targetLangWord);
-                bundle.putLong("wordId", wordId);
-                navController.navigate(R.id.customDialogFragment, bundle);
+                showBottomSheetDialog();
             }
         });
 
@@ -158,20 +127,11 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         });
     }
 
-
-       @Override
-    public void remove(long deleteWordId2) {
-        db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(deleteWordId2)});
-        goHome();
-    }
-
-
     private void goHome() {
         // закрываем подключение
         db.close();
         navController.navigate(R.id.action_global_listFragment);
     }
-
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
@@ -179,5 +139,28 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
             checkedDigit = 1;
         else
             checkedDigit = 0;
+    }
+
+    private void showBottomSheetDialog() {
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+        Button btnYes = bottomSheetDialog.findViewById(R.id.btnYes);
+        Button btnNo = bottomSheetDialog.findViewById(R.id.btnNo);
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
+                bottomSheetDialog.dismiss();
+                goHome();
+            }
+        });
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.show();
     }
 }
