@@ -3,6 +3,7 @@ package com.example.sqliteapp;
 /**
  * 1.  убрать повторяющиеся значения в wrongwords (закомментировано)
  * 2. сделать кнопку след. слово неактивной, пока не выбран правильный ответ
+ * 3. Сделать чтобы работало верхнее меню и кнопка назад, либо переделать во фрагменты
  * */
 
 import androidx.annotation.NonNull;
@@ -121,7 +122,6 @@ public class TestActivity extends AppCompatActivity {
 
 
         // по нажатию кнопки получаем следующую строку
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,25 +262,22 @@ public class TestActivity extends AppCompatActivity {
     //методы для верхнего меню---------------------------------------------------------------------
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.study_menu, menu);
         return true;
     }
 
-
-    // this event will enable the back
-    // function to the button on press
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    // this event will enable the back function to the button on press
+  /*   @Override
+   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
-/*    @Override
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.swapLangs) {
@@ -297,7 +294,7 @@ public class TestActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     public void goToEdit() {
     //    long id = wordsCursor.getInt(0);
@@ -315,7 +312,8 @@ public class TestActivity extends AppCompatActivity {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_STUDY, 0);
         Toast.makeText(this, "Успешно исключено",Toast.LENGTH_LONG).show();
-        db.update(DatabaseHelper.TABLE, cv, DatabaseHelper.COLUMN_ID + "=" + wordsCursor.getInt(0), null);
+        db.update(DatabaseHelper.TABLE, cv,
+                DatabaseHelper.COLUMN_ID + "=" + wordsCursor.getInt(0), null);
         //записываем айди удаленных слов в коллекцию
         excluded.add(wordsCursor.getInt(0));
         //уменьшаем счетчики на одно слово
