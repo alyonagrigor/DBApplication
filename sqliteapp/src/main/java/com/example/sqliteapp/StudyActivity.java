@@ -1,5 +1,7 @@
 package com.example.sqliteapp;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
@@ -44,6 +46,13 @@ public class StudyActivity extends AppCompatActivity {
         fieldTop = findViewById(R.id.fieldTop);
         counterBox = findViewById(R.id.counter);
 
+        // calling the action bar
+        ActionBar actionBar = getSupportActionBar();
+        // showing the back button in action bar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Study");
+        }
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
         // открываем подключение
@@ -100,12 +109,11 @@ public class StudyActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.study_menu, menu);
         return true;
     }
 
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.swapLangs) {
@@ -120,9 +128,14 @@ public class StudyActivity extends AppCompatActivity {
         } if (id == R.id.toList) {
             goToList();
             return true;
+        } if (id == R.id.home) {
+            // this event will enable the back
+            // function to the button on press
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     public void checkExclusion() {
 
@@ -143,24 +156,24 @@ public class StudyActivity extends AppCompatActivity {
     }
 
 
- public void swapLangs() {
-       Intent intent = new Intent(getApplicationContext(), TestActivity.class);
-       startActivity(intent);
+    public void swapLangs() {
+    //   Intent intent = new Intent(getApplicationContext(), TestActivity.class);
+    //   startActivity(intent);
     }
 
     public void goToEdit() {
-        long id = wordsCursor.getInt(0);
-        Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-        intent.putExtra("id", id);
-        startActivity(intent);
+    //    long id = wordsCursor.getInt(0);
+    //    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+    //    intent.putExtra("id", id);
+    //    startActivity(intent);
     }
 
     public void goToList() {
-        Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-        startActivity(intent);
+    //    Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+    //    startActivity(intent);
     }
 
-    public void  exclude() {
+    public void exclude() {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_STUDY, 0);
         Toast.makeText(this, "Успешно исключено",Toast.LENGTH_LONG).show();
@@ -179,4 +192,18 @@ public class StudyActivity extends AppCompatActivity {
         db.close();
         wordsCursor.close();
     }
+
+    // this event will enable the back
+    // function to the button on press
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
