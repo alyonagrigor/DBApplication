@@ -10,13 +10,14 @@
     <string name="study">Учить</string>
     <string name="delete">Удалить</string>
     <string name="addToStudy">Включить в обучение</string>
+    <string name="removeFromStudy">Исключить из обучения</string>
+    <string name="swap">Поменять языки местами</string>
     <string name="no">Нет</string>
     <string name="yes">Да</string>
     <string name="add">Добавить</string>
     <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
     <string name="showAnswer">Показать ответ</string>
     <string name="nextWord">Следующее слово</string>
-
     <string name="title_activity_navdrawer">NavdrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

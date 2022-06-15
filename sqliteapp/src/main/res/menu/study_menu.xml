@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/swap"
+        android:orderInCategory="2"
+        android:title="@string/swap" />
+    <item
         android:id="@+id/exclude"
         android:orderInCategory="3"
-        android:title="Исключить из обучения" />
+        android:title="@string/removeFromStudy" />
 </menu>

@@ -46,7 +46,7 @@ public class StudyActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Study");
+            getSupportActionBar().setTitle("Режим просмотра");
         }
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
@@ -56,33 +56,18 @@ public class StudyActivity extends AppCompatActivity {
         wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
         linesCount = wordsCursor.getCount();
 
-        //устанавливаем курсор и генерируем первое значение
-        wordsCursor.moveToFirst();
-        wordsCursor.moveToPosition(r.nextInt(linesCount));
-
-        //устаналиваем первое значение и счетчик
-        fieldTop.setText(wordsCursor.getString(2));
-        currentCount = 1;
-        counterBox.setText(currentCount + " / " + linesCount);
-
+        showFirstWord();
 
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //показываем перевод слова в поле fieldBottom
-                fieldBottom.setText(wordsCursor.getString(1));
-
-                //временная задержка
-          /*      try {
-                    Thread.sleep(5 * 1000);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                }*/
+                if (isReversed) fieldBottom.setText(wordsCursor.getString(2));
+                else fieldBottom.setText(wordsCursor.getString(1));
             }
         });
 
         // по нажатию кнопки получаем следующую строку
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +78,8 @@ public class StudyActivity extends AppCompatActivity {
                 } while (isExcluded);
 
                 //выводим полученное слово
-                fieldTop.setText(wordsCursor.getString(2));
+                if (isReversed) fieldTop.setText(wordsCursor.getString(1));
+                else fieldTop.setText(wordsCursor.getString(2));
                 currentCount++;
                 fieldBottom.setText("");
                 counterBox.setText(currentCount + " / " + linesCount);
@@ -116,6 +102,9 @@ public class StudyActivity extends AppCompatActivity {
             case R.id.exclude:
                 exclude();
                 return true;
+            case R.id.swap:
+                swapLangs();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -132,13 +121,10 @@ public class StudyActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public void clearFieldBottom() {
-        fieldBottom.setText("");
-    }
+     }
 
     public void exclude() {
+        //делаем запрос к бд, помечаем слово как исключенное из обучения
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_STUDY, 0);
         Toast.makeText(this, "Успешно исключено",Toast.LENGTH_LONG).show();
@@ -148,6 +134,23 @@ public class StudyActivity extends AppCompatActivity {
         //уменьшаем счетчики на одно слово
         currentCount--;
         linesCount--;
+    }
+
+    public void showFirstWord() {
+        //устанавливаем курсор и генерируем первое значение
+        wordsCursor.moveToFirst();
+        wordsCursor.moveToPosition(r.nextInt(linesCount));
+
+        //устаналиваем первое значение и счетчик
+        if (isReversed) fieldTop.setText(wordsCursor.getString(1));
+        else fieldTop.setText(wordsCursor.getString(2));
+        currentCount = 1;
+        counterBox.setText(currentCount + " / " + linesCount);
+    }
+
+    public void swapLangs() {
+        isReversed = !isReversed;
+        showFirstWord();
     }
 
     @Override
