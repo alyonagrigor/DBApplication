@@ -3,15 +3,17 @@ package com.example.sqliteapp;
 /**
  * 1.  убрать повторяющиеся значения в wrongwords (закомментировано)
  * 2. сделать кнопку след. слово неактивной, пока не выбран правильный ответ
- * 3. Сделать чтобы работало верхнее меню и кнопка назад, либо переделать во фрагменты
+ * 3. Возможно, сделать переход к редактированию слова в верхнем меню и сделать функцию поменять
+ * языки местами. Не получается сделать фрагментами testactivity, studyactivity т.к. у фрагментов
+ * некорректно работает optionsmenu
+ * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
+ * 5. Возможно, сделать временную задержку и задавать ее в настройках
  * */
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -60,9 +62,7 @@ public class TestActivity extends AppCompatActivity {
         rBtn3 = findViewById(R.id.rBtn3);
         rBtn4 = findViewById(R.id.rBtn4);
 
-        // calling the action bar
         ActionBar actionBar = getSupportActionBar();
-        // showing the back button in action bar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Test");
@@ -141,7 +141,6 @@ public class TestActivity extends AppCompatActivity {
 
                 //выводим варианты ответа
                 showOptions();
-
             }
         });
     }
@@ -261,54 +260,25 @@ public class TestActivity extends AppCompatActivity {
 
     //методы для верхнего меню---------------------------------------------------------------------
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.study_menu, menu);
         return true;
     }
 
-    // this event will enable the back function to the button on press
-  /*   @Override
-   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
                 return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.swapLangs) {
-            // swapLangs
-            //return true;
-        } if (id == R.id.editIntent) {
-            goToEdit();
-            return true;
-        } if (id == R.id.exclude) {
-            exclude();
-            return true;
-        } if (id == R.id.toList) {
-            goToList();
-            return true;
+            case R.id.exclude:
+                exclude();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void goToEdit() {
-    //    long id = wordsCursor.getInt(0);
-    //    Intent intent = new Intent(getApplicationContext(), EditActivity.class);
-    //    intent.putExtra("id", id);
-    //    startActivity(intent);
-    }
-
-    public void goToList() {
-    //    Intent intent = new Intent(getApplicationContext(), ListActivity.class);
-    //    startActivity(intent);
-    }
-
-    public void exclude() {
+   public void exclude() {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_STUDY, 0);
         Toast.makeText(this, "Успешно исключено",Toast.LENGTH_LONG).show();
@@ -319,11 +289,11 @@ public class TestActivity extends AppCompatActivity {
         //уменьшаем счетчики на одно слово
         currentCount--;
         linesCount--;
-    }
+   }
 
     //***конец методов верхнего меню---------------------------------------------------------------
 
-    public void checkExclusion() {
+   public void checkExclusion() {
 
         if (excluded.isEmpty()) {
             isExcluded = false;
@@ -335,15 +305,11 @@ public class TestActivity extends AppCompatActivity {
                 }
             }
         }
-    }
+   }
 
-    public String getLastThreeChars (String str) {
-        return str.substring(str.length() - 3);
-    }
+    public String getLastThreeChars (String str) { return str.substring(str.length() - 3); }
 
-    public String getLastTwoChars (String str) {
-        return str.substring(str.length() - 2);
-    }
+    public String getLastTwoChars (String str) { return str.substring(str.length() - 2); }
 
     public String getOneLastChar (String str) { return str.substring(str.length() - 1); }
 

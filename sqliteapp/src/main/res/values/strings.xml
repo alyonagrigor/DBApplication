@@ -14,6 +14,9 @@
     <string name="yes">Да</string>
     <string name="add">Добавить</string>
     <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
+    <string name="showAnswer">Показать ответ</string>
+    <string name="nextWord">Следующее слово</string>
+
     <string name="title_activity_navdrawer">NavdrawerActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -21,9 +24,5 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
 
 </resources>
