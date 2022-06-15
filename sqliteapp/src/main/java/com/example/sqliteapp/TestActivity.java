@@ -2,9 +2,9 @@ package com.example.sqliteapp;
 
 /**
  * 1. сделать функцию поменять языки местами внутри данной активити
- * 2. сделать кнопку след. слово неактивной, пока не выбран правильный ответ
- * 3. Возможно, сделать переход к редактированию слова в верхнем меню и . Не получается сделать фрагментами testactivity, studyactivity т.к. у фрагментов
- * некорректно работает optionsmenu
+ * 2.
+ * 3. Возможно, сделать переход к редактированию слова в верхнем меню. Не получается сделать
+ * фрагментами testactivity, studyactivity т.к. у фрагментов некорректно работает optionsmenu
  * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
  * 5. Возможно, сделать временную задержку и задавать ее в настройках
  * */
@@ -31,7 +31,7 @@ import java.util.Random;
 public class TestActivity extends AppCompatActivity {
 
     TextView fieldTop, counterBox;
-    Button btnShow, btnNext;
+    Button btnNext;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor wordsCursor;
@@ -51,7 +51,6 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        // btnShow = findViewById(R.id.btnShow);
         btnNext = findViewById(R.id.btnNext);
         radGrp = findViewById(R.id.radioGroup);
         fieldTop = findViewById(R.id.fieldTop);
@@ -94,19 +93,31 @@ public class TestActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radGrp, int id) {
 
                 if (id == R.id.rBtn1) {
-                    if (rightWordPosition == 1) showToastRight();
+                    if (rightWordPosition == 1) {
+                    //    showToastRight();
+                    btnNext.setEnabled(true);
+                    }
                     else showToastWrong();
 
                 } if (id == R.id.rBtn2) {
-                    if (rightWordPosition == 2) showToastRight();
+                    if (rightWordPosition == 2)  {
+                    //    showToastRight();
+                        btnNext.setEnabled(true);
+                    }
                     else showToastWrong();
 
                 } if (id == R.id.rBtn3) {
-                    if (rightWordPosition == 3) showToastRight();
+                    if (rightWordPosition == 3)  {
+                    //    showToastRight();
+                        btnNext.setEnabled(true);
+                    }
                     else showToastWrong();
 
                 } if (id == R.id.rBtn4) {
-                    if (rightWordPosition == 4) showToastRight();
+                    if (rightWordPosition == 4)  {
+                    //    showToastRight();
+                        btnNext.setEnabled(true);
+                    }
                     else showToastWrong();
                 }
 
@@ -124,6 +135,7 @@ public class TestActivity extends AppCompatActivity {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // переходим на случайную строку
                 do {
                     wordsCursor.moveToPosition(r.nextInt(linesCount));
@@ -140,6 +152,8 @@ public class TestActivity extends AppCompatActivity {
 
                 //выводим варианты ответа
                 showOptions();
+                //деактивируем кнопку "следующее слово"
+                btnNext.setEnabled(false);
             }
         });
     }
@@ -148,6 +162,7 @@ public class TestActivity extends AppCompatActivity {
 
     // метод, который выводит правильный и похожие варианты ответа в радиогруп
     public void showOptions () {
+
         //записываем правильный ответ в строку
         rightWord = wordsCursor.getString(1);
 

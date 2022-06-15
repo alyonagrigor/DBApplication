@@ -22,7 +22,6 @@
         android:layout_width="290dp"
         android:layout_height="99dp"
         android:layout_marginBottom="36dp"
-        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintHeight_percent="0.3"
         app:layout_constraintStart_toStartOf="@+id/counter"
@@ -32,7 +31,7 @@
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:enabled="false"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="40dp"
         android:text="@string/nextWord"
