@@ -1,10 +1,9 @@
 package com.example.sqliteapp;
 
 /**
- * 1.  убрать повторяющиеся значения в wrongwords (закомментировано)
+ * 1. сделать функцию поменять языки местами внутри данной активити
  * 2. сделать кнопку след. слово неактивной, пока не выбран правильный ответ
- * 3. Возможно, сделать переход к редактированию слова в верхнем меню и сделать функцию поменять
- * языки местами. Не получается сделать фрагментами testactivity, studyactivity т.к. у фрагментов
+ * 3. Возможно, сделать переход к редактированию слова в верхнем меню и . Не получается сделать фрагментами testactivity, studyactivity т.к. у фрагментов
  * некорректно работает optionsmenu
  * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
  * 5. Возможно, сделать временную задержку и задавать ее в настройках
@@ -153,16 +152,16 @@ public class TestActivity extends AppCompatActivity {
         rightWord = wordsCursor.getString(1);
 
         //подбираем подходящие варианты неправильных ответов
-        rightWordEnding = getLastThreeChars(rightWord); //получаем окончание
+        rightWordEnding = getThreeLastChars(rightWord); //получаем окончание
         //правильного ответа в отдельную строку, последние 3 буквы, например, soledad - -dad
 
         // перебираем строки в курсоре циклом и записываем подходящие варианты в список
         for (int i = 0; i < linesCount; i++) {
             wordsCursor.moveToPosition(i);
             curWord = wordsCursor.getString(1);
-            if (getLastThreeChars(curWord).equals(rightWordEnding)
+            if (getThreeLastChars(curWord).equals(rightWordEnding)
                     && !curWord.equals(rightWord)
-            //        && !wrongWords.contains(curWord)
+                    && !wrongWords.contains(curWord)
                     ){
                 wrongWords.add(curWord);
             }
@@ -173,13 +172,13 @@ public class TestActivity extends AppCompatActivity {
 
         //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 2 буквы в конце
         if (wrongWords.size() < 3) {
-            rightWordEnding = getLastTwoChars(rightWord);
+            rightWordEnding = getTwoLastChars(rightWord);
             for (int i = 0; i < linesCount; i++) {
                 wordsCursor.moveToPosition(i);
                 curWord = wordsCursor.getString(1);
-                if (getLastTwoChars(curWord).equals(rightWordEnding)
+                if (getTwoLastChars(curWord).equals(rightWordEnding)
                         && !curWord.equals(rightWord)
-                //        && !wrongWords.contains(curWord)
+                        && !wrongWords.contains(curWord)
                 ) {
                     wrongWords.add(curWord);
                 }
@@ -196,7 +195,7 @@ public class TestActivity extends AppCompatActivity {
                 curWord = wordsCursor.getString(1);
                 if (getOneLastChar(curWord).equals(rightWordEnding)
                         && !curWord.equals(rightWord)
-                //        && !wrongWords.contains(curWord)
+                        && !wrongWords.contains(curWord)
                 ) {
                     wrongWords.add(curWord);
                 }
@@ -307,9 +306,9 @@ public class TestActivity extends AppCompatActivity {
         }
    }
 
-    public String getLastThreeChars (String str) { return str.substring(str.length() - 3); }
+    public String getThreeLastChars(String str) { return str.substring(str.length() - 3); }
 
-    public String getLastTwoChars (String str) { return str.substring(str.length() - 2); }
+    public String getTwoLastChars(String str) { return str.substring(str.length() - 2); }
 
     public String getOneLastChar (String str) { return str.substring(str.length() - 1); }
 
