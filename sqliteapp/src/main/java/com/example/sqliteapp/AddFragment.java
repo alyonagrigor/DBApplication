@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 public class AddFragment extends Fragment {
 
     EditText targetBox, nativeBox;
-    Button saveButton, studyButton, listButton;
+    Button saveButton;
     DatabaseHelper sqlHelper;
     SQLiteDatabase db;
 
@@ -39,8 +39,6 @@ public class AddFragment extends Fragment {
 
     public void onViewCreated (View view,  Bundle savedInstanceState) {
         saveButton = view.findViewById(R.id.saveButton);
-        studyButton = view.findViewById(R.id.studyButton);
-        listButton = view.findViewById(R.id.listButton);
         targetBox = view.findViewById(R.id.targetBox);
         nativeBox = view.findViewById(R.id.nativeBox);
         sqlHelper = new DatabaseHelper(getActivity());
@@ -68,22 +66,6 @@ public class AddFragment extends Fragment {
                 }
             }
         });
-
- /*       listButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-            studyButton.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(getActivity(), StudyActivity.class);
-            startActivity(intent);
-        }
-    });*/
 }
 
     @Override

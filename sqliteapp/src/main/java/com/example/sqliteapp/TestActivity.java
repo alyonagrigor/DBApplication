@@ -3,7 +3,7 @@ package com.example.sqliteapp;
 /**
  * 1.
  * 2. Возможно, добавить заглушку, если в бд меньше N слов, то тест запустить нельзя
- * 3. Возможно, сделать переход к редактированию слова в верхнем меню. Не получается сделать
+ * 3. Возможно, сделать переход к редактированию слова в optionsmenu. Не получается сделать
  * фрагментами testactivity, studyactivity т.к. у фрагментов некорректно работает optionsmenu
  * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
  * */
@@ -11,6 +11,8 @@ package com.example.sqliteapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,7 +31,7 @@ import java.util.Random;
 
 public class TestActivity extends AppCompatActivity {
 
-    TextView fieldTop, counterBox;
+    TextView fieldTop, counterBox, testImpossible;
     Button btnNext;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
@@ -44,12 +46,12 @@ public class TestActivity extends AppCompatActivity {
     RadioGroup radGrp;
     RadioButton rBtn1, rBtn2, rBtn3, rBtn4;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         btnNext = findViewById(R.id.btnNext);
+        testImpossible = findViewById(R.id.testImpossible);
         radGrp = findViewById(R.id.radioGroup);
         fieldTop = findViewById(R.id.fieldTop);
         counterBox = findViewById(R.id.counter);
@@ -69,73 +71,86 @@ public class TestActivity extends AppCompatActivity {
         db = databaseHelper.open();
         //получаем данные из таблицы бд, только те строки, которые не исключены из обучения,
         wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
-        linesCount = wordsCursor.getCount();
 
-        showFirstWordTest();
+        //проверяем, чтобы в бд было более 4 слов, иначе скрываем все view, кроме testImpossible
+        if (wordsCursor.getCount() < 4) {
+
+            testImpossible.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.GONE);
+            radGrp.setVisibility(View.GONE);
+            fieldTop.setVisibility(View.GONE);
+            counterBox.setVisibility(View.GONE);
+
+        } else {
+            //если в бд более 4 слов, то запускаем ОСНОВНОЙ ФУНКЦИОНАЛ ПРОГРАММЫ
+
+            linesCount = wordsCursor.getCount();
+            showFirstWordTest();
 
 // ***********************************************!!!НАЧАЛО СЛУШАТЕЛЕЙ!!!**************************
 
-        radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radGrp, int id) {
+            radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radGrp, int id) {
 
-                if (id == R.id.rBtn1) {
-                    if (rightWordPosition == 1) {
-                    //    showToastRight();
-                    btnNext.setEnabled(true);
-                    }
-                    else showToastWrong();
+                    if (id == R.id.rBtn1) {
+                        if (rightWordPosition == 1) {
+                            //    showToastRight();
+                            btnNext.setEnabled(true);
+                        } else showToastWrong();
 
-                } if (id == R.id.rBtn2) {
-                    if (rightWordPosition == 2)  {
-                    //    showToastRight();
-                        btnNext.setEnabled(true);
                     }
-                    else showToastWrong();
+                    if (id == R.id.rBtn2) {
+                        if (rightWordPosition == 2) {
+                            //    showToastRight();
+                            btnNext.setEnabled(true);
+                        } else showToastWrong();
 
-                } if (id == R.id.rBtn3) {
-                    if (rightWordPosition == 3)  {
-                    //    showToastRight();
-                        btnNext.setEnabled(true);
                     }
-                    else showToastWrong();
+                    if (id == R.id.rBtn3) {
+                        if (rightWordPosition == 3) {
+                            //    showToastRight();
+                            btnNext.setEnabled(true);
+                        } else showToastWrong();
 
-                } if (id == R.id.rBtn4) {
-                    if (rightWordPosition == 4)  {
-                    //    showToastRight();
-                        btnNext.setEnabled(true);
                     }
-                    else showToastWrong();
+                    if (id == R.id.rBtn4) {
+                        if (rightWordPosition == 4) {
+                            //    showToastRight();
+                            btnNext.setEnabled(true);
+                        } else showToastWrong();
+                    }
+
                 }
+            });
 
-            }});
+            // по нажатию кнопки получаем следующую строку
+            btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-        // по нажатию кнопки получаем следующую строку
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    // переходим на случайную строку
+                    do {
+                        wordsCursor.moveToPosition(r.nextInt(linesCount));
+                        //проверяем, не было ли слово исключено в процессе работы с текущей активити
+                        checkExclusion();
+                    } while (isExcluded);
 
-                // переходим на случайную строку
-                do {
-                    wordsCursor.moveToPosition(r.nextInt(linesCount));
-                    //проверяем, не было ли слово исключено в процессе работы с текущей активити
-                    checkExclusion();
-                } while (isExcluded);
+                    //выводим полученное слово
+                    if (isReversed) fieldTop.setText(wordsCursor.getString(1));
+                    else fieldTop.setText(wordsCursor.getString(2));
+                    currentCount++;
+                    counterBox.setText(currentCount + " / " + linesCount);
+                    radGrp.clearCheck();
+                    wrongWords.clear();
 
-                //выводим полученное слово
-                if (isReversed) fieldTop.setText(wordsCursor.getString(1));
-                else fieldTop.setText(wordsCursor.getString(2));
-                currentCount++;
-                counterBox.setText(currentCount + " / " + linesCount);
-                radGrp.clearCheck();
-                wrongWords.clear();
-
-                //выводим варианты ответа
-                showOptions();
-                //деактивируем кнопку "следующее слово"
-                btnNext.setEnabled(false);
-            }
-        });
+                    //выводим варианты ответа
+                    showOptions();
+                    //деактивируем кнопку "следующее слово"
+                    btnNext.setEnabled(false);
+                }
+            });
+        }
     }
 
 // ***********************************************!!!КОНЕЦ МЕТОДА MAIN!!!**************************

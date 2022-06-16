@@ -16,6 +16,10 @@
     <string name="yes">Да</string>
     <string name="add">Добавить</string>
     <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
+    <string name="testImpossible">Недостаточно слов в базе данных \n Чтобы начать тест, нужно
+        добавить не менее 4 слов</string>
+    <string name="studyImpossible">В базе данных пока ничего нет \n Добавьте первое слово на
+        вкладке "Добавить"</string>
     <string name="showAnswer">Показать ответ</string>
     <string name="nextWord">Следующее слово</string>
     <string name="title_activity_navdrawer">NavdrawerActivity</string>

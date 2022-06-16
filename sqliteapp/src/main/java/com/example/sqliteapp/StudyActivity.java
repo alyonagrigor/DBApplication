@@ -19,7 +19,7 @@ import java.util.Random;
 
 public class StudyActivity extends AppCompatActivity {
 
-    TextView fieldBottom, fieldTop, counterBox;
+    TextView fieldBottom, fieldTop, counterBox, studyImpossible;
     Button btnShow, btnNext;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
@@ -41,6 +41,7 @@ public class StudyActivity extends AppCompatActivity {
         fieldBottom = findViewById(R.id.fieldBottom);
         fieldTop = findViewById(R.id.fieldTop);
         counterBox = findViewById(R.id.counter);
+        studyImpossible = findViewById(R.id.studyImpossible);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -53,38 +54,53 @@ public class StudyActivity extends AppCompatActivity {
         db = databaseHelper.open();
         //получаем данные из таблицы бд, только те строки, которые не исключены из обучения,
         wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
-        linesCount = wordsCursor.getCount();
 
-        showFirstWord();
 
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //показываем перевод слова в поле fieldBottom
-                if (isReversed) fieldBottom.setText(wordsCursor.getString(2));
-                else fieldBottom.setText(wordsCursor.getString(1));
-            }
-        });
+        //проверяем, чтобы в бд есть слова, иначе скрываем все view, кроме studyImpossible
+        if (wordsCursor.getCount() == 0) {
 
-        // по нажатию кнопки получаем следующую строку
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // переходим на случайную строку
-                do {
-                    wordsCursor.moveToPosition(r.nextInt(linesCount));
-                    checkExclusion();
-                } while (isExcluded);
+            studyImpossible.setVisibility(View.VISIBLE);
+            btnNext.setVisibility(View.GONE);
+            btnShow.setVisibility(View.GONE);
+            fieldTop.setVisibility(View.GONE);
+            counterBox.setVisibility(View.GONE);
 
-                //выводим полученное слово
-                if (isReversed) fieldTop.setText(wordsCursor.getString(1));
-                else fieldTop.setText(wordsCursor.getString(2));
-                currentCount++;
-                fieldBottom.setText("");
-                counterBox.setText(currentCount + " / " + linesCount);
-            }
-        });
+        } else {
+            //если в бд есть слова, то запускаем ОСНОВНОЙ ФУНКЦИОНАЛ ПРОГРАММЫ
+            linesCount = wordsCursor.getCount();
+
+            showFirstWord();
+
+            btnShow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //показываем перевод слова в поле fieldBottom
+                    if (isReversed) fieldBottom.setText(wordsCursor.getString(2));
+                    else fieldBottom.setText(wordsCursor.getString(1));
+                }
+            });
+
+            // по нажатию кнопки получаем следующую строку
+            btnNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // переходим на случайную строку
+                    do {
+                        wordsCursor.moveToPosition(r.nextInt(linesCount));
+                        checkExclusion();
+                    } while (isExcluded);
+
+                    //выводим полученное слово
+                    if (isReversed) fieldTop.setText(wordsCursor.getString(1));
+                    else fieldTop.setText(wordsCursor.getString(2));
+                    currentCount++;
+                    fieldBottom.setText("");
+                    counterBox.setText(currentCount + " / " + linesCount);
+                }
+            });
+        }
     }
+    //КОНЕЦ МЕТОДА MAIN
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {

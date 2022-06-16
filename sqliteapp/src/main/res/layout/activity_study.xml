@@ -7,12 +7,26 @@
     tools:context=".StudyActivity">
 
     <TextView
+        android:id="@+id/studyImpossible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/studyImpossible"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:paddingBottom="20sp"
+        android:paddingTop="20sp"
+        app:layout_constraintBottom_toTopOf="@id/counter"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
         android:id="@+id/counter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="13dp"
-        android:text="TextView"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/fieldTop"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +39,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="18dp"
-        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/btnShow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.3"
@@ -39,7 +52,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="35dp"
-        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/fieldBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.3"
