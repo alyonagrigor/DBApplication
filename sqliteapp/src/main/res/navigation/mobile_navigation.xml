@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/addFragment"
         android:name="com.example.sqliteapp.AddFragment"
-        android:label="AddFragment" />
+        android:label="Добавить слово" />
     <action
         android:id="@+id/action_global_addFragment"
         app:destination="@id/addFragment" />
@@ -16,19 +16,19 @@
     <activity
         android:id="@+id/studyActivity"
         android:name="com.example.sqliteapp.StudyActivity"
-        android:label="activity_study"
+        android:label="Режим просмотра"
         tools:layout="@layout/activity_study" />
     <action android:id="@+id/action_global_studyActivity" app:destination="@id/studyActivity" />
     <activity
         android:id="@+id/testActivity"
         android:name="com.example.sqliteapp.TestActivity"
-        android:label="TestActivity" />
+        android:label="Режим теста" />
     <action android:id="@+id/action_global_testActivity" app:destination="@id/testActivity" />
 
     <fragment
         android:id="@+id/editFragment"
         android:name="com.example.sqliteapp.EditFragment"
-        android:label="EditFragment" >
+        android:label="Редактирование слова" >
         <argument
             android:name="id"
             app:argType="long"
@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.sqliteapp.ListFragment"
-        android:label="ListFragment" >
+        android:label="Список слов" >
         <action
             android:id="@+id/action_listFragment_to_editFragment"
             app:destination="@id/editFragment" />

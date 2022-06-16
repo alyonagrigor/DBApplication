@@ -46,7 +46,6 @@ public class StudyActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Режим просмотра");
         }
 
         databaseHelper = new DatabaseHelper(getApplicationContext());

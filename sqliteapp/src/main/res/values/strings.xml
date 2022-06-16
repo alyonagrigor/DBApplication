@@ -5,7 +5,7 @@
     <string name="enterNative">Введите cлово на родном языке</string>
     <string name="targetWord">Слово на изучаемом языке</string>
     <string name="nativeWord">Слово на родном языке</string>
-    <string name="toList">К списку слов</string>
+    <string name="toList">Список слов</string>
     <string name="save">Сохранить</string>
     <string name="study">Учить</string>
     <string name="delete">Удалить</string>
@@ -15,6 +15,9 @@
     <string name="no">Нет</string>
     <string name="yes">Да</string>
     <string name="add">Добавить</string>
+    <string name="addWord">Добавить слово</string>
+    <string name="studyMode">Режим просмотра</string>
+    <string name="testMode">Режим теста</string>
     <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
     <string name="testImpossible">Недостаточно слов в базе данных \n Чтобы начать тест, нужно
         добавить не менее 4 слов</string>
@@ -23,10 +26,10 @@
     <string name="showAnswer">Показать ответ</string>
     <string name="nextWord">Следующее слово</string>
     <string name="title_activity_navdrawer">NavdrawerActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="navigation_drawer_open">Открыть боковое меню</string>
+    <string name="navigation_drawer_close">Закрыть боковое меню</string>
+    <string name="nav_header_title">Memorize Words</string>
+    <string name="nav_header_subtitle">alyonagrigor@gmail.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 

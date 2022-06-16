@@ -2,7 +2,7 @@ package com.example.sqliteapp;
 
 /**
  * 1.
- * 2. Возможно, добавить заглушку, если в бд меньше N слов, то тест запустить нельзя
+ * 2.
  * 3. Возможно, сделать переход к редактированию слова в optionsmenu. Не получается сделать
  * фрагментами testactivity, studyactivity т.к. у фрагментов некорректно работает optionsmenu
  * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
@@ -63,7 +63,6 @@ public class TestActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Режим теста");
         }
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
