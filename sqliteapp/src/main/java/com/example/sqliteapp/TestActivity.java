@@ -1,12 +1,11 @@
 package com.example.sqliteapp;
 
 /**
- * 1. сделать функцию поменять языки местами внутри данной активити
- * 2.
+ * 1.
+ * 2. Возможно, добавить заглушку, если в бд меньше N слов, то тест запустить нельзя
  * 3. Возможно, сделать переход к редактированию слова в верхнем меню. Не получается сделать
  * фрагментами testactivity, studyactivity т.к. у фрагментов некорректно работает optionsmenu
  * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
- * 5. Возможно, сделать временную задержку и задавать ее в настройках
  * */
 
 import androidx.annotation.NonNull;
@@ -40,11 +39,10 @@ public class TestActivity extends AppCompatActivity {
     ArrayList<Integer> excluded = new ArrayList<Integer>(); //коллекция для хранения айди исключенных
     //слов, при исключении одновременно удаляются из бд и записываются в эту коллекцию
     Iterator<Integer> iter = excluded.iterator(); //итератор для коллекции
-    boolean isExcluded = false;
+    boolean isReversed = false, isExcluded = false;
     Random r = new Random(); //объект для генерации рандомных чисел
     RadioGroup radGrp;
     RadioButton rBtn1, rBtn2, rBtn3, rBtn4;
-    String rightWord, rightWordEnding, curWord;
 
 
     @Override
@@ -63,7 +61,7 @@ public class TestActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Test");
+            getSupportActionBar().setTitle("Режим теста");
         }
 
         databaseHelper = new DatabaseHelper(getApplicationContext());
@@ -73,18 +71,7 @@ public class TestActivity extends AppCompatActivity {
         wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
         linesCount = wordsCursor.getCount();
 
-        //устанавливаем курсор и устанавливаем на рандомную строку
-        wordsCursor.moveToFirst();
-        wordsCursor.moveToPosition(r.nextInt(linesCount));
-
-        //устаналиваем значение на родном языке и счетчик
-        fieldTop.setText(wordsCursor.getString(2));
-        currentCount = 1;
-        counterBox.setText(currentCount + " / " + linesCount);
-        radGrp.clearCheck();
-
-        //выводим варианты ответа
-        showOptions();
+        showFirstWordTest();
 
 // ***********************************************!!!НАЧАЛО СЛУШАТЕЛЕЙ!!!**************************
 
@@ -123,14 +110,6 @@ public class TestActivity extends AppCompatActivity {
 
             }});
 
-        //временная задержка
-          /*      try {
-                    Thread.sleep(5 * 1000);
-                } catch (InterruptedException ie) {
-                    Thread.currentThread().interrupt();
-                }*/
-
-
         // по нажатию кнопки получаем следующую строку
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +123,8 @@ public class TestActivity extends AppCompatActivity {
                 } while (isExcluded);
 
                 //выводим полученное слово
-                fieldTop.setText(wordsCursor.getString(2));
+                if (isReversed) fieldTop.setText(wordsCursor.getString(1));
+                else fieldTop.setText(wordsCursor.getString(2));
                 currentCount++;
                 counterBox.setText(currentCount + " / " + linesCount);
                 radGrp.clearCheck();
@@ -162,36 +142,86 @@ public class TestActivity extends AppCompatActivity {
 
     // метод, который выводит правильный и похожие варианты ответа в радиогруп
     public void showOptions () {
+        String rightWord, rightWordEnding, curWord;
 
         //записываем правильный ответ в строку
-        rightWord = wordsCursor.getString(1);
+        if (isReversed) rightWord = wordsCursor.getString(2);
+        else rightWord = wordsCursor.getString(1);
 
         //подбираем подходящие варианты неправильных ответов
         rightWordEnding = getThreeLastChars(rightWord); //получаем окончание
         //правильного ответа в отдельную строку, последние 3 буквы, например, soledad - -dad
 
-        // перебираем строки в курсоре циклом и записываем подходящие варианты в список
-        for (int i = 0; i < linesCount; i++) {
-            wordsCursor.moveToPosition(i);
-            curWord = wordsCursor.getString(1);
-            if (getThreeLastChars(curWord).equals(rightWordEnding)
-                    && !curWord.equals(rightWord)
-                    && !wrongWords.contains(curWord)
-                    ){
-                wrongWords.add(curWord);
+        //если смена языка включена
+        if (isReversed) {
+            // перебираем строки в курсоре циклом и записываем подходящие варианты в список
+            for (int i = 0; i < linesCount; i++) {
+                wordsCursor.moveToPosition(i);
+                curWord = wordsCursor.getString(2);
+                if (getThreeLastChars(curWord).equals(rightWordEnding)
+                        && !curWord.equals(rightWord)
+                        && !wrongWords.contains(curWord)
+                ){
+                    wrongWords.add(curWord);
+                }
+                if (wrongWords.size() == 3) {
+                    break;
+                }
             }
-            if (wrongWords.size() == 3) {
-                break;
+            //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 2 буквы в конце
+            if (wrongWords.size() < 3) {
+                rightWordEnding = getTwoLastChars(rightWord);
+                for (int i = 0; i < linesCount; i++) {
+                    wordsCursor.moveToPosition(i);
+                    curWord = wordsCursor.getString(2);
+                    if (getTwoLastChars(curWord).equals(rightWordEnding)
+                            && !curWord.equals(rightWord)
+                            && !wrongWords.contains(curWord)
+                    ) {
+                        wrongWords.add(curWord);
+                    }
+                    if (wrongWords.size() == 3) {
+                        break;
+                    }
+                }
             }
-        }
+            //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 1 буква в конце
+            if (wrongWords.size() < 3) {
+                rightWordEnding = getOneLastChar(rightWord);
+                for (int i = 0; i < linesCount; i++) {
+                    wordsCursor.moveToPosition(i);
+                    curWord = wordsCursor.getString(2);
+                    if (getOneLastChar(curWord).equals(rightWordEnding)
+                            && !curWord.equals(rightWord)
+                            && !wrongWords.contains(curWord)
+                    ) {
+                        wrongWords.add(curWord);
+                    }
+                    if (wrongWords.size() == 3) {
+                        break;
+                    }
+                }
+            }
 
-        //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 2 буквы в конце
-        if (wrongWords.size() < 3) {
-            rightWordEnding = getTwoLastChars(rightWord);
+            //если вариантов все равно не хватило, берем любое рандомное значение
+            if (wrongWords.size() < 3) {
+                do {
+                    wordsCursor.moveToPosition(r.nextInt(linesCount));
+                    curWord = wordsCursor.getString(2);
+                    if (!curWord.equals(rightWord)
+                        && !wrongWords.contains(curWord)
+                    ) {
+                        wrongWords.add(curWord);
+                    }
+                //    wrongWords.add("Test");
+                } while (wrongWords.size() < 3);
+            }
+        } else { //если смена языка выключена
+            // перебираем строки в курсоре циклом и записываем подходящие варианты в список
             for (int i = 0; i < linesCount; i++) {
                 wordsCursor.moveToPosition(i);
                 curWord = wordsCursor.getString(1);
-                if (getTwoLastChars(curWord).equals(rightWordEnding)
+                if (getThreeLastChars(curWord).equals(rightWordEnding)
                         && !curWord.equals(rightWord)
                         && !wrongWords.contains(curWord)
                 ) {
@@ -201,32 +231,54 @@ public class TestActivity extends AppCompatActivity {
                     break;
                 }
             }
-        }
-//если получилось меньше 3 значений, то ищем слова, с которыми совпадают 1 буква в конце
-        if (wrongWords.size()<3) {
-            rightWordEnding = getOneLastChar(rightWord);
-            for (int i = 0; i < linesCount; i++) {
-                wordsCursor.moveToPosition(i);
-                curWord = wordsCursor.getString(1);
-                if (getOneLastChar(curWord).equals(rightWordEnding)
-                        && !curWord.equals(rightWord)
-                        && !wrongWords.contains(curWord)
-                ) {
-                    wrongWords.add(curWord);
-                }
-                if (wrongWords.size() == 3) {
-                    break;
+            //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 2 буквы в конце
+            if (wrongWords.size() < 3) {
+                rightWordEnding = getTwoLastChars(rightWord);
+                for (int i = 0; i < linesCount; i++) {
+                    wordsCursor.moveToPosition(i);
+                    curWord = wordsCursor.getString(1);
+                    if (getTwoLastChars(curWord).equals(rightWordEnding)
+                            && !curWord.equals(rightWord)
+                            && !wrongWords.contains(curWord)
+                    ) {
+                        wrongWords.add(curWord);
+                    }
+                    if (wrongWords.size() == 3) {
+                        break;
+                    }
                 }
             }
-        }
+            //если получилось меньше 3 значений, то ищем слова, с которыми совпадают 1 буква в конце
+            if (wrongWords.size()<3) {
+                rightWordEnding = getOneLastChar(rightWord);
+                for (int i = 0; i < linesCount; i++) {
+                    wordsCursor.moveToPosition(i);
+                    curWord = wordsCursor.getString(1);
+                    if (getOneLastChar(curWord).equals(rightWordEnding)
+                            && !curWord.equals(rightWord)
+                            && !wrongWords.contains(curWord)
+                    ) {
+                        wrongWords.add(curWord);
+                    }
+                    if (wrongWords.size() == 3) {
+                        break;
+                    }
+                }
+            }
 
-        //если вариантов все равно не хватило, берем любое рандомное значение
-        if (wrongWords.size()<3) {
-            do {
-                wordsCursor.moveToPosition(r.nextInt(linesCount));
-            //    if (!wrongWords.contains(wordsCursor.getString(1)))
-                wrongWords.add(wordsCursor.getString(1));
-            } while (wrongWords.size()==3);
+            //если вариантов все равно не хватило, берем любое рандомное значение
+            if (wrongWords.size() < 3) {
+                do {
+                    wordsCursor.moveToPosition(r.nextInt(linesCount));
+                    curWord = wordsCursor.getString(1);
+                    if (!curWord.equals(rightWord)
+                            && !wrongWords.contains(curWord)
+                    ) {
+                        wrongWords.add(curWord);
+                    }
+                //    wrongWords.add("Test");
+                } while (wrongWords.size() < 3);
+            }
         }
 
 //рандомно выбираем и записываем позицию для правильного ответа
@@ -288,6 +340,9 @@ public class TestActivity extends AppCompatActivity {
             case R.id.exclude:
                 exclude();
                 return true;
+            case R.id.swap:
+                swapLangs();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -326,6 +381,32 @@ public class TestActivity extends AppCompatActivity {
     public String getTwoLastChars(String str) { return str.substring(str.length() - 2); }
 
     public String getOneLastChar (String str) { return str.substring(str.length() - 1); }
+
+    public void swapLangs() {
+        isReversed = !isReversed;
+        showFirstWordTest();
+    }
+
+    public void showFirstWordTest() {
+        //устанавливаем курсор и устанавливаем на рандомную строку
+        wordsCursor.moveToFirst();
+        wordsCursor.moveToPosition(r.nextInt(linesCount));
+
+        //устаналиваем значение на родном языке и счетчик
+        if (isReversed) fieldTop.setText(wordsCursor.getString(1));
+        else fieldTop.setText(wordsCursor.getString(2));
+        currentCount = 1;
+        counterBox.setText(currentCount + " / " + linesCount);
+        radGrp.clearCheck();
+        wrongWords.clear();
+        rBtn1.setText("");
+        rBtn2.setText("");
+        rBtn3.setText("");
+        rBtn4.setText("");
+
+        //выводим варианты ответа
+        showOptions();
+    }
 
     @Override
     public void onDestroy() {

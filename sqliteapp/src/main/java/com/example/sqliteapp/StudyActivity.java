@@ -25,11 +25,10 @@ public class StudyActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor wordsCursor;
     int linesCount, currentCount = 0;
-    boolean isReversed = false;
+    boolean isReversed = false, isExcluded = false;
     ArrayList<Integer> excluded = new ArrayList<Integer>(); //коллекция для хранения айди исключенных
     //слов, при исключении одновременно удаляются из бд и записываются в эту коллекцию
     Iterator<Integer> iter = excluded.iterator(); //итератор для коллекции
-    boolean isExcluded = false;
     Random r = new Random(); //объект для генерации рандомных чисел
 
 
@@ -124,7 +123,6 @@ public class StudyActivity extends AppCompatActivity {
      }
 
     public void exclude() {
-        //делаем запрос к бд, помечаем слово как исключенное из обучения
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_STUDY, 0);
         Toast.makeText(this, "Успешно исключено",Toast.LENGTH_LONG).show();
