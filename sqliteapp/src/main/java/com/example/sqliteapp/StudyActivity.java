@@ -24,7 +24,7 @@ public class StudyActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor wordsCursor;
     int linesCount, currentCount = 0;
-    boolean isReversed = false, isShown = false, isExcluded = false;
+    boolean isReversed, isShown, isExcluded = false;
     ArrayList<Integer> excludedList = new ArrayList<Integer>(); //коллекция для хранения айди исключенных
     //слов, при исключении одновременно удаляются из бд и записываются в эту коллекцию
     ArrayList<Integer> shownList = new ArrayList<Integer>(); //коллекция для хранения уже показанных слов

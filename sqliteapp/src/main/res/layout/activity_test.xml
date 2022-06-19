@@ -42,25 +42,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/counter" />
 
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="40dp"
-        android:text="@string/nextWord"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btnNext"
-        app:layout_constraintEnd_toEndOf="@+id/fieldTop"
-        app:layout_constraintStart_toStartOf="@+id/fieldTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fieldTop">
 
         <RadioButton
@@ -84,5 +72,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/nextWord"
+        app:layout_constraintBottom_toTopOf="@+id/btnRestart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+    <Button
+        android:id="@+id/btnRestart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:enabled="false"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/restart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNext" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

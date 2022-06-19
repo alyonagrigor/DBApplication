@@ -5,13 +5,11 @@ package com.example.sqliteapp;
  * 2.
  * 3. Возможно, сделать переход к редактированию слова в optionsmenu. Не получается сделать
  * фрагментами testactivity, studyactivity т.к. у фрагментов некорректно работает optionsmenu
- * 4. Возможно, сделать ротацию так, чтобы слова не повторялись, тогда будут иметь смысл счетчики
  * */
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -26,22 +24,21 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 public class TestActivity extends AppCompatActivity {
 
     TextView fieldTop, counterBox, testImpossible;
-    Button btnNext;
+    Button btnNext, btnRestart;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor wordsCursor;
     int linesCount, currentCount, rightWordPosition = 0;
     ArrayList<String> wrongWords = new ArrayList<>(); //список для хранения неправильных вариантов ответа в тесте
-    ArrayList<Integer> excluded = new ArrayList<Integer>(); //коллекция для хранения айди исключенных
+    ArrayList<Integer> excludedList = new ArrayList<Integer>(); //коллекция для хранения айди исключенных
     //слов, при исключении одновременно удаляются из бд и записываются в эту коллекцию
-    ArrayList<Integer> shown = new ArrayList<Integer>(); //коллекция для хранения уже показанных слов
-    boolean isReversed = false, isExcluded = false;
+    ArrayList<Integer> shownList = new ArrayList<Integer>(); //коллекция для хранения уже показанных слов
+    boolean isReversed, isExcluded, isShown = false;
     Random r = new Random(); //объект для генерации рандомных чисел
     RadioGroup radGrp;
     RadioButton rBtn1, rBtn2, rBtn3, rBtn4;
@@ -51,6 +48,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         btnNext = findViewById(R.id.btnNext);
+        btnRestart = findViewById(R.id.btnRestart);
         testImpossible = findViewById(R.id.testImpossible);
         radGrp = findViewById(R.id.radioGroup);
         fieldTop = findViewById(R.id.fieldTop);
@@ -84,7 +82,7 @@ public class TestActivity extends AppCompatActivity {
             //если в бд более 4 слов, то запускаем ОСНОВНОЙ ФУНКЦИОНАЛ ПРОГРАММЫ
 
             linesCount = wordsCursor.getCount();
-            showFirstWordTest();
+            showFirstWord();
 
 // ***********************************************!!!НАЧАЛО СЛУШАТЕЛЕЙ!!!**************************
 
@@ -94,29 +92,29 @@ public class TestActivity extends AppCompatActivity {
 
                     if (id == R.id.rBtn1) {
                         if (rightWordPosition == 1) {
-                            //    showToastRight();
                             btnNext.setEnabled(true);
+                            btnRestart.setEnabled(true);
                         } else showToastWrong();
 
                     }
                     if (id == R.id.rBtn2) {
                         if (rightWordPosition == 2) {
-                            //    showToastRight();
                             btnNext.setEnabled(true);
+                            btnRestart.setEnabled(true);
                         } else showToastWrong();
 
                     }
                     if (id == R.id.rBtn3) {
                         if (rightWordPosition == 3) {
-                            //    showToastRight();
                             btnNext.setEnabled(true);
+                            btnRestart.setEnabled(true);
                         } else showToastWrong();
 
                     }
                     if (id == R.id.rBtn4) {
                         if (rightWordPosition == 4) {
-                            //    showToastRight();
                             btnNext.setEnabled(true);
+                            btnRestart.setEnabled(true);
                         } else showToastWrong();
                     }
 
@@ -131,9 +129,9 @@ public class TestActivity extends AppCompatActivity {
                     // переходим на случайную строку
                     do {
                         wordsCursor.moveToPosition(r.nextInt(linesCount));
-                        //проверяем, не было ли слово исключено в процессе работы с текущей активити
                         checkExclusion();
-                    } while (isExcluded);
+                        checkShown();
+                    } while (isExcluded || isShown);
 
                     //выводим полученное слово
                     if (isReversed) fieldTop.setText(wordsCursor.getString(1));
@@ -142,11 +140,28 @@ public class TestActivity extends AppCompatActivity {
                     counterBox.setText(currentCount + " / " + linesCount);
                     radGrp.clearCheck();
                     wrongWords.clear();
+                    shownList.add(wordsCursor.getInt(0));
+                    //если все слова в базе уже показаны, то
+                    if (shownList.size() == linesCount) {
+                        btnNext.setVisibility(View.GONE);
+                        btnRestart.setVisibility(View.VISIBLE);
+                    }
 
                     //выводим варианты ответа
                     showOptions();
                     //деактивируем кнопку "следующее слово"
                     btnNext.setEnabled(false);
+                    btnRestart.setEnabled(false);
+                }
+            });
+
+            btnRestart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    shownList.clear();
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnRestart.setVisibility(View.GONE);
+                    showFirstWord();
                 }
             });
         }
@@ -368,7 +383,7 @@ public class TestActivity extends AppCompatActivity {
         db.update(DatabaseHelper.TABLE, cv,
                 DatabaseHelper.COLUMN_ID + "=" + wordsCursor.getInt(0), null);
         //записываем айди удаленных слов в коллекцию
-        excluded.add(wordsCursor.getInt(0));
+        excludedList.add(wordsCursor.getInt(0));
         //уменьшаем счетчики на одно слово
         currentCount--;
         linesCount--;
@@ -376,19 +391,30 @@ public class TestActivity extends AppCompatActivity {
 
     //***конец методов верхнего меню---------------------------------------------------------------
 
-   public void checkExclusion() {
-       Iterator<Integer> iter = excluded.iterator();
-       if (excluded.isEmpty()) {
+    public void checkExclusion() {
+        if (excludedList.isEmpty()) {
             isExcluded = false;
-       } else {
-           while (iter.hasNext()) {
-               if (iter.next() == wordsCursor.getInt(0)) {
+        } else {
+            for (int i = 0, excludedSize = excludedList.size(); i < excludedSize; i++) {
+                Integer integer = excludedList.get(i);
+                if (integer == wordsCursor.getInt(0)) {
                     isExcluded = true;
                     break;
-               }
-           }
+                }
+            }
         }
-   }
+    }
+
+    public void checkShown() {
+        isShown = false;
+        for (int i = 0, shownSize = shownList.size(); i < shownSize; i++) {
+            Integer integer = shownList.get(i);
+            if (integer == wordsCursor.getInt(0)) {
+                isShown = true;
+                break;
+            }
+        }
+    }
 
     public String getThreeLastChars(String str) { return str.substring(str.length() - 3); }
 
@@ -398,10 +424,11 @@ public class TestActivity extends AppCompatActivity {
 
     public void swapLangs() {
         isReversed = !isReversed;
-        showFirstWordTest();
+        shownList.clear();
+        showFirstWord();
     }
 
-    public void showFirstWordTest() {
+    public void showFirstWord() {
         //устанавливаем курсор и устанавливаем на рандомную строку
         wordsCursor.moveToFirst();
         wordsCursor.moveToPosition(r.nextInt(linesCount));
@@ -413,6 +440,7 @@ public class TestActivity extends AppCompatActivity {
         counterBox.setText(currentCount + " / " + linesCount);
         radGrp.clearCheck();
         wrongWords.clear();
+        shownList.add(wordsCursor.getInt(0));
         rBtn1.setText("");
         rBtn2.setText("");
         rBtn3.setText("");
