@@ -25,6 +25,7 @@
         вкладке "Добавить"</string>
     <string name="showAnswer">Показать ответ</string>
     <string name="nextWord">Следующее слово</string>
+    <string name="restart">Начать с начала</string>
     <string name="title_activity_navdrawer">NavdrawerActivity</string>
     <string name="navigation_drawer_open">Открыть боковое меню</string>
     <string name="navigation_drawer_close">Закрыть боковое меню</string>

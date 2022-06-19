@@ -40,7 +40,7 @@ public class TestActivity extends AppCompatActivity {
     ArrayList<String> wrongWords = new ArrayList<>(); //список для хранения неправильных вариантов ответа в тесте
     ArrayList<Integer> excluded = new ArrayList<Integer>(); //коллекция для хранения айди исключенных
     //слов, при исключении одновременно удаляются из бд и записываются в эту коллекцию
-    Iterator<Integer> iter = excluded.iterator(); //итератор для коллекции
+    ArrayList<Integer> shown = new ArrayList<Integer>(); //коллекция для хранения уже показанных слов
     boolean isReversed = false, isExcluded = false;
     Random r = new Random(); //объект для генерации рандомных чисел
     RadioGroup radGrp;
@@ -377,16 +377,16 @@ public class TestActivity extends AppCompatActivity {
     //***конец методов верхнего меню---------------------------------------------------------------
 
    public void checkExclusion() {
-
-        if (excluded.isEmpty()) {
+       Iterator<Integer> iter = excluded.iterator();
+       if (excluded.isEmpty()) {
             isExcluded = false;
-        } else {
-            while (iter.hasNext()) {
-                if (iter.next() == wordsCursor.getInt(0)) {
+       } else {
+           while (iter.hasNext()) {
+               if (iter.next() == wordsCursor.getInt(0)) {
                     isExcluded = true;
                     break;
-                }
-            }
+               }
+           }
         }
    }
 
