@@ -1,12 +1,5 @@
 package com.example.sqliteapp;
 
-/**
- * 1.
- * 2.
- * 3. Возможно, сделать переход к редактированию слова в optionsmenu. Не получается сделать
- * фрагментами testactivity, studyactivity т.к. у фрагментов некорректно работает optionsmenu
- * */
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
