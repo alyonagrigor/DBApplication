@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WordsAdapter extends CursorAdapter {
@@ -32,10 +33,9 @@ public WordsAdapter(Context context, Cursor cursor){
             String nativeString = cursor.getString(2);
             nativeText.setText(nativeString);
 
-            TextView flagText = view.findViewById(R.id.flagCell);
-            String flagString = String.valueOf(cursor.getInt(3));
-            flagText.setText(flagString);
-
+            ImageView flagCell = view.findViewById(R.id.flagCell);
+            if (cursor.getInt(3) == 1) { flagCell.setImageResource(R.drawable.yes); }
+            else { flagCell.setImageResource(R.drawable.no); }
 
             int study = cursor.getInt(3); //нашли айди элемента с БД
             //Log.e("GAdapter", "bindView: idGroup = " + idGroup);
@@ -43,11 +43,11 @@ public WordsAdapter(Context context, Cursor cursor){
                 //Log.e("GAdapter", "bindView: idGroup == 11\nзакрашиваем строчки");
                 targetText.setBackgroundColor(context.getResources().getColor(R.color.grey));
                 nativeText.setBackgroundColor(context.getResources().getColor(R.color.grey));
-                flagText.setBackgroundColor(context.getResources().getColor(R.color.grey));
+                flagCell.setBackgroundColor(context.getResources().getColor(R.color.grey));
             } else { // если не равен 0 (как раз этот блок не даст цветам меняться при прокрутке)
                 targetText.setBackgroundColor(context.getResources().getColor(R.color.white));
                 nativeText.setBackgroundColor(context.getResources().getColor(R.color.white));
-                flagText.setBackgroundColor(context.getResources().getColor(R.color.white));
+                flagCell.setBackgroundColor(context.getResources().getColor(R.color.white));
             }
         }
 }

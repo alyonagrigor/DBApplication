@@ -35,13 +35,11 @@
         app:layout_constraintStart_toEndOf="@+id/targetCell"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <ImageView
         android:id="@+id/flagCell"
         android:layout_width="0dp"
-        android:layout_height="32dp"
+        android:layout_height="0dp"
         android:paddingEnd="12dp"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
         android:background="@drawable/list_item_border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
