@@ -32,7 +32,7 @@
     <string name="navigation_drawer_close">Закрыть боковое меню</string>
     <string name="nav_header_title">Memorize Words</string>
     <string name="nav_header_subtitle">alyonagrigor@gmail.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="nav_header_desc">Заголовок меню</string>
+    <string name="action_settings">Настройки</string>
 
 </resources>
