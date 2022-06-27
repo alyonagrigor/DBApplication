@@ -2,6 +2,9 @@ package com.example.sqliteapp;
 
 import android.os.Bundle;
 import com.google.android.material.navigation.NavigationView;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -16,6 +19,7 @@ public class NavdrawerActivity extends AppCompatActivity implements Controllable
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityNavdrawerBinding binding;
     DrawerLayout drawer;
+    private boolean isDrawerFixed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +27,7 @@ public class NavdrawerActivity extends AppCompatActivity implements Controllable
 
         binding = ActivityNavdrawerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        isDrawerFixed = getResources().getBoolean(R.bool.isDrawerFixed);
         setSupportActionBar(binding.appBarNavdrawer.toolbar);
         drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
@@ -36,6 +40,15 @@ public class NavdrawerActivity extends AppCompatActivity implements Controllable
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_navdrawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+    /*    if (!isDrawerFixed) {
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+        if (!isDrawerFixed) {
+            drawer.closeDrawer(GravityCompat.START);
+        }*/
     }
 /*
     @Override
@@ -44,6 +57,7 @@ public class NavdrawerActivity extends AppCompatActivity implements Controllable
         getMenuInflater().inflate(R.menu.navdrawer, menu);
         return true;
     }*/
+
 
     @Override
     public boolean onSupportNavigateUp() {
