@@ -1,12 +1,7 @@
 package com.example.sqliteapp;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.Menu;
-
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -16,10 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sqliteapp.databinding.ActivityNavdrawerBinding;
 
-public class NavdrawerActivity extends AppCompatActivity {
+public class NavdrawerActivity extends AppCompatActivity implements Controllable {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityNavdrawerBinding binding;
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +25,7 @@ public class NavdrawerActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarNavdrawer.toolbar);
-        DrawerLayout drawer = binding.drawerLayout;
+        drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -54,5 +50,15 @@ public class NavdrawerActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_navdrawer);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void setDrawer_Locked() {
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    @Override
+    public void setDrawer_Unlocked() {
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

@@ -7,19 +7,31 @@
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/app/src/main/res/layout/activity_user.xml" value="0.25" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/app/src/main/res/layout/activity_user2.xml" value="0.25" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/drawable/ic_no.xml" value="0.2595" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/drawable/ic_no2.xml" value="0.2595" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/drawable/ic_yes.xml" value="0.2595" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/drawable/list_item_border.xml" value="0.2703125" />
-        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/activity_study.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/activity_study.xml" value="0.136" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/activity_test.xml" value="0.21428571428571427" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/bottom_sheet_dialog_layout.xml" value="0.21428571428571427" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/fragment_add.xml" value="0.2" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/fragment_edit.xml" value="0.21428571428571427" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-land/fragment_list.xml" value="0.21516754850088182" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw1280dp-port/activity_study.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw1280dp/activity_study.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw600dp-land/activity_study.xml" value="0.264" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw600dp-land/fragment_list.xml" value="0.1" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw600dp/activity_study.xml" value="0.1" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw600dp/fragment_list.xml" value="0.12458745874587458" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw720dp-land/activity_study.xml" value="0.1" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-sw720dp/activity_study.xml" value="0.12458745874587458" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout-w600dp/activity_study.xml" value="0.24387254901960784" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_edit.xml" value="0.24818840579710144" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_list.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_maincopy.xml" value="0.24818840579710144" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_navdrawer.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_study.xml" value="0.25" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_study.xml" value="0.10400000000000001" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_test.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/activity_user.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/app_bar_navdrawer.xml" value="0.25416666666666665" />
@@ -32,6 +44,7 @@
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/fragment_list.xml" value="0.18613138686131386" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/linear_list_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/list_item.xml" value="0.536" />
+        <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/layout/nav_header_navdrawer.xml" value="0.12458745874587458" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/menu/activity_main_drawer.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/menu/navdrawer.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/ivanc/AndroidStudioProjects/DBApplication/sqliteapp/src/main/res/menu/study_menu.xml" value="0.25416666666666665" />

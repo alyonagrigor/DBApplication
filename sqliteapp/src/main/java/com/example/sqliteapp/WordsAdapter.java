@@ -25,22 +25,20 @@ public WordsAdapter(Context context, Cursor cursor){
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
-            TextView targetText = view.findViewById(R.id.targetCell); // инициализировали textView
-            String targetString = cursor.getString(1);// достали строку в переменную
-            targetText.setText(targetString);// присвоили значение
+            TextView targetText = view.findViewById(R.id.targetCell);
+            String targetString = cursor.getString(1);
+            targetText.setText(targetString);
 
             TextView nativeText = view.findViewById(R.id.nativeCell);
             String nativeString = cursor.getString(2);
             nativeText.setText(nativeString);
 
             ImageView flagCell = view.findViewById(R.id.flagCell);
-            if (cursor.getInt(3) == 1) { flagCell.setImageResource(R.drawable.yes); }
-            else { flagCell.setImageResource(R.drawable.no); }
+            if (cursor.getInt(3) == 1) { flagCell.setImageResource(R.drawable.ic_yes); }
+            else { flagCell.setImageResource(R.drawable.ic_no); }
 
-            int study = cursor.getInt(3); //нашли айди элемента с БД
-            //Log.e("GAdapter", "bindView: idGroup = " + idGroup);
+            int study = cursor.getInt(3);
             if (study == 0){ // если id = 0, меняем цвета текстов на те, что есть в файле colors
-                //Log.e("GAdapter", "bindView: idGroup == 11\nзакрашиваем строчки");
                 targetText.setBackgroundColor(context.getResources().getColor(R.color.grey));
                 nativeText.setBackgroundColor(context.getResources().getColor(R.color.grey));
                 flagCell.setBackgroundColor(context.getResources().getColor(R.color.grey));
