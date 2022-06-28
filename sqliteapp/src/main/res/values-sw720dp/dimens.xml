@@ -1,7 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_left_right">36dp</dimen>
+    <dimen name="button_margin_left_right">36dp</dimen>
     <dimen name="button_text_size">28sp</dimen>
     <dimen name="field_text_size">48sp</dimen>
+    <dimen name="radio_text_size">32sp</dimen>
     <dimen name="alert_text_size">48sp</dimen>
     <dimen name="counter_text_size">36sp</dimen>
+    <dimen name="list_text_size">20sp</dimen>
+    <dimen name="list_padding_left_right">12dp</dimen>
+    <dimen name="edit_text_size">36sp</dimen>
+    <dimen name="toggle_text_size">36sp</dimen>
+    <dimen name="save_button_margin">100dp</dimen>
 </resources>

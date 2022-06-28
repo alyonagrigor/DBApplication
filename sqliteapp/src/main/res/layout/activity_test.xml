@@ -5,85 +5,107 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
     <TextView
         android:id="@+id/testImpossible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_left_right"
+        android:layout_marginEnd="@dimen/margin_left_right"
         android:text="@string/testImpossible"
-        android:visibility="gone"
         android:textAlignment="center"
-        android:textSize="28sp"
-        android:paddingBottom="20sp"
-        android:paddingTop="20sp"
+        android:textSize="@dimen/alert_text_size"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/counter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
 
     <TextView
         android:id="@+id/counter"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="28dp"
-        android:textSize="20sp"
+        android:layout_marginEnd="@dimen/margin_left_right"
+        android:textSize="@dimen/counter_text_size"
         app:layout_constraintBottom_toTopOf="@+id/fieldTop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/testImpossible" />
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/testImpossible"
+        tools:text="@tools:sample/full_names" />
 
     <TextView
         android:id="@+id/fieldTop"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:textSize="28sp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="@dimen/margin_left_right"
+        android:textSize="@dimen/field_text_size"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/counter" />
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/counter"
+        tools:text="@tools:sample/lorem" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="@dimen/margin_left_right"
         app:layout_constraintBottom_toTopOf="@+id/btnNext"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/fieldTop">
 
         <RadioButton
             android:id="@+id/rBtn1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false" />
+            android:checked="false"
+
+            android:padding="0dp"
+            android:textSize="@dimen/radio_text_size"
+            tools:text="@tools:sample/cities" />
 
         <RadioButton
             android:id="@+id/rBtn2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+
+            android:textSize="@dimen/radio_text_size"
+            tools:text="@tools:sample/cities" />
 
         <RadioButton
             android:id="@+id/rBtn3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+
+            android:textSize="@dimen/radio_text_size"
+            tools:text="@tools:sample/cities" />
 
         <RadioButton
             android:id="@+id/rBtn4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+
+            android:textSize="@dimen/radio_text_size"
+            tools:text="@tools:sample/cities" />
     </RadioGroup>
 
     <Button
         android:id="@+id/btnNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_left_right"
+        android:layout_marginEnd="@dimen/margin_left_right"
         android:enabled="false"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/nextWord"
+        android:textSize="@dimen/button_text_size"
         app:layout_constraintBottom_toTopOf="@+id/btnRestart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -92,14 +114,16 @@
         android:id="@+id/btnRestart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:layout_marginStart="@dimen/margin_left_right"
+        android:layout_marginEnd="@dimen/margin_left_right"
         android:enabled="false"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/restart"
+        android:textSize="@dimen/button_text_size"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnNext" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

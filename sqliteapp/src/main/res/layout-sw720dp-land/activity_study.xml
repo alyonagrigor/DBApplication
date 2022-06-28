@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".StudyActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
     <TextView
         android:id="@+id/studyImpossible"
         android:layout_width="match_parent"
@@ -25,41 +32,34 @@
         android:id="@+id/counter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="@dimen/margin_left_right"
         android:layout_marginEnd="@dimen/margin_left_right"
-        android:layout_marginBottom="12dp"
         android:textSize="@dimen/counter_text_size"
         app:layout_constraintBottom_toTopOf="@+id/fieldTop"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/fieldTop"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_left_right"
         android:layout_marginEnd="@dimen/margin_left_right"
-        android:layout_marginBottom="20dp"
         android:textSize="@dimen/field_text_size"
         app:layout_constraintHeight_percent="0.2"
         app:layout_constraintBottom_toTopOf="@+id/fieldBottom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/counter" />
 
     <TextView
         android:id="@+id/fieldBottom"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/margin_left_right"
         android:layout_marginEnd="@dimen/margin_left_right"
-        android:layout_marginBottom="18dp"
         android:textSize="@dimen/field_text_size"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.2"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/fieldTop" />
 
     <LinearLayout

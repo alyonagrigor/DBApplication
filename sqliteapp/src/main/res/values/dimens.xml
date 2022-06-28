@@ -5,10 +5,17 @@
     <dimen name="nav_header_vertical_spacing">8dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-
+    <dimen name="radio_text_size">16sp</dimen>
     <dimen name="margin_left_right">16dp</dimen>
-    <dimen name="button_text_size">28sp</dimen>
-    <dimen name="field_text_size">28sp</dimen>
+    <dimen name="button_margin_left_right">16dp</dimen>
+    <dimen name="button_text_size">16sp</dimen>
+    <dimen name="field_text_size">24sp</dimen>
     <dimen name="alert_text_size">28sp</dimen>
-    <dimen name="counter_text_size">20sp</dimen>
+    <dimen name="counter_text_size">16sp</dimen>
+    <dimen name="list_text_size">16sp</dimen>
+    <dimen name="list_padding_left_right">12dp</dimen>
+    <dimen name="list_padding_top_bottom">4dp</dimen>
+    <dimen name="edit_text_size">24sp</dimen>
+    <dimen name="toggle_text_size">24sp</dimen>
+    <dimen name="save_button_margin">56dp</dimen>
 </resources>

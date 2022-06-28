@@ -10,11 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:paddingTop="20sp"
-        android:paddingBottom="20sp"
         android:text="@string/listEmpty"
         android:textAlignment="center"
-        android:textSize="28sp"
+        android:textSize="@dimen/alert_text_size"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,13 +20,16 @@
 
     <Button
         android:id="@+id/listButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/save_button_margin"
+        android:layout_marginEnd="@dimen/save_button_margin"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewList"
         app:layout_constraintBottom_toTopOf="@id/list"
+        android:textSize="@dimen/button_text_size"
         android:text="@string/add" />
 
     <ListView
