@@ -18,6 +18,7 @@
     <string name="addWord">Добавить слово</string>
     <string name="studyMode">Режим просмотра</string>
     <string name="testMode">Режим теста</string>
+    <string name="wsMode">Режим Word Search</string>
     <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
     <string name="testImpossible">Недостаточно слов в базе данных \n Чтобы начать тест, нужно
         добавить не менее 4 слов</string>

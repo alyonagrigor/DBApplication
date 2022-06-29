@@ -13,6 +13,14 @@
         android:id="@+id/action_global_addFragment"
         app:destination="@id/addFragment" />
 
+    <fragment
+        android:id="@+id/wordSearchFragment"
+        android:name="com.example.sqliteapp.WordSearchFragment"
+        android:label="Добавить слово" />
+    <action
+        android:id="@+id/action_global_wordSearchFragment"
+        app:destination="@id/wordSearchFragment" />
+
     <activity
         android:id="@+id/studyActivity"
         android:name="com.example.sqliteapp.StudyActivity"

@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/testMode" />
         <item
+            android:id="@+id/wordSearchFragment"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/wsMode" />
+        <item
             android:id="@+id/listFragment"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/toList" />
