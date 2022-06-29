@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/wordSearchFragment"
         android:name="com.example.sqliteapp.WordSearchFragment"
-        android:label="Добавить слово" />
+        android:label="WordSearch" />
     <action
         android:id="@+id/action_global_wordSearchFragment"
         app:destination="@id/wordSearchFragment" />

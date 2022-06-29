@@ -14,12 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.sqliteapp.databinding.FragmentAddBinding;
+import com.example.sqliteapp.databinding.FragmentWordSearchBinding;
+
 import org.apache.commons.lang3.StringUtils;
 
 public class AddFragment extends Fragment {
 
-    EditText targetBox, nativeBox;
-    Button saveButton;
+    private FragmentAddBinding binding;
     DatabaseHelper sqlHelper;
     SQLiteDatabase db;
 
@@ -32,23 +34,23 @@ public class AddFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add, container, false);
+    public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+        binding = FragmentAddBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
     }
 
     public void onViewCreated (View view,  Bundle savedInstanceState) {
-        saveButton = view.findViewById(R.id.saveButton);
-        targetBox = view.findViewById(R.id.targetBox);
-        nativeBox = view.findViewById(R.id.nativeBox);
+
         sqlHelper = new DatabaseHelper(getActivity());
         sqlHelper.create_db();
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        binding.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String targetWord = targetBox.getText().toString();
-                String nativeWord = nativeBox.getText().toString();
+                String targetWord =  binding.targetBox.getText().toString();
+                String nativeWord =  binding.nativeBox.getText().toString();
 
                 if (!StringUtils.isBlank(targetWord) && !StringUtils.isBlank(nativeWord)) {
                     ContentValues cv = new ContentValues();
@@ -57,8 +59,8 @@ public class AddFragment extends Fragment {
                     db.insert(DatabaseHelper.TABLE, null, cv);
                     Toast.makeText(getActivity(), "Успешно сохранено",
                             Toast.LENGTH_SHORT).show();
-                    targetBox.setText("");
-                    nativeBox.setText("");
+                    binding.targetBox.setText("");
+                    binding.nativeBox.setText("");
 
                 } else {
                     Toast.makeText(getActivity(), "Пожалуйста, заполните обе строки",
@@ -77,6 +79,7 @@ public class AddFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        binding = null;
         if (db != null) {
             db.close();
         }

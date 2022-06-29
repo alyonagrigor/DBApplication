@@ -16,13 +16,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.sqliteapp.databinding.ActivityStudyBinding;
+import com.example.sqliteapp.databinding.ActivityTestBinding;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class TestActivity extends AppCompatActivity {
 
-    TextView fieldTop, counterBox, testImpossible;
-    Button btnNext, btnRestart;
+    private ActivityTestBinding binding;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor wordsCursor;
@@ -33,23 +36,13 @@ public class TestActivity extends AppCompatActivity {
     ArrayList<Integer> shownList = new ArrayList<Integer>(); //коллекция для хранения уже показанных слов
     boolean isReversed, isExcluded, isShown = false;
     Random r = new Random(); //объект для генерации рандомных чисел
-    RadioGroup radGrp;
-    RadioButton rBtn1, rBtn2, rBtn3, rBtn4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        btnNext = findViewById(R.id.btnNext);
-        btnRestart = findViewById(R.id.btnRestart);
-        testImpossible = findViewById(R.id.testImpossible);
-        radGrp = findViewById(R.id.radioGroup);
-        fieldTop = findViewById(R.id.fieldTop);
-        counterBox = findViewById(R.id.counter);
-        rBtn1 = findViewById(R.id.rBtn1);
-        rBtn2 = findViewById(R.id.rBtn2);
-        rBtn3 = findViewById(R.id.rBtn3);
-        rBtn4 = findViewById(R.id.rBtn4);
+        binding = ActivityTestBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -65,11 +58,11 @@ public class TestActivity extends AppCompatActivity {
         //проверяем, чтобы в бд было более 4 слов, иначе скрываем все view, кроме testImpossible
         if (wordsCursor.getCount() < 4) {
 
-            testImpossible.setVisibility(View.VISIBLE);
-            btnNext.setVisibility(View.GONE);
-            radGrp.setVisibility(View.GONE);
-            fieldTop.setVisibility(View.GONE);
-            counterBox.setVisibility(View.GONE);
+            binding.testImpossible.setVisibility(View.VISIBLE);
+            binding.btnNext.setVisibility(View.GONE);
+            binding.radioGroup.setVisibility(View.GONE);
+            binding.fieldTop.setVisibility(View.GONE);
+            binding.counter.setVisibility(View.GONE);
 
         } else {
             //если в бд более 4 слов, то запускаем ОСНОВНОЙ ФУНКЦИОНАЛ ПРОГРАММЫ
@@ -79,35 +72,35 @@ public class TestActivity extends AppCompatActivity {
 
 // ***********************************************!!!НАЧАЛО СЛУШАТЕЛЕЙ!!!**************************
 
-            radGrp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup radGrp, int id) {
 
                     if (id == R.id.rBtn1) {
                         if (rightWordPosition == 1) {
-                            btnNext.setEnabled(true);
-                            btnRestart.setEnabled(true);
+                            binding.btnNext.setEnabled(true);
+                            binding.btnRestart.setEnabled(true);
                         } else showToastWrong();
 
                     }
                     if (id == R.id.rBtn2) {
                         if (rightWordPosition == 2) {
-                            btnNext.setEnabled(true);
-                            btnRestart.setEnabled(true);
+                            binding.btnNext.setEnabled(true);
+                            binding.btnRestart.setEnabled(true);
                         } else showToastWrong();
 
                     }
                     if (id == R.id.rBtn3) {
                         if (rightWordPosition == 3) {
-                            btnNext.setEnabled(true);
-                            btnRestart.setEnabled(true);
+                            binding.btnNext.setEnabled(true);
+                            binding.btnRestart.setEnabled(true);
                         } else showToastWrong();
 
                     }
                     if (id == R.id.rBtn4) {
                         if (rightWordPosition == 4) {
-                            btnNext.setEnabled(true);
-                            btnRestart.setEnabled(true);
+                            binding.btnNext.setEnabled(true);
+                            binding.btnRestart.setEnabled(true);
                         } else showToastWrong();
                     }
 
@@ -115,7 +108,7 @@ public class TestActivity extends AppCompatActivity {
             });
 
             // по нажатию кнопки получаем следующую строку
-            btnNext.setOnClickListener(new View.OnClickListener() {
+            binding.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -127,33 +120,33 @@ public class TestActivity extends AppCompatActivity {
                     } while (isExcluded || isShown);
 
                     //выводим полученное слово
-                    if (isReversed) fieldTop.setText(wordsCursor.getString(1));
-                    else fieldTop.setText(wordsCursor.getString(2));
+                    if (isReversed)  binding.fieldTop.setText(wordsCursor.getString(1));
+                    else  binding.fieldTop.setText(wordsCursor.getString(2));
                     currentCount++;
-                    counterBox.setText(currentCount + " / " + linesCount);
-                    radGrp.clearCheck();
+                    binding.counter.setText(currentCount + " / " + linesCount);
+                    binding.radioGroup.clearCheck();
                     wrongWords.clear();
                     shownList.add(wordsCursor.getInt(0));
                     //если все слова в базе уже показаны, то
                     if (shownList.size() == linesCount) {
-                        btnNext.setVisibility(View.GONE);
-                        btnRestart.setVisibility(View.VISIBLE);
+                        binding.btnNext.setVisibility(View.GONE);
+                        binding.btnRestart.setVisibility(View.VISIBLE);
                     }
 
                     //выводим варианты ответа
                     showOptions();
                     //деактивируем кнопку "следующее слово"
-                    btnNext.setEnabled(false);
-                    btnRestart.setEnabled(false);
+                    binding.btnNext.setEnabled(false);
+                    binding.btnRestart.setEnabled(false);
                 }
             });
 
-            btnRestart.setOnClickListener(new View.OnClickListener() {
+            binding.btnRestart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     shownList.clear();
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnRestart.setVisibility(View.GONE);
+                    binding.btnNext.setVisibility(View.VISIBLE);
+                    binding.btnRestart.setVisibility(View.GONE);
                     showFirstWord();
                 }
             });
@@ -309,28 +302,28 @@ public class TestActivity extends AppCompatActivity {
         //выводим полученные ответы в радиогруп
         switch (rightWordPosition) {
             case 1:
-                rBtn1.setText(rightWord);
-                rBtn2.setText(wrongWords.get(0));
-                rBtn3.setText(wrongWords.get(1));
-                rBtn4.setText(wrongWords.get(2));
+                binding.rBtn1.setText(rightWord);
+                binding.rBtn2.setText(wrongWords.get(0));
+                binding.rBtn3.setText(wrongWords.get(1));
+                binding.rBtn4.setText(wrongWords.get(2));
                 break;
             case 2:
-                rBtn1.setText(wrongWords.get(0));
-                rBtn2.setText(rightWord);
-                rBtn3.setText(wrongWords.get(1));
-                rBtn4.setText(wrongWords.get(2));
+                binding.rBtn1.setText(wrongWords.get(0));
+                binding.rBtn2.setText(rightWord);
+                binding.rBtn3.setText(wrongWords.get(1));
+                binding.rBtn4.setText(wrongWords.get(2));
                 break;
             case 3:
-                rBtn1.setText(wrongWords.get(0));
-                rBtn2.setText(wrongWords.get(1));
-                rBtn3.setText(rightWord);
-                rBtn4.setText(wrongWords.get(2));
+                binding.rBtn1.setText(wrongWords.get(0));
+                binding.rBtn2.setText(wrongWords.get(1));
+                binding.rBtn3.setText(rightWord);
+                binding.rBtn4.setText(wrongWords.get(2));
                 break;
             case 4:
-                rBtn1.setText(wrongWords.get(0));
-                rBtn2.setText(wrongWords.get(1));
-                rBtn3.setText(wrongWords.get(2));
-                rBtn4.setText(rightWord);
+                binding.rBtn1.setText(wrongWords.get(0));
+                binding.rBtn2.setText(wrongWords.get(1));
+                binding.rBtn3.setText(wrongWords.get(2));
+                binding.rBtn4.setText(rightWord);
                 break;
         }
     }
@@ -427,17 +420,17 @@ public class TestActivity extends AppCompatActivity {
         wordsCursor.moveToPosition(r.nextInt(linesCount));
 
         //устаналиваем значение на родном языке и счетчик
-        if (isReversed) fieldTop.setText(wordsCursor.getString(1));
-        else fieldTop.setText(wordsCursor.getString(2));
+        if (isReversed)  binding.fieldTop.setText(wordsCursor.getString(1));
+        else  binding.fieldTop.setText(wordsCursor.getString(2));
         currentCount = 1;
-        counterBox.setText(currentCount + " / " + linesCount);
-        radGrp.clearCheck();
+        binding.counter.setText(currentCount + " / " + linesCount);
+        binding.radioGroup.clearCheck();
         wrongWords.clear();
         shownList.add(wordsCursor.getInt(0));
-        rBtn1.setText("");
-        rBtn2.setText("");
-        rBtn3.setText("");
-        rBtn4.setText("");
+        binding.rBtn1.setText("");
+        binding.rBtn2.setText("");
+        binding.rBtn3.setText("");
+        binding.rBtn4.setText("");
 
         //выводим варианты ответа
         showOptions();

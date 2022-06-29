@@ -16,30 +16,28 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ListFragment extends Fragment {
+import com.example.sqliteapp.databinding.FragmentListBinding;
 
-    ListView wordList;
+public class ListFragment extends Fragment {
+    FragmentListBinding binding;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor wordsCursor;
     NavController navController;
-    TextView textViewList;
-    Button listButton;
 
     public ListFragment() {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_list, container, false);
+    public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+        binding = FragmentListBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         this.navController = Navigation.findNavController(view);
-        textViewList = view.findViewById(R.id.textViewList);
-        listButton = view.findViewById(R.id.listButton);
-        wordList = view.findViewById(R.id.list);
 
         databaseHelper = new DatabaseHelper(getActivity());
         databaseHelper.create_db();
@@ -53,10 +51,10 @@ public class ListFragment extends Fragment {
 
         //если в таблице БД нет записей, то показываем текствью и кнопку с предложением добавить слово
         if (wordsCursor.getCount() == 0) {
-            wordList.setVisibility(View.GONE);
-            textViewList.setVisibility(View.VISIBLE);
-            listButton.setVisibility(View.VISIBLE);
-            listButton.setOnClickListener(new View.OnClickListener() {
+            binding.list.setVisibility(View.GONE);
+            binding.textViewList.setVisibility(View.VISIBLE);
+            binding.listButton.setVisibility(View.VISIBLE);
+            binding.listButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     navController.navigate(R.id.addFragment);
@@ -65,9 +63,9 @@ public class ListFragment extends Fragment {
         }
 
         WordsAdapter wordsAdapter = new WordsAdapter(getActivity(), wordsCursor);
-        wordList.setAdapter(wordsAdapter);
+        binding.list.setAdapter(wordsAdapter);
 
-        wordList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        binding.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundleToEdit = new Bundle();
@@ -80,6 +78,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        binding = null;
         if (db != null) {
             db.close();
         }

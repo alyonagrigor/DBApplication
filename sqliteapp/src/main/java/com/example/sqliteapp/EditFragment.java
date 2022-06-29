@@ -16,14 +16,14 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.sqliteapp.databinding.FragmentEditBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.apache.commons.lang3.StringUtils;
 
 public class EditFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
-    EditText targetBox, nativeBox;
-    Button delButton, saveButton;
+    private FragmentEditBinding binding;
     String targetLangWord;
-    SwitchCompat toggleBtn;
     int checkedDigit;
     DatabaseHelper sqlHelper;
     SQLiteDatabase db;
@@ -40,20 +40,18 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_edit, container, false);
+    public View onCreateView (LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+        binding = FragmentEditBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
-        targetBox = view.findViewById(R.id.targetBox);
-        nativeBox = view.findViewById(R.id.nativeBox);
-        delButton = view.findViewById(R.id.deleteButton);
-        saveButton = view.findViewById(R.id.saveButton);
-        toggleBtn = view.findViewById(R.id.toggleBtn);
-        toggleBtn.setOnCheckedChangeListener(this);
+        binding.toggleBtn.setOnCheckedChangeListener(this);
         this.navController = Navigation.findNavController(view);
 
         sqlHelper = new DatabaseHelper(getActivity());
@@ -69,19 +67,19 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
                     DatabaseHelper.COLUMN_ID + "=?", new String[]{String.valueOf(wordId)});
             editCursor.moveToFirst();
             targetLangWord = editCursor.getString(1);
-            targetBox.setText(targetLangWord);
-            nativeBox.setText(editCursor.getString(2));
+            binding.targetBox.setText(targetLangWord);
+            binding.nativeBox.setText(editCursor.getString(2));
             //получаем и выставляем булево значение учить/не учить
             if (editCursor.getInt(3) == 1) {
-                toggleBtn.setChecked(true);
+                binding.toggleBtn.setChecked(true);
                 checkedDigit = 1;
             } else if (editCursor.getInt(3) == 0) {
-                toggleBtn.setChecked(false);
+                binding.toggleBtn.setChecked(false);
                 checkedDigit = 0;
             } else {
                 //если будет null или еще какая-то ошибка, то устанавливаем значение true и
                 //выводим toast
-                toggleBtn.setChecked(true);
+                binding.toggleBtn.setChecked(true);
                 checkedDigit = 1;
                 Toast.makeText(getActivity(),
                         "Пожалуйста, укажите, нужно ли включать это слово в обучение",
@@ -90,21 +88,21 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
             editCursor.close();
         } else {
             // скрываем кнопку удаления
-            delButton.setVisibility(View.GONE);
+            binding.deleteButton.setVisibility(View.GONE);
         }
 
-        delButton.setOnClickListener(new View.OnClickListener() {
+        binding.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBottomSheetDialog();
             }
         });
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        binding.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String targetWord = targetBox.getText().toString();
-                String nativeWord = nativeBox.getText().toString();
+                String targetWord = binding.targetBox.getText().toString();
+                String nativeWord = binding.nativeBox.getText().toString();
 
                 if (!StringUtils.isBlank(targetWord) && !StringUtils.isBlank(nativeWord)) {
                     ContentValues cv = new ContentValues();
@@ -162,5 +160,11 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
             }
         });
         bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

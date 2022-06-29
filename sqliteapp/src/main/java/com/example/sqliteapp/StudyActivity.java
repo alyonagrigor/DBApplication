@@ -13,13 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.sqliteapp.databinding.ActivityStudyBinding;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class StudyActivity extends AppCompatActivity {
 
-    TextView fieldBottom, fieldTop, counterBox, studyImpossible;
-    Button btnShow, btnNext, btnRestart;
+    private ActivityStudyBinding binding;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor wordsCursor;
@@ -34,14 +36,9 @@ public class StudyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_study);
-        btnShow = findViewById(R.id.btnShow);
-        btnNext = findViewById(R.id.btnNext);
-        btnRestart = findViewById(R.id.btnRestart);
-        fieldBottom = findViewById(R.id.fieldBottom);
-        fieldTop = findViewById(R.id.fieldTop);
-        counterBox = findViewById(R.id.counter);
-        studyImpossible = findViewById(R.id.studyImpossible);
+        binding = ActivityStudyBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -58,11 +55,11 @@ public class StudyActivity extends AppCompatActivity {
         //проверяем, чтобы в бд есть слова, иначе скрываем все view, кроме studyImpossible
         if (wordsCursor.getCount() == 0) {
 
-            studyImpossible.setVisibility(View.VISIBLE);
-            btnNext.setVisibility(View.GONE);
-            btnShow.setVisibility(View.GONE);
-            fieldTop.setVisibility(View.GONE);
-            counterBox.setVisibility(View.GONE);
+            binding.studyImpossible.setVisibility(View.VISIBLE);
+            binding.btnNext.setVisibility(View.GONE);
+            binding. btnShow.setVisibility(View.GONE);
+            binding.fieldTop.setVisibility(View.GONE);
+            binding.counter.setVisibility(View.GONE);
 
         } else {
             //если в бд есть слова, то запускаем ОСНОВНОЙ ФУНКЦИОНАЛ ПРОГРАММЫ
@@ -70,17 +67,17 @@ public class StudyActivity extends AppCompatActivity {
 
             showFirstWord();
 
-            btnShow.setOnClickListener(new View.OnClickListener() {
+            binding. btnShow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //показываем перевод слова в поле fieldBottom
-                    if (isReversed) fieldBottom.setText(wordsCursor.getString(2));
-                    else fieldBottom.setText(wordsCursor.getString(1));
+                    if (isReversed)  binding.fieldBottom.setText(wordsCursor.getString(2));
+                    else  binding.fieldBottom.setText(wordsCursor.getString(1));
                 }
             });
 
             // по нажатию кнопки получаем следующую строку
-            btnNext.setOnClickListener(new View.OnClickListener() {
+            binding.btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -94,26 +91,26 @@ public class StudyActivity extends AppCompatActivity {
                     );
 
                     //выводим полученное слово
-                    if (isReversed) fieldTop.setText(wordsCursor.getString(1));
-                    else fieldTop.setText(wordsCursor.getString(2));
+                    if (isReversed)  binding.fieldTop.setText(wordsCursor.getString(1));
+                    else  binding.fieldTop.setText(wordsCursor.getString(2));
                     currentCount++;
-                    fieldBottom.setText("");
-                    counterBox.setText(currentCount + " / " + linesCount);
+                    binding.fieldBottom.setText("");
+                    binding.counter.setText(currentCount + " / " + linesCount);
                     shownList.add(wordsCursor.getInt(0));
                     //если все слова в базе уже показаны, то
                     if (shownList.size() == linesCount) {
-                        btnNext.setVisibility(View.GONE);
-                        btnRestart.setVisibility(View.VISIBLE);
+                        binding.btnNext.setVisibility(View.GONE);
+                        binding.btnRestart.setVisibility(View.VISIBLE);
                     }
                 }
             });
-            btnRestart.setOnClickListener(new View.OnClickListener() {
+            binding.btnRestart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     shownList.clear();
-                    fieldBottom.setText("");
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnRestart.setVisibility(View.GONE);
+                    binding.fieldBottom.setText("");
+                    binding.btnNext.setVisibility(View.VISIBLE);
+                    binding.btnRestart.setVisibility(View.GONE);
                     showFirstWord();
                 }
             });
@@ -187,11 +184,11 @@ public class StudyActivity extends AppCompatActivity {
         wordsCursor.moveToPosition(r.nextInt(linesCount));
 
         //устаналиваем первое значение и счетчик
-        if (isReversed) fieldTop.setText(wordsCursor.getString(1));
-        else fieldTop.setText(wordsCursor.getString(2));
+        if (isReversed)  binding.fieldTop.setText(wordsCursor.getString(1));
+        else  binding.fieldTop.setText(wordsCursor.getString(2));
         shownList.add(wordsCursor.getInt(0));
         currentCount = 1;
-        counterBox.setText(currentCount + " / " + linesCount);
+        binding.counter.setText(currentCount + " / " + linesCount);
     }
 
     public void swapLangs() {

@@ -1,17 +1,17 @@
 package com.example.sqliteapp;
 
+import android.widget.TextView;
+
 public class Cell {
 
-    int hor;
-    int ver;
-    int direction;
-    String cellId;
-    char letter;
+    int hor; //координаты ячейки по горизонтали
+    int ver; //координаты ячейки по вертикали
+    TextView cellId; //вью ячейки
+    String letter; //буква, которую нужно вставить
 
-    public Cell(int hor, int ver, int direction, String cellId, char letter) {
+    public Cell(int hor, int ver, TextView cellId, String letter) {
         this.hor = hor;
         this.ver = ver;
-        this.direction = direction;
         this.cellId = cellId;
         this.letter = letter;
     }
@@ -40,27 +40,19 @@ public class Cell {
         this.ver = ver;
     }
 
-    public int getDirection() {
-        return direction;
-    }
-
-    public void setDirection(int direction) {
-        this.direction = direction;
-    }
-
-    public String getCellId() {
+    public TextView getCellId() {
         return cellId;
     }
 
-    public void setCellId(String cellId) {
+    public void setCellId(TextView cellId) {
         this.cellId = cellId;
     }
 
-    public char getLetter() {
+    public String getLetter() {
         return letter;
     }
 
-    public void setLetter(char letter) {
+    public void setLetter(String letter) {
         this.letter = letter;
     }
 }
