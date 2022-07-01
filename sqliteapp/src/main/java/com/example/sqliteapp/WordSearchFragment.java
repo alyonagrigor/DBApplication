@@ -26,28 +26,22 @@ public class WordSearchFragment extends Fragment {
     Cursor wordsCursor;
     int linesCount = 0, ver = 0, hor = 0, horCount = 0, verCount = 0, direction = 1;
     final int CELLS_AMOUNT = 10; // количество ячеек по горизонтали и по вертикали
-    final int LIMIT = 4; // минимальная длина слова
-    final int TOTAL_TRIES_AMOUNT = 10; //сколько раз нужно прогнать главный цикл после вставки
+    final int LIMIT = 3; // минимальная длина слова
+    final int TOTAL_TRIES_AMOUNT = 50; //сколько раз нужно прогнать главный цикл после вставки
     // первого слова
-    boolean isUsed = false
-           //, flagSubstr2 = false, flagSubstr1 = false
-            ;
+    boolean isUsed = false;
     String currentWord, letter, substr1, substr2;
     Random r = new Random(); //объект для генерации рандомных чисел
-    ArrayList<Integer> usedList = new ArrayList<Integer>(); //коллекция для хранения уже
-    // использованных слов по айди в бд
     Cell[] array = new Cell[CELLS_AMOUNT * CELLS_AMOUNT]; //массив для хранения ячеек
-    ArrayList<TextView> CurrentWordCells = new ArrayList<TextView>(); //коллекция для записи,
-    // в какие ячейки вписаны буквы текущего слова, чтобы можно было отменить
-   /*  ArrayList<TextView> CurrentWordCellsSubstr1 = new ArrayList<TextView>(); //аналогичная коллекция
-    //для записи при вставке Substr1
-    ArrayList<TextView> CurrentWordCellsSubstr2 = new ArrayList<TextView>(); //аналогичная коллекция
-    //для записи при вставке Substr2*/
     Cell appropriateCell;
     boolean flagTop = false, flagBottom = false, flagLeft = false, flagRight = false; //флаги для
     //функций write
-    ArrayList<Cell> currentWordCellsTop = new ArrayList<Cell>(); //коллекция для записи,
-    // в какие ячейки вписаны буквы текущего слова, чтобы можно было отменить для writeTop()
+    ArrayList<Integer> usedList = new ArrayList<Integer>(); //коллекция для хранения уже
+    // использованных слов по айди в бд
+    ArrayList<TextView> CurrentWordCells = new ArrayList<TextView>(); //коллекция для записи,
+    // в какие ячейки вписаны буквы текущего слова, чтобы можно было отменить
+    ArrayList<Cell> currentWordCellsTop = new ArrayList<Cell>(); //аналогичная коллекция
+    //для записи при вставке методом writeTop()
     ArrayList<Cell> currentWordCellsBottom = new ArrayList<Cell>(); //аналогичная коллекция
     //для записи при вставке методом writeBottom()
     ArrayList<Cell> currentWordCellsLeft = new ArrayList<Cell>(); //аналогичная коллекция
@@ -216,8 +210,6 @@ public class WordSearchFragment extends Fragment {
             hor = 0;
             ver = 0;
             CurrentWordCells.clear();
-        //    CurrentWordCellsSubstr2.clear();
-        //    CurrentWordCellsSubstr1.clear();
             appropriateCell = null;
             // получаем рандомное слово
             getRandomWord();
@@ -241,8 +233,8 @@ public class WordSearchFragment extends Fragment {
             } else { //если есть совпадающие буквы (appropriateCell == !null)
                 placeWordWithAppropriate();
                 //если с первой попытки вставить не удалось, то пробуем подобрать другую
-                // appropriateCell 3 раза
-                for (int y = 0; y < 3; y++) {
+                // appropriateCell 100 раз
+                for (int y = 0; y < 100; y++) {
                     findAppropriateCell();
                     if (appropriateCell != null) {
                         break;
@@ -285,7 +277,9 @@ public class WordSearchFragment extends Fragment {
     }
 
     public void placeWordWithAppropriate() {
-        //разрезаем слово на 2 подстроки, до и после совпадающей буквы, не включая эту букву
+        //разрезаем слово на 2 подстроки, до и после совпадающей буквы, не включая эту букву;
+        //если сопадает первая или последняя буква, то первая или вторая подстрока может оказаться
+        // пустой, в этом случае мы явно прописываем подстроки как пустые
         int x = currentWord.indexOf(appropriateCell.getLetter());
         if (x == 0) {
             substr1 = "";
@@ -300,59 +294,84 @@ public class WordSearchFragment extends Fragment {
 
         //проверяем, доступны ли ячейки вокруг appropriateCell: 1. должна быть пустая строка
         //2. не должна находиться за пределами поля
-        //получаем ячейки
-        Cell rightCell = new Cell(),
-                leftCell = new Cell(),
-                topCell = new Cell(),
-                bottomCell = new Cell();
+        //инициализируем ячейки
 
-        for (Cell item: array) { //находим объект cell rightCell
+        Cell rightCell = new Cell(0, 0, null, ""), // создаем произвольный объект, чтобы избежать NullException
+            leftCell = new Cell(0, 0, null, ""),
+            topCell = new Cell(0, 0, null, ""),
+            bottomCell = new Cell(0, 0, null, "");
+
+        //назначаем булевы переменные для информации о том, не находится ли ячейка за пределами
+        // поля, изначально false
+        boolean isRightCellOutOfBorder = false,
+                isLeftCellOutOfBorder = false,
+                isTopCellOutOfBorder = false,
+                isBottomCellOutOfBorder = false;
+
+        //сразу вычисляем координаты ячейки и назначаем булевой значение false, если они выпадают
+        //за пределы поля, только после проверки этого условия присваиваем ячейке ссылку на объект
+        for (Cell item: array) {
             if (appropriateCell.getVer() + 1 > CELLS_AMOUNT) {
-                rightCell = null;
+                isRightCellOutOfBorder = true;
             } else if (item.getHor() == appropriateCell.getHor()
                     && item.getVer() == appropriateCell.getVer() + 1) {
                 rightCell = item;
             }
         }
 
-        for (Cell item: array) { //находим leftCell
+        for (Cell item: array) {
             if (appropriateCell.getVer() + 1 < 1) {
-                leftCell = null;
+                isLeftCellOutOfBorder = true;
             } else if (item.getHor() == appropriateCell.getHor() && item.getVer() == appropriateCell.getVer() - 1) {
                 leftCell = item;
             }
         }
 
-        for (Cell item: array) { //находим topCell
+        for (Cell item: array) {
             if (appropriateCell.getHor() - 1 < 1) {
-                topCell = null;
+                isTopCellOutOfBorder = true;
             } else if (item.getHor() == appropriateCell.getHor() - 1 && item.getVer() == appropriateCell.getVer()) {
                 topCell = item;
             }
         }
 
-        for (Cell item: array) { //находим bottomCell
+        for (Cell item: array) {
             if (appropriateCell.getHor() + 1 > CELLS_AMOUNT) {
-                bottomCell = null;
+                isBottomCellOutOfBorder = true;
             } else if (item.getHor() == appropriateCell.getHor() + 1 && item.getVer() == appropriateCell.getVer()) {
                 bottomCell = item;
             }
         }
 
-        //проверка
-        boolean isRightCellAvailable,
-                isLeftCellAvailable,
-                isTopCellAvailable,
-                isBottomCellAvailable;
+        //назначаем булевы переменные для информации о том, пустая ли ячейка и проверяем
+        boolean isRightCellEmpty = rightCell.getLetter().equals("");
+        boolean isLeftCellEmpty = leftCell.getLetter().equals("");
+        boolean isTopCellEmpty = topCell.getLetter().equals("");
+        boolean isBottomCellEmpty = bottomCell.getLetter().equals("");
 
-        if (rightCell != null && rightCell.getLetter().equals("")) { isRightCellAvailable = true; }
-        else { isRightCellAvailable = false; }
-        if (leftCell != null && leftCell.getLetter().equals("")) { isLeftCellAvailable = true; }
-        else { isLeftCellAvailable = false; }
-        if (topCell != null && topCell.getLetter().equals("")) { isTopCellAvailable = true; }
-        else { isTopCellAvailable = false; }
-        if (bottomCell != null && bottomCell.getLetter().equals("")) { isBottomCellAvailable = true; }
-        else { isBottomCellAvailable = false; }
+
+        //назначаем булевы переменные для информации о том, доступна ли ячейка для записи
+        boolean isRightCellAvailable = false,
+                isLeftCellAvailable = false,
+                isTopCellAvailable = false,
+                isBottomCellAvailable = false;
+
+        // и наконец вычисляем это:
+        if (!isRightCellOutOfBorder && isRightCellEmpty) {
+            isRightCellAvailable = true;
+        } //во всех прочих случаях остается false
+
+        if (!isLeftCellOutOfBorder && isLeftCellEmpty) {
+            isLeftCellAvailable = true;
+        } //во всех прочих случаях остается false
+
+        if (!isTopCellOutOfBorder && isTopCellEmpty) {
+            isTopCellAvailable = true;
+        } //во всех прочих случаях остается false
+
+        if (!isBottomCellOutOfBorder && isBottomCellEmpty) {
+            isBottomCellAvailable = true;
+        } //во всех прочих случаях остается false
 
 
         //на этом шаге мы можем сразу выйти из метода, если нужные ячейки недоступны
@@ -651,211 +670,7 @@ public class WordSearchFragment extends Fragment {
         }
     return flagBottom;
     }
-    /*
-        flagSubstr1 = false; //обнуляем
-        flagSubstr2 = false;
 
-        //так как неизвестно, расположено ли пересекаемое слово вертикально или горизонтально, то
-        //нужно пробовать расположить новое слово в обеих ориентациях
-        direction = 2;//начинаем с верт.ориентации
-        //пробуем разместить substr2 вертикально
-        if (!substr2.equals("")) {
-            for (int i = appropriateCell.getHor() + 1, k = 0; k < substr2.length(); i++, k++) {
-                //каждый раз проверяем, чтобы координаты не вылезали за пределы поля
-                if (i > CELLS_AMOUNT) {
-                    for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                        CurrentWordCellsSubstr2.get(m).setText("");
-                    }
-                    CurrentWordCellsSubstr2.clear(); //очищаем список заполненных ячеек
-                    flagSubstr2 = true;
-                    break;
-                }
-                letter = Character.toString(substr2.charAt(k)); //получаем букву
-                for (Cell item: array) { //находим объект cell с координатами appropriateCell.getVer
-                    // и i по горизонтали
-                    if (item.getHor() == i && item.getVer() == appropriateCell.getVer()) {
-                        if (item.getLetter().equals("")) {// проверка на незанятость ячейки
-                            //если ячейка пустая, вставляем букву
-                            item.getCellId().setText(letter);
-                            item.setLetter(letter);
-                            CurrentWordCellsSubstr2.add(item.getCellId()); //записываем в цикл только новые буквы
-                        } else if (item.getLetter().equals(letter)) {
-                            //проверяем, совпадают ли буквы уже вставленная и буква нового слова
-                            // то выходим из цикла и переходим к вставке новой буквы
-                            break;
-                        } else {  //если вставлена другая буква, то стираем записанные буквы
-                            for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                                CurrentWordCellsSubstr2.get(m).setText("");
-                                CurrentWordCellsSubstr2.clear(); //очищаем список заполненных на этом этапе ячеек
-                                //ставим флаг на выход из внешнего цикла
-                                flagSubstr2 = true;
-                            }
-                            break; // и выходим из внутреннего цикла
-                        }
-                    }
-                }
-                if (flagSubstr2) {
-                    break;
-                } //выходим из внешнего цикла
-            }
-        }
-
-        //если substr2 успешно размещена вертикально, размещаем substr1
-        if (!flagSubstr2 && !substr1.equals("")) {
-            //размещаем подстроку substr1, начиная с ее конца
-            for (int j = appropriateCell.getHor() - 1, k = substr1.length()-1; k < 1; j--, k--) {
-                //каждый раз проверяем, чтобы координаты не вылезали за пределы поля
-                if (j < 0) {
-                    for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                        CurrentWordCellsSubstr2.get(m).setText("");
-                    }
-                    for (int n = 0; n < CurrentWordCellsSubstr1.size(); n++) {
-                        CurrentWordCellsSubstr1.get(n).setText("");
-                    }
-                    CurrentWordCellsSubstr2.clear();
-                    CurrentWordCellsSubstr1.clear(); //очищаем список заполненных ячеек
-                    flagSubstr1 = true;
-                    break;
-                }
-                letter = Character.toString(substr1.charAt(k)); //получаем букву
-                for (Cell item: array) { //находим объект cell с координатами appropriateCell.getVer
-                    // и j по горизонтали
-                    if (item.getHor() == j && item.getVer() == appropriateCell.getVer()) {
-                        if (item.getLetter().equals("")) {// проверка на незанятость ячейки
-                            //если ячейка пустая, вставляем букву
-                            item.getCellId().setText(letter);
-                            item.setLetter(letter);
-                            CurrentWordCellsSubstr1.add(item.getCellId()); //записываем в цикл только новые буквы
-                           // break; //выходим из цикла и переходим к вставке новой буквы
-                        } else if (item.getLetter().equals(letter)) {
-                            //проверяем, совпадают ли буквы уже вставленная и буква нового слова
-                            // то выходим из цикла и переходим к вставке новой буквы
-                            break;
-                        } else {  //если вставлена другая буква, то стираем записанные буквы из
-                            //substr1 и substr2
-                            for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                                CurrentWordCellsSubstr2.get(m).setText("");
-                            }
-                            for (int n = 0; n < CurrentWordCellsSubstr1.size(); n++) {
-                                CurrentWordCellsSubstr1.get(n).setText("");
-                            }
-                            CurrentWordCellsSubstr1.clear();
-                            CurrentWordCellsSubstr2.clear();//очищаем список заполненных ячеек
-                            //ставим флаг на выход из внешнего цикла
-                            flagSubstr1 = true;
-                            break; // и выходим из внутреннего цикла
-                        }
-                    }
-                }
-                if (flagSubstr1) { break; } //выходим из внешнего цикла
-                else {
-                    verCount++;
-                    usedList.add(wordsCursor.getInt(0));
-                } //если прошло успешно, записываем в verCount и в список использованных
-            }
-        }
-
-        CurrentWordCellsSubstr1.clear(); //обнуляем
-        CurrentWordCellsSubstr2.clear();
-
-        if (!substr2.equals("") && (flagSubstr1 || flagSubstr2)) { //если размещение по вертикали substr1 или substr2
-            // не удалось, то пытаемся разместить substr2 по горизонтали
-            direction = 1;
-            flagSubstr2 = false; //обнуляем
-            flagSubstr1 = false;
-            //цикл, который прописывает букву в таблицу и сохраняет ее в параметры объекта
-            for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
-                //каждый раз проверяем, чтобы координаты не вылезали за пределы поля
-                if (i > CELLS_AMOUNT) {
-                    flagSubstr2 = true;
-                    for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                        CurrentWordCellsSubstr2.get(m).setText("");
-                    }
-                    CurrentWordCellsSubstr2.clear(); //очищаем список заполненных ячеек
-                    break;
-                }
-                letter = Character.toString(substr2.charAt(k)); //получаем букву
-                for (Cell item: array) { //находим объект cell с координатами appropriateCell.getHor
-                    // и i по вертикали
-                    if (item.getHor() == appropriateCell.getHor() && item.getVer() == i) {
-                        if (item.getLetter().equals("")) {// проверка на незанятость ячейки
-                            //если ячейка пустая, вставляем букву
-                            item.getCellId().setText(letter);
-                            item.setLetter(letter);
-                            CurrentWordCellsSubstr2.add(item.getCellId()); //записываем в цикл только новые буквы
-                          //  break; //выходим из цикла и переходим к вставке новой буквы
-                        } else if (item.getLetter().equals(letter)) {
-                            //проверяем, совпадают ли буквы уже вставленная и буква нового слова
-                            // то выходим из цикла и переходим к вставке новой буквы
-                            break;
-                        } else {  //если вставлена другая буква, то стираем записанные буквы
-                            for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                                CurrentWordCellsSubstr2.get(m).setText("");
-                                CurrentWordCellsSubstr2.clear(); //очищаем список заполненных на этом этапе ячеек
-                                //ставим флаг на выход из внешнего цикла
-                                flagSubstr2 = true;
-                            }
-                            break; // и выходим из внутреннего цикла
-                        }
-                    }
-                }
-                if (flagSubstr2) { break; } //выходим из внешнего цикла
-            }
-        }
-
-        // если substr2 заполнена успешно, пытаемся заполнить substr1
-        if (!flagSubstr2 && !substr1.equals("")){
-            //размещаем подстроку substr1, начиная с ее конца
-            for (int j = appropriateCell.getVer() - 1, k = substr1.length()-1; k < 1; j--, k--) {
-                //каждый раз проверяем, чтобы координаты не вылезали за пределы поля
-                if (j < 0) {
-                    flagSubstr1 = true;
-                    for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                        CurrentWordCellsSubstr2.get(m).setText("");
-                    }
-                    for (int n = 0; n < CurrentWordCellsSubstr1.size(); n++) {
-                        CurrentWordCellsSubstr1.get(n).setText("");
-                    }
-                    CurrentWordCellsSubstr2.clear();
-                    CurrentWordCellsSubstr1.clear(); //очищаем список заполненных ячеек
-                    break;
-                }
-                letter = Character.toString(substr1.charAt(k)); //получаем букву
-                for (Cell item: array) {
-                    if (item.getHor() == appropriateCell.getHor() && item.getVer() == j) {
-                        if (item.getLetter().equals("")) {// проверка на незанятость ячейки
-                            //если ячейка пустая, вставляем букву
-                            item.getCellId().setText(letter);
-                            item.setLetter(letter);
-                            CurrentWordCellsSubstr1.add(item.getCellId()); //записываем в цикл только новые буквы
-                          //  break; //выходим из цикла и переходим к вставке новой буквы
-                        } else if (item.getLetter().equals(letter)) {
-                            //проверяем, совпадают ли буквы уже вставленная и буква нового слова
-                            // то выходим из цикла и переходим к вставке новой буквы
-                            break;
-                        } else {  //если вставлена другая буква, то стираем записанные буквы из
-                            //substr1 и substr2
-                            for (int m = 0; m < CurrentWordCellsSubstr2.size(); m++) {
-                                CurrentWordCellsSubstr2.get(m).setText("");
-                            }
-                            for (int n = 0; n < CurrentWordCellsSubstr1.size(); n++) {
-                                CurrentWordCellsSubstr1.get(n).setText("");
-                            }
-                            CurrentWordCellsSubstr2.clear();
-                            CurrentWordCellsSubstr1.clear(); //очищаем список заполненных ячеек
-                            //ставим флаг на выход из внешнего цикла
-                            flagSubstr1 = true;
-                            break; // и выходим из внутреннего цикла
-                        }
-                    }
-                }
-                if (flagSubstr1) { break; } //выходим из внешнего цикла
-                else {
-                    horCount++;
-                    usedList.add(wordsCursor.getInt(0));
-                } //если прошло успешно, записываем в horCount и в список использованных
-            }
-        }*/
 
     public void placeWordWithoutAppropriate() {
         //цикл, который прописывает букву в таблицу и сохраняет ее в параметры объекта
