@@ -20,9 +20,6 @@ public class Cell {
     }
 
     // методы
-    public void putChar () {
-        //binding.cellId.setText(letter);
-    }
 
     public int getHor() {
         return hor;
