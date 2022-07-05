@@ -7,13 +7,29 @@
     tools:context=".WordSearchFragment">
 
     <TextView
+        android:id="@+id/wsImpossible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_left_right"
+        android:layout_marginEnd="@dimen/margin_left_right"
+        android:text="@string/wsImpossible"
+        android:textAlignment="center"
+        android:textSize="@dimen/alert_text_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/wsText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread" />
+
+    <TextView
         android:id="@+id/wsText"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wsImpossible"
         app:layout_constraintBottom_toTopOf="@id/tableLayout"
         android:layout_marginStart="@dimen/button_margin_left_right"
         android:layout_marginEnd="@dimen/button_margin_left_right"/>

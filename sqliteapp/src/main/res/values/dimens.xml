@@ -18,4 +18,5 @@
     <dimen name="edit_text_size">24sp</dimen>
     <dimen name="toggle_text_size">24sp</dimen>
     <dimen name="save_button_margin">56dp</dimen>
+    <dimen name="cell_text_size">20sp</dimen>
 </resources>
