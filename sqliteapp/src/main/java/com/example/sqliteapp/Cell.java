@@ -1,33 +1,34 @@
 package com.example.sqliteapp;
 
+import android.view.View;
 import android.widget.TextView;
 
 public class Cell {
 
-    int hor; //координаты ячейки по горизонтали
     int ver; //координаты ячейки по вертикали
+    int hor; //координаты ячейки по горизонтали
     TextView cellId; //вью ячейки
     String letter; //буква, которую нужно вставить
 
-    public Cell(int hor, int ver, TextView cellId, String letter) {
-        this.hor = hor;
+    public Cell(int ver, int hor, TextView cellId, String letter) {
         this.ver = ver;
+        this.hor = hor;
         this.cellId = cellId;
         this.letter = letter;
     }
 
     public Cell(){
-    }
+        }
 
     // методы
-
-    public int getHor() {
-        return hor;
+    public float getLeftBorder2() {
+        return getCellId().getX();
     }
 
-    public void setHor(int hor) {
-        this.hor = hor;
+    public float getTopBorder2() {
+        return getCellId().getY();
     }
+
 
     public int getVer() {
         return ver;
@@ -35,6 +36,14 @@ public class Cell {
 
     public void setVer(int ver) {
         this.ver = ver;
+    }
+
+    public int getHor() {
+        return hor;
+    }
+
+    public void setHor(int hor) {
+        this.hor = hor;
     }
 
     public TextView getCellId() {
