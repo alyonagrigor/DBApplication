@@ -192,7 +192,7 @@ public class WordSearchFragment2 extends Fragment
 
         // для обработки движений строим массив объектов, хранящих границы CellBorder в пикселях
             // top - right - bottom - left
-            for (int v = 0; v < CELLS_AMOUNT; v++) { //координаты по вертикали
+        /*    for (int v = 0; v < CELLS_AMOUNT; v++) { //координаты по вертикали
                 Log.d(TAG, "внешний массив, шаг: " + v);
                 for (int g = 0; g < CELLS_AMOUNT; g++) {//координаты по горизонтали
                     Log.d(TAG, "внутренний массив, шаг: " + g);
@@ -211,7 +211,7 @@ public class WordSearchFragment2 extends Fragment
                     Log.d(TAG, String.valueOf(cellBorderArray[g][v].getLeftBorder()));
                     Log.d(TAG, "------------------");
                 }
-            }
+            }*/
            /* Log.d(TAG, "массив: " + (Arrays.asList(cellsArray)));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                Stream.of(cellBorderArray).forEach(System.out::println);
@@ -980,7 +980,7 @@ public class WordSearchFragment2 extends Fragment
          return topBorder;
     }*/
 
-            public float pleaseCalculateTopBorder (int v) {
+    /*        public float pleaseCalculateTopBorder (int v) {
                 float topBorder = 0;
                 for (Cell cell: cellsArray) {//получаем верхнюю границу
                     if (cell.getVer() == v + 1) {
@@ -1026,5 +1026,5 @@ public class WordSearchFragment2 extends Fragment
                     }
                 }
                 return rightBorder;
-            }
+            }*/
 }

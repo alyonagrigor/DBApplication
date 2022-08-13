@@ -1,6 +1,5 @@
 package com.example.sqliteapp;
 
-import android.view.View;
 import android.widget.TextView;
 
 public class Cell {
@@ -19,16 +18,6 @@ public class Cell {
 
     public Cell(){
         }
-
-    // методы
-    public float getLeftBorder2() {
-        return getCellId().getX();
-    }
-
-    public float getTopBorder2() {
-        return getCellId().getY();
-    }
-
 
     public int getVer() {
         return ver;

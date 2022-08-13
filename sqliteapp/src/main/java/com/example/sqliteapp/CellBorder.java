@@ -1,21 +1,18 @@
 package com.example.sqliteapp;
 
-import androidx.annotation.NonNull;
-
 public class CellBorder {
-
-    int coordHor; // координаты ячейки в таблице по горизонтали
     int coordVer; //координаты ячейки в таблице по горизонтали
+    int coordHor; // координаты ячейки в таблице по горизонтали
     float topBorder; //координаты границы в пикселях
     float rightBorder; //координаты границы в пикселях
     float bottomBorder; //координаты границы в пикселях
     float leftBorder; //координаты границы в пикселях
     private String name;
 
-    public CellBorder(int coordHor, int coordVer, float topBorder, float rightBorder,
+    public CellBorder(int coordVer, int coordHor, float topBorder, float rightBorder,
                       float bottomBorder, float leftBorder) {
-        this.coordHor = coordHor;
         this.coordVer = coordVer;
+        this.coordHor = coordHor;
         this.topBorder = topBorder;
         this.rightBorder = rightBorder;
         this.bottomBorder = bottomBorder;
@@ -32,17 +29,16 @@ public class CellBorder {
         return getClass().getSimpleName() + "[name=" + name + "]";
     }*/
 
+    public int getCoordVer() {return coordVer; }
+
+    public void setCoordVer(int coordVer) {
+        this.coordVer = coordVer;
+    }
 
     public int getCoordHor() { return coordHor; }
 
     public void setCoordHor(int coordHor) {
         this.coordHor = coordHor;
-    }
-
-    public int getCoordVer() {return coordVer; }
-
-    public void setCoordVer(int coordVer) {
-        this.coordVer = coordVer;
     }
 
     public float getTopBorder() {

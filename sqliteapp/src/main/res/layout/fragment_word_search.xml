@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".WordSearchFragment">
+    tools:context=".WordSearchFragment"
+    android:id="@+id/conLayout">
 
     <TextView
         android:id="@+id/wsImpossible"
@@ -48,6 +49,50 @@
 
         <TableRow>
             <TextView
+                android:id="@+id/v0h0"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h1"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h2"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h3"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h4"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h5"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h6"
+                style="@style/CellStyle" />
+            <TextView
+                android:id="@+id/v0h7"
+                style="@style/CellStyle" />
+            <TextView
+                android:id="@+id/v0h8"
+                style="@style/CellStyle" />
+
+            <TextView
+                android:id="@+id/v0h9"
+                style="@style/CellStyle" />
+        </TableRow>
+
+        <TableRow>
+            <TextView
+                android:id="@+id/v1h0"
+                style="@style/CellStyle" />
+
+            <TextView
                 android:id="@+id/v1h1"
                 style="@style/CellStyle" />
 
@@ -70,23 +115,23 @@
             <TextView
                 android:id="@+id/v1h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v1h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v1h8"
                 style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v1h9"
-                style="@style/CellStyle" />
 
             <TextView
-                android:id="@+id/v1h10"
+                android:id="@+id/v1h9"
                 style="@style/CellStyle" />
         </TableRow>
 
         <TableRow>
+            <TextView
+                android:id="@+id/v2h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v2h1"
                 style="@style/CellStyle" />
@@ -110,23 +155,24 @@
             <TextView
                 android:id="@+id/v2h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v2h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v2h8"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v2h9"
                 style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v2h10"
-                style="@style/CellStyle" />
         </TableRow>
 
+
         <TableRow>
+            <TextView
+                android:id="@+id/v3h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v3h1"
                 style="@style/CellStyle" />
@@ -150,24 +196,24 @@
             <TextView
                 android:id="@+id/v3h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v3h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v3h8"
                 style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v3h9"
-                style="@style/CellStyle" />
 
             <TextView
-                android:id="@+id/v3h10"
+                android:id="@+id/v3h9"
                 style="@style/CellStyle" />
         </TableRow>
 
 
         <TableRow>
+            <TextView
+                android:id="@+id/v4h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v4h1"
                 style="@style/CellStyle" />
@@ -191,24 +237,24 @@
             <TextView
                 android:id="@+id/v4h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v4h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v4h8"
                 style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v4h9"
-                style="@style/CellStyle" />
 
             <TextView
-                android:id="@+id/v4h10"
+                android:id="@+id/v4h9"
                 style="@style/CellStyle" />
         </TableRow>
 
 
         <TableRow>
+            <TextView
+                android:id="@+id/v5h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v5h1"
                 style="@style/CellStyle" />
@@ -232,24 +278,23 @@
             <TextView
                 android:id="@+id/v5h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v5h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v5h8"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v5h9"
                 style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v5h10"
-                style="@style/CellStyle" />
         </TableRow>
 
-
         <TableRow>
+            <TextView
+                android:id="@+id/v6h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v6h1"
                 style="@style/CellStyle" />
@@ -273,23 +318,23 @@
             <TextView
                 android:id="@+id/v6h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v6h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v6h8"
                 style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v6h9"
-                style="@style/CellStyle" />
 
             <TextView
-                android:id="@+id/v6h10"
+                android:id="@+id/v6h9"
                 style="@style/CellStyle" />
         </TableRow>
 
         <TableRow>
+            <TextView
+                android:id="@+id/v7h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v7h1"
                 style="@style/CellStyle" />
@@ -313,23 +358,23 @@
             <TextView
                 android:id="@+id/v7h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v7h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v7h8"
                 style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v7h9"
-                style="@style/CellStyle" />
 
             <TextView
-                android:id="@+id/v7h10"
+                android:id="@+id/v7h9"
                 style="@style/CellStyle" />
         </TableRow>
 
         <TableRow>
+            <TextView
+                android:id="@+id/v8h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v8h1"
                 style="@style/CellStyle" />
@@ -353,23 +398,23 @@
             <TextView
                 android:id="@+id/v8h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v8h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v8h8"
                 style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v8h9"
-                style="@style/CellStyle" />
 
             <TextView
-                android:id="@+id/v8h10"
+                android:id="@+id/v8h9"
                 style="@style/CellStyle" />
         </TableRow>
 
         <TableRow>
+            <TextView
+                android:id="@+id/v9h0"
+                style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v9h1"
                 style="@style/CellStyle" />
@@ -393,59 +438,15 @@
             <TextView
                 android:id="@+id/v9h6"
                 style="@style/CellStyle" />
-
             <TextView
                 android:id="@+id/v9h7"
                 style="@style/CellStyle" />
             <TextView
                 android:id="@+id/v9h8"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v9h9"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v9h10"
-                style="@style/CellStyle" />
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:id="@+id/v10h1"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h2"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h3"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h4"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h5"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h6"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h7"
-                style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v10h8"
-                style="@style/CellStyle" />
-            <TextView
-                android:id="@+id/v10h9"
-                style="@style/CellStyle" />
-
-            <TextView
-                android:id="@+id/v10h10"
                 style="@style/CellStyle" />
         </TableRow>
 
