@@ -7,5 +7,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "DBApplication"
-include ':app'
 include ':sqliteapp'

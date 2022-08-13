@@ -34,15 +34,10 @@ public class WordSearchFragment extends Fragment {
     final int CELLS_AMOUNT = 10; // количество ячеек по горизонтали и по вертикали
     final int LIMIT = 3; // минимальная длина слова
     boolean isUsed, hasSucceed, isTheSame;
-    float tableX, tableY, cellX, cellY;
     String currentWord, letter, substr1, substr2;
     Random rand = new Random();
     Cell appropriateCell;
     Cell[] cellsArray = new Cell[CELLS_AMOUNT * CELLS_AMOUNT]; //массив для хранения ячеек
-    Float[] leftBordersArray = new Float[CELLS_AMOUNT];
-    Float[] rightBordersArray = new Float[CELLS_AMOUNT];
-    Float[] topBordersArray = new Float[CELLS_AMOUNT];
-    Float[] bottomBordersArray = new Float[CELLS_AMOUNT];
     ArrayList<Integer> usedList = new ArrayList<Integer>(); //коллекция для хранения уже
     // использованных слов по айди в бд
     ArrayList<Cell> appropriateCellsList = new ArrayList<Cell>(); //коллекция appropriateCells,
@@ -558,7 +553,6 @@ public class WordSearchFragment extends Fragment {
                 }
             }
         }
-
         // в конце записываем в коллекцию использованных
         usedList.add(wordsCursor.getInt(0));
         // и в количество горизонтально или вертикально расположенных слов
