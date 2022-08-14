@@ -34,7 +34,8 @@ public class WordSearchFragment extends Fragment {
     final int CELLS_AMOUNT = 10; // количество ячеек по горизонтали и по вертикали
     final int LIMIT = 3; // минимальная длина слова
     boolean isUsed, hasSucceed, isTheSame;
-    String currentWord, letter, substr1, substr2;
+    String currentWord, substr1, substr2;
+    char letter;
     Random rand = new Random();
     Cell appropriateCell;
     Cell[] cellsArray = new Cell[CELLS_AMOUNT * CELLS_AMOUNT]; //массив для хранения ячеек
@@ -150,16 +151,15 @@ public class WordSearchFragment extends Fragment {
             String vowels = "AEIOU";
             char c;
             int counter = 1; //счетчик для чередования: в нечетные разы - гласные, в четные - согласные
-            for (Cell item : cellsArray) {
-                if (item.getLetter().equals("")) {
+            for (Cell item: cellsArray) {
+                if (item.getLetter() == '0') {
                     if (counter % 2 != 0) {
                         c = vowels.charAt(rand.nextInt(vowels.length()));
                     } else {
                         c = consonants.charAt(rand.nextInt(consonants.length()));
                     }
-                    String str = String.valueOf(c);
-                    item.setLetter(str);
-                    item.getCellId().setText(str);
+                    item.setLetter(c);
+                    item.getCellId().setText(Character.toString(c));
                     counter++;
                 }
             }
@@ -169,10 +169,10 @@ public class WordSearchFragment extends Fragment {
 
     public void findAppropriateCell() {
         //проверяем, есть ли совпадающие буквы в таблице
-        for (Cell item : cellsArray) { //проверяем совпадение букв в уже заполненных ячейках с новым словом
-            if (!item.getLetter().equals("")) { //проверка что ячейка не пустая
+        for (Cell item: cellsArray) { //проверяем совпадение букв в уже заполненных ячейках с новым словом
+            if (item.getLetter() != '0') { //проверка что ячейка не пустая
                 for (int i = 0; i < currentWord.length(); i++) {
-                    if (item.getLetter().equals(Character.toString(currentWord.charAt(i)))) {
+                    if (item.getLetter() == currentWord.charAt(i)) {
                         appropriateCell = new Cell(item.getVer(), item.getHor(),
                                 item.getCellId(), item.getLetter());
                         break; //если подходящая ячейка найдена, выходим из внутреннего цикла
@@ -340,12 +340,12 @@ public class WordSearchFragment extends Fragment {
         for (int i = appropriateCell.getVer() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
             Log.d(TAG, "входим в цикл для проверки в направлении Top");
             Log.d(TAG, "i = " + i + ", k = " + k);
-            letter = Character.toString(substr1.charAt(k)); //получаем букву
+            letter = substr1.charAt(k); //получаем букву
             Log.d(TAG, "буква для размещения " + letter);
             for (Cell item : cellsArray) {
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
                     Log.d(TAG, "коорд ячейки по гор: " + i + ", по верт. " + appropriateCell.getVer());
-                    if (!item.getLetter().equals("") && !item.getLetter().equals(letter)) {
+                    if (item.getLetter() != '0' && item.getLetter() != letter) {
                         //если вставлена другая буква, то выходим из метода
                         return false;
                     }
@@ -359,11 +359,11 @@ public class WordSearchFragment extends Fragment {
     public void writeTop() {
         for (int i = appropriateCell.getVer() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
             Log.d(TAG, "входим в цикл для записи в направлении Top");
-            letter = Character.toString(substr1.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) {
+            letter = substr1.charAt(k); //получаем букву
+            for (Cell item: cellsArray) {
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
                     Log.d(TAG, "записываем в ячейку по гор: " + appropriateCell.getHor() + ", по верт. " + i);
-                    item.getCellId().setText(letter); // в ячейку
+                    item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
                 }
             }
@@ -372,17 +372,17 @@ public class WordSearchFragment extends Fragment {
 
     public boolean checkLeft() {
         for (int i = appropriateCell.getHor() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
-            letter = Character.toString(substr1.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) {
+            letter = substr1.charAt(k); //получаем букву
+            for (Cell item: cellsArray) {
                 if (item.getVer() == appropriateCell.getVer() && item.getHor() == i) {
-                    if (item.getLetter().equals("")) {// проверка на незанятость ячейки
+                    if (item.getLetter() == '0') {// проверка на незанятость ячейки
                         //если ячейка пустая, идем проверять следующую
                         break;
-                    } else if (item.getLetter().equals(letter)) {
+                    } else if (item.getLetter() == letter) {
                         //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                         // идем проверять следующую
                         break;
-                    } else if (!item.getLetter().equals("") && !item.getLetter().equals(letter)) {
+                    } else if (item.getLetter() != '0' && item.getLetter() != letter) {
                         //если вставлена другая буква, то метод возвращает true
                         return false;
                     }
@@ -394,10 +394,10 @@ public class WordSearchFragment extends Fragment {
 
     public void writeLeft() {
         for (int i = appropriateCell.getHor() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
-            letter = Character.toString(substr1.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) {
+            letter = substr1.charAt(k); //получаем букву
+            for (Cell item: cellsArray) {
                 if (item.getVer() == appropriateCell.getVer() && item.getHor() == i) {
-                    item.getCellId().setText(letter); // в ячейку
+                    item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
                 }
             }
@@ -406,18 +406,18 @@ public class WordSearchFragment extends Fragment {
 
     public boolean checkRight() {
         for (int i = appropriateCell.getHor() + 1, k = 0; k < substr2.length(); i++, k++) {
-            letter = Character.toString(substr2.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) { //находим объект cell с координатами appropriateCell.getHor
+            letter = substr2.charAt(k); //получаем букву
+            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getHor
                 // и i по вертикали
                 if (item.getVer() == appropriateCell.getVer() && item.getHor() == i) {
-                    if (item.getLetter().equals("")) {// проверка на незанятость ячейки
+                    if (item.getLetter() == '0') {// проверка на незанятость ячейки
                         //если ячейка пустая, выходим из цикла
                         break;
-                    } else if (item.getLetter().equals(letter)) {
+                    } else if (item.getLetter() == letter) {
                         //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                         // если совпадают, выходим из цикла
                         break;
-                    } else if (!item.getLetter().equals("") && !item.getLetter().equals(letter)) {
+                    } else if (item.getLetter() != '0' && item.getLetter() != letter) {
                         //если вставлена другая буква, то выходим из метода и возращаем тру
                         return false;
                     }
@@ -429,11 +429,11 @@ public class WordSearchFragment extends Fragment {
 
     public void writeRight() {
         for (int i = appropriateCell.getHor() + 1, k = 0; k < substr2.length(); i++, k++) {
-            letter = Character.toString(substr2.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) { //находим объект cell с координатами appropriateCell.getHor
+            letter = substr2.charAt(k); //получаем букву
+            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getHor
                 // и i по вертикали
                 if (item.getVer() == appropriateCell.getVer() && item.getHor() == i) {
-                    item.getCellId().setText(letter); // в ячейку
+                    item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
                 }
             }
@@ -442,18 +442,18 @@ public class WordSearchFragment extends Fragment {
 
     public boolean checkBottom() {
         for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
-            letter = Character.toString(substr2.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) { //находим объект cell с координатами appropriateCell.getVer
+            letter = substr2.charAt(k); //получаем букву
+            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getVer
                 // и i по горизонтали
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
-                    if (item.getLetter().equals("")) {// проверка на незанятость ячейки
+                    if (item.getLetter() == '0') {// проверка на незанятость ячейки
                         //если ячейка пустая, выходим из внутреннего цикла и проверяем дальше
                         break;
-                    } else if (item.getLetter().equals(letter)) {
+                    } else if (item.getLetter() == (letter)) {
                         //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                         // то выходим из цикла и проверяем дальше
                         break;
-                    } else if (!item.getLetter().equals("") && !item.getLetter().equals(letter)) {
+                    } else if (item.getLetter() != '0' && item.getLetter() != letter) {
                         //выходим из метода
                         return false;
                     }
@@ -465,11 +465,11 @@ public class WordSearchFragment extends Fragment {
 
     public void writeBottom() {
         for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
-            letter = Character.toString(substr2.charAt(k)); //получаем букву
-            for (Cell item : cellsArray) { //находим объект cell с координатами appropriateCell.getVer
+            letter = substr2.charAt(k); //получаем букву
+            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getVer
                 // и i по горизонтали
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
-                    item.getCellId().setText(letter); // в ячейку
+                    item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
                 }
             }
@@ -480,13 +480,13 @@ public class WordSearchFragment extends Fragment {
         Log.d(TAG, "checkWordWithoutAppropriate() ");
         if (direction == 1) { //для гориз.ориентации
             for (int i = hor, k = 0; k < currentWord.length(); i++, k++) {
-                letter = Character.toString(currentWord.charAt(k)); //получаем букву
-                for (Cell item : cellsArray) { //находим объект cell с координатами i и ver
+                letter = currentWord.charAt(k); //получаем букву
+                for (Cell item: cellsArray) { //находим объект cell с координатами i и ver
                     if (item.getHor() == i && item.getVer() == ver) {
-                        if (item.getLetter().equals("")) {// проверка на незанятость ячейки
+                        if (item.getLetter() == '0') {// проверка на незанятость ячейки
                             Log.d(TAG, "пустая ячйека по горизонтали ");
                             break; //выходим из цикла и переходим к следующей ячейке
-                        } else if (item.getLetter().equals(letter)) {
+                        } else if (item.getLetter() == letter) {
                             //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                             // то переходим к следующей ячейке на пути - выходим из цикла
                             Log.d(TAG, "пропустили совпадающую букву по горизонтали " + letter);
@@ -501,15 +501,15 @@ public class WordSearchFragment extends Fragment {
 
         if (direction == 2) {//для верт.ориентации
             for (int i = ver, k = 0; k < currentWord.length(); i++, k++) {
-                letter = Character.toString(currentWord.charAt(k)); //получаем букву
-                for (Cell item : cellsArray) { //находим объект cell с координатами hor и i
+                letter = currentWord.charAt(k); //получаем букву
+                for (Cell item: cellsArray) { //находим объект cell с координатами hor и i
                     if (item.getVer() == i && item.getHor() == hor) {
-                        if (item.getLetter().equals("")) {// проверка на незанятость ячейки
+                        if (item.getLetter() == '0') {// проверка на незанятость ячейки
                             Log.d(TAG, "разметсили букву по вертикали " + letter);
                             Log.d(TAG, "hor = " + i);
                             Log.d(TAG, "ver = " + item.getHor());
                             break; //выходим из цикла и переходим к следующей ячейке
-                        } else if (item.getLetter().equals(letter)) {
+                        } else if (item.getLetter() == letter) {
                             Log.d(TAG, "буквы совпадают " + letter);
                             //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                             // то переходим к следующей ячейке на пути - выходим из цикла
@@ -527,10 +527,10 @@ public class WordSearchFragment extends Fragment {
     public void writeWordWithoutAppropriate() {
         if (direction == 1) { //для гориз.ориентации
             for (int i = hor, k = 0; k < currentWord.length(); i++, k++) {
-                letter = Character.toString(currentWord.charAt(k)); //получаем букву
-                for (Cell item : cellsArray) { //находим объект cell с координатами i и ver
+                letter = currentWord.charAt(k); //получаем букву
+                for (Cell item: cellsArray) { //находим объект cell с координатами i и ver
                     if (item.getVer() == ver && item.getHor() == i) {
-                        item.getCellId().setText(letter);
+                        item.getCellId().setText(Character.toString(letter));
                         item.setLetter(letter);
                         Log.d(TAG, "разметсили букву по горизонтали " + letter);
                         Log.d(TAG, "hor = " + item.getHor());
@@ -541,10 +541,10 @@ public class WordSearchFragment extends Fragment {
         }
         if (direction == 2) {//для верт.ориентации
             for (int i = ver, k = 0; k < currentWord.length(); i++, k++) {
-                letter = Character.toString(currentWord.charAt(k)); //получаем букву
-                for (Cell item : cellsArray) { //находим объект cell с координатами hor и i
+                letter = currentWord.charAt(k); //получаем букву
+                for (Cell item: cellsArray) { //находим объект cell с координатами hor и i
                     if (item.getVer() == i && item.getHor() == hor) {
-                        item.getCellId().setText(letter);
+                        item.getCellId().setText(Character.toString(letter));
                         item.setLetter(letter);
                         Log.d(TAG, "разметсили букву по вертикали " + letter);
                         Log.d(TAG, "hor = " + i);
@@ -581,7 +581,7 @@ public class WordSearchFragment extends Fragment {
         if (currentWord.contains(" ")) { //если строка состоит из нескольких слов, разделенных
             // пробелами, нарезаем на подстроки
             String[] currentWordSplit = StringUtils.split(currentWord, ' ');
-            for (String s : currentWordSplit) {
+            for (String s: currentWordSplit) {
                 if (s.length() < CELLS_AMOUNT && s.length() > LIMIT) {
                     currentWord = s; //находим первое слово подходящей длины
                     break;                    //и выходим из цикла
@@ -622,7 +622,7 @@ public class WordSearchFragment extends Fragment {
 
     public void clearVariables() {
         currentWord = "";
-        letter = "";
+        letter = '0';
         substr1 = "";
         substr2 = "";
         hor = 0;
@@ -634,106 +634,106 @@ public class WordSearchFragment extends Fragment {
     }
 
     public void fillArray() {
-        cellsArray[0] = new Cell(0, 0, binding.v0h0, "");
-        cellsArray[1] = new Cell(0, 1, binding.v0h1, "");
-        cellsArray[2] = new Cell(0, 2, binding.v0h2, "");
-        cellsArray[3] = new Cell(0, 3, binding.v0h3, "");
-        cellsArray[4] = new Cell(0, 4, binding.v0h4, "");
-        cellsArray[5] = new Cell(0, 5, binding.v0h5, "");
-        cellsArray[6] = new Cell(0, 6, binding.v0h6, "");
-        cellsArray[7] = new Cell(0, 7, binding.v0h7, "");
-        cellsArray[8] = new Cell(0, 8, binding.v0h8, "");
-        cellsArray[9] = new Cell(0, 9, binding.v0h9, "");
-        cellsArray[10] = new Cell(1, 0, binding.v1h0, "");
-        cellsArray[11] = new Cell(1, 1, binding.v1h1, "");
-        cellsArray[12] = new Cell(1, 2, binding.v1h2, "");
-        cellsArray[13] = new Cell(1, 3, binding.v1h3, "");
-        cellsArray[14] = new Cell(1, 4, binding.v1h4, "");
-        cellsArray[15] = new Cell(1, 5, binding.v1h5, "");
-        cellsArray[16] = new Cell(1, 6, binding.v1h6, "");
-        cellsArray[17] = new Cell(1, 7, binding.v1h7, "");
-        cellsArray[18] = new Cell(1, 8, binding.v1h8, "");
-        cellsArray[19] = new Cell(1, 9, binding.v1h9, "");
-        cellsArray[20] = new Cell(2, 0, binding.v2h0, "");
-        cellsArray[21] = new Cell(2, 1, binding.v2h1, "");
-        cellsArray[22] = new Cell(2, 2, binding.v2h2, "");
-        cellsArray[23] = new Cell(2, 3, binding.v2h3, "");
-        cellsArray[24] = new Cell(2, 4, binding.v2h4, "");
-        cellsArray[25] = new Cell(2, 5, binding.v2h5, "");
-        cellsArray[26] = new Cell(2, 6, binding.v2h6, "");
-        cellsArray[27] = new Cell(2, 7, binding.v2h7, "");
-        cellsArray[28] = new Cell(2, 8, binding.v2h8, "");
-        cellsArray[29] = new Cell(2, 9, binding.v2h9, "");
-        cellsArray[30] = new Cell(3, 0, binding.v3h0, "");
-        cellsArray[31] = new Cell(3, 1, binding.v3h1, "");
-        cellsArray[32] = new Cell(3, 2, binding.v3h2, "");
-        cellsArray[33] = new Cell(3, 3, binding.v3h3, "");
-        cellsArray[34] = new Cell(3, 4, binding.v3h4, "");
-        cellsArray[35] = new Cell(3, 5, binding.v3h5, "");
-        cellsArray[36] = new Cell(3, 6, binding.v3h6, "");
-        cellsArray[37] = new Cell(3, 7, binding.v3h7, "");
-        cellsArray[38] = new Cell(3, 8, binding.v3h8, "");
-        cellsArray[39] = new Cell(3, 9, binding.v3h9, "");
-        cellsArray[40] = new Cell(4, 0, binding.v4h0, "");
-        cellsArray[41] = new Cell(4, 1, binding.v4h1, "");
-        cellsArray[42] = new Cell(4, 2, binding.v4h2, "");
-        cellsArray[43] = new Cell(4, 3, binding.v4h3, "");
-        cellsArray[44] = new Cell(4, 4, binding.v4h4, "");
-        cellsArray[45] = new Cell(4, 5, binding.v4h5, "");
-        cellsArray[46] = new Cell(4, 6, binding.v4h6, "");
-        cellsArray[47] = new Cell(4, 7, binding.v4h7, "");
-        cellsArray[48] = new Cell(4, 8, binding.v4h8, "");
-        cellsArray[49] = new Cell(4, 9, binding.v4h9, "");
-        cellsArray[50] = new Cell(5, 0, binding.v5h0, "");
-        cellsArray[51] = new Cell(5, 1, binding.v5h1, "");
-        cellsArray[52] = new Cell(5, 2, binding.v5h2, "");
-        cellsArray[53] = new Cell(5, 3, binding.v5h3, "");
-        cellsArray[54] = new Cell(5, 4, binding.v5h4, "");
-        cellsArray[55] = new Cell(5, 5, binding.v5h5, "");
-        cellsArray[56] = new Cell(5, 6, binding.v5h6, "");
-        cellsArray[57] = new Cell(5, 7, binding.v5h7, "");
-        cellsArray[58] = new Cell(5, 8, binding.v5h8, "");
-        cellsArray[59] = new Cell(5, 9, binding.v5h9, "");
-        cellsArray[60] = new Cell(6, 0, binding.v6h0, "");
-        cellsArray[61] = new Cell(6, 1, binding.v6h1, "");
-        cellsArray[62] = new Cell(6, 2, binding.v6h2, "");
-        cellsArray[63] = new Cell(6, 3, binding.v6h3, "");
-        cellsArray[64] = new Cell(6, 4, binding.v6h4, "");
-        cellsArray[65] = new Cell(6, 5, binding.v6h5, "");
-        cellsArray[66] = new Cell(6, 6, binding.v6h6, "");
-        cellsArray[67] = new Cell(6, 7, binding.v6h7, "");
-        cellsArray[68] = new Cell(6, 8, binding.v6h8, "");
-        cellsArray[69] = new Cell(6, 9, binding.v6h9, "");
-        cellsArray[70] = new Cell(7, 0, binding.v7h0, "");
-        cellsArray[71] = new Cell(7, 1, binding.v7h1, "");
-        cellsArray[72] = new Cell(7, 2, binding.v7h2, "");
-        cellsArray[73] = new Cell(7, 3, binding.v7h3, "");
-        cellsArray[74] = new Cell(7, 4, binding.v7h4, "");
-        cellsArray[75] = new Cell(7, 5, binding.v7h5, "");
-        cellsArray[76] = new Cell(7, 6, binding.v7h6, "");
-        cellsArray[77] = new Cell(7, 7, binding.v7h7, "");
-        cellsArray[78] = new Cell(7, 8, binding.v7h8, "");
-        cellsArray[79] = new Cell(7, 9, binding.v7h9, "");
-        cellsArray[80] = new Cell(8, 0, binding.v8h0, "");
-        cellsArray[81] = new Cell(8, 1, binding.v8h1, "");
-        cellsArray[82] = new Cell(8, 2, binding.v8h2, "");
-        cellsArray[83] = new Cell(8, 3, binding.v8h3, "");
-        cellsArray[84] = new Cell(8, 4, binding.v8h4, "");
-        cellsArray[85] = new Cell(8, 5, binding.v8h5, "");
-        cellsArray[86] = new Cell(8, 6, binding.v8h6, "");
-        cellsArray[87] = new Cell(8, 7, binding.v8h7, "");
-        cellsArray[88] = new Cell(8, 8, binding.v8h8, "");
-        cellsArray[89] = new Cell(8, 9, binding.v8h9, "");
-        cellsArray[90] = new Cell(9, 0, binding.v9h0, "");
-        cellsArray[91] = new Cell(9, 1, binding.v9h1, "");
-        cellsArray[92] = new Cell(9, 2, binding.v9h2, "");
-        cellsArray[93] = new Cell(9, 3, binding.v9h3, "");
-        cellsArray[94] = new Cell(9, 4, binding.v9h4, "");
-        cellsArray[95] = new Cell(9, 5, binding.v9h5, "");
-        cellsArray[96] = new Cell(9, 6, binding.v9h6, "");
-        cellsArray[97] = new Cell(9, 7, binding.v9h7, "");
-        cellsArray[98] = new Cell(9, 8, binding.v9h8, "");
-        cellsArray[99] = new Cell(9, 9, binding.v9h9, "");
+        cellsArray[0] = new Cell(0, 0, binding.v0h0, '0');
+        cellsArray[1] = new Cell(0, 1, binding.v0h1, '0');
+        cellsArray[2] = new Cell(0, 2, binding.v0h2, '0');
+        cellsArray[3] = new Cell(0, 3, binding.v0h3, '0');
+        cellsArray[4] = new Cell(0, 4, binding.v0h4, '0');
+        cellsArray[5] = new Cell(0, 5, binding.v0h5, '0');
+        cellsArray[6] = new Cell(0, 6, binding.v0h6, '0');
+        cellsArray[7] = new Cell(0, 7, binding.v0h7, '0');
+        cellsArray[8] = new Cell(0, 8, binding.v0h8, '0');
+        cellsArray[9] = new Cell(0, 9, binding.v0h9, '0');
+        cellsArray[10] = new Cell(1, 0, binding.v1h0, '0');
+        cellsArray[11] = new Cell(1, 1, binding.v1h1, '0');
+        cellsArray[12] = new Cell(1, 2, binding.v1h2, '0');
+        cellsArray[13] = new Cell(1, 3, binding.v1h3, '0');
+        cellsArray[14] = new Cell(1, 4, binding.v1h4, '0');
+        cellsArray[15] = new Cell(1, 5, binding.v1h5, '0');
+        cellsArray[16] = new Cell(1, 6, binding.v1h6, '0');
+        cellsArray[17] = new Cell(1, 7, binding.v1h7, '0');
+        cellsArray[18] = new Cell(1, 8, binding.v1h8, '0');
+        cellsArray[19] = new Cell(1, 9, binding.v1h9, '0');
+        cellsArray[20] = new Cell(2, 0, binding.v2h0, '0');
+        cellsArray[21] = new Cell(2, 1, binding.v2h1, '0');
+        cellsArray[22] = new Cell(2, 2, binding.v2h2, '0');
+        cellsArray[23] = new Cell(2, 3, binding.v2h3, '0');
+        cellsArray[24] = new Cell(2, 4, binding.v2h4, '0');
+        cellsArray[25] = new Cell(2, 5, binding.v2h5, '0');
+        cellsArray[26] = new Cell(2, 6, binding.v2h6, '0');
+        cellsArray[27] = new Cell(2, 7, binding.v2h7, '0');
+        cellsArray[28] = new Cell(2, 8, binding.v2h8, '0');
+        cellsArray[29] = new Cell(2, 9, binding.v2h9, '0');
+        cellsArray[30] = new Cell(3, 0, binding.v3h0, '0');
+        cellsArray[31] = new Cell(3, 1, binding.v3h1, '0');
+        cellsArray[32] = new Cell(3, 2, binding.v3h2, '0');
+        cellsArray[33] = new Cell(3, 3, binding.v3h3, '0');
+        cellsArray[34] = new Cell(3, 4, binding.v3h4, '0');
+        cellsArray[35] = new Cell(3, 5, binding.v3h5, '0');
+        cellsArray[36] = new Cell(3, 6, binding.v3h6, '0');
+        cellsArray[37] = new Cell(3, 7, binding.v3h7, '0');
+        cellsArray[38] = new Cell(3, 8, binding.v3h8, '0');
+        cellsArray[39] = new Cell(3, 9, binding.v3h9, '0');
+        cellsArray[40] = new Cell(4, 0, binding.v4h0, '0');
+        cellsArray[41] = new Cell(4, 1, binding.v4h1, '0');
+        cellsArray[42] = new Cell(4, 2, binding.v4h2, '0');
+        cellsArray[43] = new Cell(4, 3, binding.v4h3, '0');
+        cellsArray[44] = new Cell(4, 4, binding.v4h4, '0');
+        cellsArray[45] = new Cell(4, 5, binding.v4h5, '0');
+        cellsArray[46] = new Cell(4, 6, binding.v4h6, '0');
+        cellsArray[47] = new Cell(4, 7, binding.v4h7, '0');
+        cellsArray[48] = new Cell(4, 8, binding.v4h8, '0');
+        cellsArray[49] = new Cell(4, 9, binding.v4h9, '0');
+        cellsArray[50] = new Cell(5, 0, binding.v5h0, '0');
+        cellsArray[51] = new Cell(5, 1, binding.v5h1, '0');
+        cellsArray[52] = new Cell(5, 2, binding.v5h2, '0');
+        cellsArray[53] = new Cell(5, 3, binding.v5h3, '0');
+        cellsArray[54] = new Cell(5, 4, binding.v5h4, '0');
+        cellsArray[55] = new Cell(5, 5, binding.v5h5, '0');
+        cellsArray[56] = new Cell(5, 6, binding.v5h6, '0');
+        cellsArray[57] = new Cell(5, 7, binding.v5h7, '0');
+        cellsArray[58] = new Cell(5, 8, binding.v5h8, '0');
+        cellsArray[59] = new Cell(5, 9, binding.v5h9, '0');
+        cellsArray[60] = new Cell(6, 0, binding.v6h0, '0');
+        cellsArray[61] = new Cell(6, 1, binding.v6h1, '0');
+        cellsArray[62] = new Cell(6, 2, binding.v6h2, '0');
+        cellsArray[63] = new Cell(6, 3, binding.v6h3, '0');
+        cellsArray[64] = new Cell(6, 4, binding.v6h4, '0');
+        cellsArray[65] = new Cell(6, 5, binding.v6h5, '0');
+        cellsArray[66] = new Cell(6, 6, binding.v6h6, '0');
+        cellsArray[67] = new Cell(6, 7, binding.v6h7, '0');
+        cellsArray[68] = new Cell(6, 8, binding.v6h8, '0');
+        cellsArray[69] = new Cell(6, 9, binding.v6h9, '0');
+        cellsArray[70] = new Cell(7, 0, binding.v7h0, '0');
+        cellsArray[71] = new Cell(7, 1, binding.v7h1, '0');
+        cellsArray[72] = new Cell(7, 2, binding.v7h2, '0');
+        cellsArray[73] = new Cell(7, 3, binding.v7h3, '0');
+        cellsArray[74] = new Cell(7, 4, binding.v7h4, '0');
+        cellsArray[75] = new Cell(7, 5, binding.v7h5, '0');
+        cellsArray[76] = new Cell(7, 6, binding.v7h6, '0');
+        cellsArray[77] = new Cell(7, 7, binding.v7h7, '0');
+        cellsArray[78] = new Cell(7, 8, binding.v7h8, '0');
+        cellsArray[79] = new Cell(7, 9, binding.v7h9, '0');
+        cellsArray[80] = new Cell(8, 0, binding.v8h0, '0');
+        cellsArray[81] = new Cell(8, 1, binding.v8h1, '0');
+        cellsArray[82] = new Cell(8, 2, binding.v8h2, '0');
+        cellsArray[83] = new Cell(8, 3, binding.v8h3, '0');
+        cellsArray[84] = new Cell(8, 4, binding.v8h4, '0');
+        cellsArray[85] = new Cell(8, 5, binding.v8h5, '0');
+        cellsArray[86] = new Cell(8, 6, binding.v8h6, '0');
+        cellsArray[87] = new Cell(8, 7, binding.v8h7, '0');
+        cellsArray[88] = new Cell(8, 8, binding.v8h8, '0');
+        cellsArray[89] = new Cell(8, 9, binding.v8h9, '0');
+        cellsArray[90] = new Cell(9, 0, binding.v9h0, '0');
+        cellsArray[91] = new Cell(9, 1, binding.v9h1, '0');
+        cellsArray[92] = new Cell(9, 2, binding.v9h2, '0');
+        cellsArray[93] = new Cell(9, 3, binding.v9h3, '0');
+        cellsArray[94] = new Cell(9, 4, binding.v9h4, '0');
+        cellsArray[95] = new Cell(9, 5, binding.v9h5, '0');
+        cellsArray[96] = new Cell(9, 6, binding.v9h6, '0');
+        cellsArray[97] = new Cell(9, 7, binding.v9h7, '0');
+        cellsArray[98] = new Cell(9, 8, binding.v9h8, '0');
+        cellsArray[99] = new Cell(9, 9, binding.v9h9, '0');
     }
 
     @Override

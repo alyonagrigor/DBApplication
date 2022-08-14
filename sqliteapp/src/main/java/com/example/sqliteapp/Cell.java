@@ -7,9 +7,9 @@ public class Cell {
     int ver; //координаты ячейки по вертикали
     int hor; //координаты ячейки по горизонтали
     TextView cellId; //вью ячейки
-    String letter; //буква, которую нужно вставить
+    char letter; //буква, которую нужно вставить
 
-    public Cell(int ver, int hor, TextView cellId, String letter) {
+    public Cell(int ver, int hor, TextView cellId, char letter) {
         this.ver = ver;
         this.hor = hor;
         this.cellId = cellId;
@@ -43,11 +43,11 @@ public class Cell {
         this.cellId = cellId;
     }
 
-    public String getLetter() {
+    public char getLetter() {
         return letter;
     }
 
-    public void setLetter(String letter) {
+    public void setLetter(char letter) {
         this.letter = letter;
     }
 }
