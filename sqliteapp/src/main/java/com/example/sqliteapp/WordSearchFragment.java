@@ -1,7 +1,6 @@
 package com.example.sqliteapp;
 
-/**
- * возможно перееисать на стрингбилдер
+/* возможно перееисать на стрингбилдер
  * возможно добавить генерацию букв из др.алфавитов
  * возм. доб генерацию в зависимости от языка
  * как-то нужно запретить персечение в одной ориентации?
@@ -33,7 +32,7 @@ public class WordSearchFragment extends Fragment {
     int linesCount = 0, ver = 0, hor = 0, horCount = 0, verCount = 0, direction = 1;
     final int CELLS_AMOUNT = 10; // количество ячеек по горизонтали и по вертикали
     final int LIMIT = 3; // минимальная длина слова
-    boolean isUsed, hasSucceed, isTheSame;
+    boolean isTheSame;
     String currentWord, substr1, substr2;
     char letter;
     Random rand = new Random();
@@ -100,21 +99,16 @@ public class WordSearchFragment extends Fragment {
 
                 //ДЛЯ ДОБАВЛЕНИЯ СЛОВ С ПЕРЕСЕЧЕНИЯМИ
                 clearVariables();
+                appropriateCellsList.clear();
                 appropriateCell = null;
-                Log.d(TAG, "запускаем цикл раз номер " + j);
-                // получаем рандомное слово
-                getRandomWord();
-                Log.d(TAG, "получаем слово номер " + j + " " + currentWord);
+                getRandomWord(); // получаем рандомное слово
                 //подбираем ячейку, в которой вставлена буква, совпадающая с буквой в новом слове -
                 //объект appropriateCell
                 findAppropriateCell();
-
-                if (appropriateCell != null) { //если есть совпадающие буквы (appropriateCell == !null)
+                if (appropriateCell != null) { //если были найдены совпадающие буквы (appropriateCell == !null)
                     appropriateCellsList.add(appropriateCell);
-                    boolean bool = placeWordWithAppropriate();
-                    //если с первой попытки вставить не удалось, то пробуем подобрать другую
-                    // appropriateCell CELLS_AMOUNT * 2 раз
-                    if (!bool) {
+                    if (!placeWordWithAppropriate()) { //пытаемся вставить слово, если успешно, то дальше конец цикла
+                        //если не успешно, то пробуем подобрать другую appropriateCell CELLS_AMOUNT * 2 раз
                         appropriateCell = null;
                         for (int y = 0; y < CELLS_AMOUNT * 2; y++) {
                             findAppropriateCell();
@@ -129,14 +123,14 @@ public class WordSearchFragment extends Fragment {
                                     }
                                 }
                                 appropriateCellsList.add(appropriateCell);
-                                break;
+                                break; //подходящая ячейка подобрана, выходим из верхнего цикла
                             }
                         }
-                    }
-                    // если удалось подобрать appropriateCell, то пытаемся вставить еще 1 раз
-                    if (!hasSucceed && appropriateCell != null && !isTheSame) {
-                        clearVariables();
-                        placeWordWithAppropriate();
+                        // если удалось подобрать appropriateCell, то пытаемся вставить слово еще 1 раз
+                        if (appropriateCell != null && !isTheSame) {
+                            clearVariables();
+                            placeWordWithAppropriate();
+                        }
                     }
                 }
             }
@@ -147,7 +141,7 @@ public class WordSearchFragment extends Fragment {
 
             //заполняем оставшиеся ячейки случайными буквами, чтобы выглядело естественно, чередуем
             //гласные и согласные, также убираем редко встречающиеся буквы
-            String consonants = "BCDFGHJKLMNPRST";
+    /*        String consonants = "BCDFGHJKLMNPRST";
             String vowels = "AEIOU";
             char c;
             int counter = 1; //счетчик для чередования: в нечетные разы - гласные, в четные - согласные
@@ -162,9 +156,9 @@ public class WordSearchFragment extends Fragment {
                     item.getCellId().setText(Character.toString(c));
                     counter++;
                 }
-            }
+            }*/
         }
-    } // конец ONRESUME//////////////////////////////////////////////////////////////////
+    } // конец ONRESUME
 
 
     public void findAppropriateCell() {
@@ -258,22 +252,21 @@ public class WordSearchFragment extends Fragment {
             //если оба направления недоступны, возвращаем false
             if ((!isRightDirectionAvailable || !areRightCellsAvailable)
                     && (!isBottomDirectionAvailable || !areBottomCellsAvailable)) {
-                hasSucceed = false; //конец логики метода
-            }
-            if (isRightDirectionAvailable && areRightCellsAvailable) {//проверяем, можно ли вписать вправо
+                return false;
+            } else if (areRightCellsAvailable) {//проверяем, можно ли вписать вправо
                 writeRight();
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
                 //записываем в horCount и в список использованных
-                hasSucceed = true;//конец логики метода
-            } else if (isBottomDirectionAvailable && areBottomCellsAvailable) {
+                return true;
+            } else if (areBottomCellsAvailable) {
                 //иначе, если нельзя вписать вправо, проверяем возможность вписать вниз
                 writeBottom();
                 verCount++; //если прошло успешно, записываем в verCount и в список использованных
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
-                hasSucceed = true; //конец логики метода
+                return true;
             }
 
             //УСЛОВИЕ 2. Если подстрока substr2 пустая
@@ -281,54 +274,50 @@ public class WordSearchFragment extends Fragment {
             //если оба направления недоступны, возвращаем false
             if ((!isLeftDirectionAvailable || !areLeftCellsAvailable)
                     && (!isTopDirectionAvailable || !areTopCellsAvailable)) {
-                hasSucceed = false; //конец логики метода
-            }
-            if (isLeftDirectionAvailable && areLeftCellsAvailable) {//проверяем, можно ли вписать влево
+                return false;
+            } else if (areLeftCellsAvailable) {//проверяем, можно ли вписать влево
                 writeLeft();
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
                 //записываем в horCount и в список использованных
-                hasSucceed = true;//конец логики метода
-            } else if (isTopDirectionAvailable && areTopCellsAvailable) {
+                return true;
+            } else if (areTopCellsAvailable) {
                 //иначе, если нельзя вписать вправо, проверяем возможность вписать вниз
                 writeTop();
                 verCount++; //если прошло успешно, записываем в verCount и в список использованных
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
-                hasSucceed = true; //конец логики метода
+                return true;
             }
 
             //УСЛОВИЕ 3. Если обе подстроки не пустые
-        } else if ((!substr1.equals("") && !substr2.equals(""))) {
-            //проверяем, доступны ли направления
+        } else {
             //если оба направления недоступны, возвращаем false
             if ((!isBottomDirectionAvailable || !isTopDirectionAvailable
                     || !areBottomCellsAvailable || !areTopCellsAvailable)
                     && (!isRightDirectionAvailable || !isLeftDirectionAvailable
                     || !areRightCellsAvailable || !areLeftCellsAvailable)) {
-                hasSucceed = false; //конец логики метода
-            }
-            if (isLeftDirectionAvailable && isRightDirectionAvailable
-                    && areLeftCellsAvailable && areRightCellsAvailable) { //если можно вписать слева и справа, то
+                return false;
+            } else if (areLeftCellsAvailable && areRightCellsAvailable) { //если можно вписать слева и справа, то
                 writeLeft();
                 writeRight();
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
                 //записываем в horCount и в список использованных
-                hasSucceed = true;//конец логики метода
-            } else if (isTopDirectionAvailable && isBottomDirectionAvailable //если возможно вписать вверх и вниз
-                    && areTopCellsAvailable && areBottomCellsAvailable) {//то пытаемся вписать вверх
+                return true;
+           } else if (areTopCellsAvailable && areBottomCellsAvailable) //если возможно вписать вверх и вниз
+                     {//то пытаемся вписать вверх
                 writeTop();
                 writeBottom();
                 verCount++;
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
-                hasSucceed = true;
-            }
+                return true;
+           }
         }
-        return hasSucceed;
+        return false;
     }
 
     public boolean checkTop() {
@@ -342,7 +331,7 @@ public class WordSearchFragment extends Fragment {
             Log.d(TAG, "i = " + i + ", k = " + k);
             letter = substr1.charAt(k); //получаем букву
             Log.d(TAG, "буква для размещения " + letter);
-            for (Cell item : cellsArray) {
+            for (Cell item: cellsArray) {
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
                     Log.d(TAG, "коорд ячейки по гор: " + i + ", по верт. " + appropriateCell.getVer());
                     if (item.getLetter() != '0' && item.getLetter() != letter) {
@@ -430,8 +419,7 @@ public class WordSearchFragment extends Fragment {
     public void writeRight() {
         for (int i = appropriateCell.getHor() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
-            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getHor
-                // и i по вертикали
+            for (Cell item: cellsArray) { //находим объект cell
                 if (item.getVer() == appropriateCell.getVer() && item.getHor() == i) {
                     item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
@@ -443,8 +431,7 @@ public class WordSearchFragment extends Fragment {
     public boolean checkBottom() {
         for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
-            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getVer
-                // и i по горизонтали
+            for (Cell item: cellsArray) { //находим объект cell
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
                     if (item.getLetter() == '0') {// проверка на незанятость ячейки
                         //если ячейка пустая, выходим из внутреннего цикла и проверяем дальше
@@ -466,8 +453,7 @@ public class WordSearchFragment extends Fragment {
     public void writeBottom() {
         for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
-            for (Cell item: cellsArray) { //находим объект cell с координатами appropriateCell.getVer
-                // и i по горизонтали
+            for (Cell item: cellsArray) { //находим объект cell
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
                     item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
@@ -568,16 +554,15 @@ public class WordSearchFragment extends Fragment {
     public void getRandomWord() {
         do {
             wordsCursor.moveToPosition(rand.nextInt(linesCount));
-            checkUsed();
             currentWord = wordsCursor.getString(1);
-        } while (isUsed ||
+        } while (checkUsed() ||
                 currentWord.length() > CELLS_AMOUNT ||
                 currentWord.length() < LIMIT ||
                 StringUtils.containsAny(currentWord, "/", ":", ";", "$", "%", "@",
                         "^", "{", "}", "(", ")", "*", "&", "?", ".", ",", "!", "<", ">", "|", "+",
                         "=", "-", "~", "№", "#", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
                         "\\", "\"", "'")); //если строка содержит символы, не используем ее
-        currentWord.trim();
+        currentWord = currentWord.trim();
         if (currentWord.contains(" ")) { //если строка состоит из нескольких слов, разделенных
             // пробелами, нарезаем на подстроки
             String[] currentWordSplit = StringUtils.split(currentWord, ' ');
@@ -609,15 +594,15 @@ public class WordSearchFragment extends Fragment {
         direction = rand.nextInt(2) + 1;
     }
 
-    public void checkUsed() {
-        isUsed = false;
+    public boolean checkUsed() {
+        boolean isUsed = false;
         for (int i = 0, usedSize = usedList.size(); i < usedSize; i++) {
-            Integer integer = usedList.get(i);
-            if (integer == wordsCursor.getInt(0)) {
+            if (usedList.get(i) == wordsCursor.getInt(0)) {
                 isUsed = true;
                 break;
             }
         }
+        return isUsed;
     }
 
     public void clearVariables() {
@@ -627,9 +612,6 @@ public class WordSearchFragment extends Fragment {
         substr2 = "";
         hor = 0;
         ver = 0;
-        appropriateCellsList.clear();
-        hasSucceed = false;
-        isUsed = false;
         isTheSame = false;
     }
 
