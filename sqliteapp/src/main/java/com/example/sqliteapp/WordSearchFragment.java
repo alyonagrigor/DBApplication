@@ -45,8 +45,6 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     Cell[] cellsArray = new Cell[CELLS_AMOUNT * CELLS_AMOUNT]; //массив для хранения ячеек
     ArrayList<Integer> usedList = new ArrayList<Integer>(); //коллекция для хранения уже
     // использованных слов по айди в бд
-    ArrayList<Cell> appropriateCellsList = new ArrayList<Cell>(); //коллекция appropriateCells,
-    //использованных в данном цикле
     ArrayList<ArrayList<Cell>> insertedWordsList = new ArrayList<ArrayList<Cell>>();//коллекция
     // вставленных слов (их объектов Cells)
     float tableX, tableY, cellX, cellY;
@@ -126,38 +124,15 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
 
                 //ДЛЯ ДОБАВЛЕНИЯ СЛОВ С ПЕРЕСЕЧЕНИЯМИ
                 clearVariables();
-                appropriateCellsList.clear();
                 appropriateCell = null;
                 getRandomWord(); // получаем рандомное слово
                 //подбираем ячейку, в которой вставлена буква, совпадающая с буквой в новом слове -
                 //объект appropriateCell
                 appropriateCell = getAppropriateCell();
                 if (appropriateCell != null) { //если были найдены совпадающие буквы (appropriateCell == !null)
-                    appropriateCellsList.add(appropriateCell); //записываем ячейку в список
-                    if (!placeWordWithAppropriate()) { //пытаемся вставить слово
-                         //если не успешно, то пробуем подобрать другую appropriateCell
-                        // несколько раз (CELLS_AMOUNT раз)
-                        appropriateCell = null;
-                        for (int y = 0; y < CELLS_AMOUNT; y++) {
-                            Log.d(TAG, "зашли в цикл раз номер " + y);
-                            appropriateCell = getAppropriateCell();
-                            if (appropriateCell != null) {
-                                Log.d(TAG, "appropriateCell != null раз номер " + y);
-                                if (!checkIfSame(appropriateCell, appropriateCellsList)) {
-                                    // если удалось подобрать appropriateCell,
-                                    //то записываем в список
-                                    appropriateCellsList.add(appropriateCell);
-                                    // и пытаемся вставить слово еще 1 раз
-                                    clearVariables();
-                                    Log.d(TAG, "тут косяк! currentWord =  " + currentWord);
-                                    placeWordWithAppropriate();
-                                }
-                            }
-                        }
+                    placeWordWithAppropriate();
                     }
                 }
-            }
-            /* КОНЕЦ ЦИКЛА!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 
             //в конце выводим количество слов по гор. и вертикали в textView
             binding.wsText.setText(getString(R.string.findWords, horCount, verCount));
