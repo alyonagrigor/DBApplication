@@ -131,14 +131,14 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 getRandomWord(); // получаем рандомное слово
                 //подбираем ячейку, в которой вставлена буква, совпадающая с буквой в новом слове -
                 //объект appropriateCell
-                findAppropriateCell();
+                appropriateCell = getAppropriateCell();
                 if (appropriateCell != null) { //если были найдены совпадающие буквы (appropriateCell == !null)
                     appropriateCellsList.add(appropriateCell);
                     if (!placeWordWithAppropriate()) { //пытаемся вставить слово, если успешно, то дальше конец цикла
                         //если не успешно, то пробуем подобрать другую appropriateCell CELLS_AMOUNT * 2 раз
                         appropriateCell = null;
                         for (int y = 0; y < CELLS_AMOUNT * 2; y++) {
-                            findAppropriateCell();
+                            getAppropriateCell();
                             if (appropriateCell != null) {
                                 //цикл для проверки, что это не та же ячейка
                                 isTheSame = false;
@@ -236,22 +236,18 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     } // конец ONRESUME
 
 
-    public void findAppropriateCell() {
+    public Cell getAppropriateCell() {
         //проверяем, есть ли совпадающие буквы в таблице
         for (Cell item: cellsArray) { //проверяем совпадение букв в уже заполненных ячейках с новым словом
             if (item.getLetter() != '0') { //проверка что ячейка не пустая
                 for (int i = 0; i < currentWord.length(); i++) {
                     if (item.getLetter() == currentWord.charAt(i)) {
-                        appropriateCell = new Cell(item.getVer(), item.getHor(),
-                                item.getCellId(), item.getLetter());
-                        break; //если подходящая ячейка найдена, выходим из внутреннего цикла
+                        return item; //если подходящая ячейка найдена, выходим из метода
                     }
                 }
-                if (appropriateCell != null) {
-                    break;
-                } //если подходящая ячейка найдена, выходим из внешнего цикла
             }
         }
+        return null;
     }
 
     public boolean placeWordWithAppropriate() {
@@ -391,10 +387,10 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 ArrayList<Cell> a5 = writeLeft();
                 insertedWordsList.add(a5);
                 Log.d(TAG, "writeLeft() = " + a5.toString());
-                ArrayList<Cell> a6 = writeLeft();
+                ArrayList<Cell> a6 = writeRight();
                 a6.remove(a6.size()-1);
                 insertedWordsList.add(a6);
-                Log.d(TAG, "writeLeft() = " + a6.toString());
+                Log.d(TAG, "writeRight() = " + a6.toString());
 
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
