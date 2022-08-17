@@ -133,30 +133,26 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 //объект appropriateCell
                 appropriateCell = getAppropriateCell();
                 if (appropriateCell != null) { //если были найдены совпадающие буквы (appropriateCell == !null)
-                    appropriateCellsList.add(appropriateCell);
-                    if (!placeWordWithAppropriate()) { //пытаемся вставить слово, если успешно, то дальше конец цикла
-                        //если не успешно, то пробуем подобрать другую appropriateCell CELLS_AMOUNT * 2 раз
+                    appropriateCellsList.add(appropriateCell); //записываем ячейку в список
+                    if (!placeWordWithAppropriate()) { //пытаемся вставить слово
+                         //если не успешно, то пробуем подобрать другую appropriateCell
+                        // несколько раз (CELLS_AMOUNT раз)
                         appropriateCell = null;
-                        for (int y = 0; y < CELLS_AMOUNT * 2; y++) {
-                            getAppropriateCell();
+                        for (int y = 0; y < CELLS_AMOUNT; y++) {
+                            Log.d(TAG, "зашли в цикл раз номер " + y);
+                            appropriateCell = getAppropriateCell();
                             if (appropriateCell != null) {
-                                //цикл для проверки, что это не та же ячейка
-                                isTheSame = false;
-                                for (int k = 0, listSize = appropriateCellsList.size(); k < listSize; k++) {
-                                    Cell item = appropriateCellsList.get(k);
-                                    if (item.getCellId() == appropriateCell.getCellId()) {
-                                        isTheSame = true;
-                                        break;
-                                    }
+                                Log.d(TAG, "appropriateCell != null раз номер " + y);
+                                if (!checkIfSame(appropriateCell, appropriateCellsList)) {
+                                    // если удалось подобрать appropriateCell,
+                                    //то записываем в список
+                                    appropriateCellsList.add(appropriateCell);
+                                    // и пытаемся вставить слово еще 1 раз
+                                    clearVariables();
+                                    Log.d(TAG, "тут косяк! currentWord =  " + currentWord);
+                                    placeWordWithAppropriate();
                                 }
-                                appropriateCellsList.add(appropriateCell);
-                                break; //подходящая ячейка подобрана, выходим из верхнего цикла
                             }
-                        }
-                        // если удалось подобрать appropriateCell, то пытаемся вставить слово еще 1 раз
-                        if (appropriateCell != null && !isTheSame) {
-                            clearVariables();
-                            placeWordWithAppropriate();
                         }
                     }
                 }
@@ -944,6 +940,16 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 break;
         }
         return true;
+    }
+
+    public boolean checkIfSame (Cell a, ArrayList<Cell> list) {
+        for (int k = 0; k < list.size(); k++) {
+            Cell item = list.get(k);
+            if (item.getCellId() == a.getCellId()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
