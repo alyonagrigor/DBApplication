@@ -1,12 +1,5 @@
 package com.example.sqliteapp;
 
-/* возможно перееисать на стрингбилдер
- * возможно добавить генерацию букв из др.алфавитов
- * возм. доб генерацию в зависимости от языка
- * как-то нужно запретить персечение в одной ориентации?
- * возм. увеличить до 12 на 12 - только если делать другой фрагмент для планшетов
- */
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
-
 import com.example.sqliteapp.databinding.FragmentWordSearchBinding;
 import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
@@ -129,7 +121,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 //подбираем ячейку, в которой вставлена буква, совпадающая с буквой в новом слове -
                 //объект appropriateCell
                 appropriateCell = getAppropriateCell();
-                if (appropriateCell != null) { //если были найдены совпадающие буквы (appropriateCell == !null)
+                if (appropriateCell != null) { //если были найдены совпадающие буквы
                     placeWordWithAppropriate();
                     }
                 }
@@ -139,7 +131,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
 
             //заполняем оставшиеся ячейки случайными буквами, чтобы выглядело естественно, чередуем
             //гласные и согласные, также убираем редко встречающиеся буквы
-    /*        String consonants = "BCDFGHJKLMNPRST";
+            String consonants = "BCDFGHJKLMNPRST";
             String vowels = "AEIOU";
             char c;
             int counter = 1; //счетчик для чередования: в нечетные разы - гласные, в четные - согласные
@@ -154,7 +146,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                     item.getCellId().setText(Character.toString(c));
                     counter++;
                 }
-            }*/
+            }
 
             // для обработки движений строим 4 массива, хранящих абсолютные границы столбцов и строк
             // в пикселях. Делаем это после проверки, что tableLayout отрисован
@@ -221,7 +213,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return null;
     }
 
-    public boolean placeWordWithAppropriate() {
+    public void placeWordWithAppropriate() {
         //разрезаем слово на 2 подстроки, до и после совпадающей буквы, не включая эту букву;
         //если сопадает первая или последняя буква, то первая или вторая подстрока может оказаться
         // пустой, в этом случае мы явно прописываем подстроки как пустые
@@ -292,95 +284,60 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         //УСЛОВИЕ 1. Если подстрока substr1 пустая, то вписываем substr2 вправо или вниз
         if (substr1.equals("") && !substr2.equals("")) {
             //если оба направления недоступны, возвращаем false
-            if ((!isRightDirectionAvailable || !areRightCellsAvailable)
-                    && (!isBottomDirectionAvailable || !areBottomCellsAvailable)) {
-                return false;
-            } else if (areRightCellsAvailable) {//проверяем, можно ли вписать вправо
-                ArrayList<Cell> a1 = writeRight();
-                insertedWordsList.add(a1);
-                Log.d(TAG, "writeRight() = " + a1.toString());
+            if (areRightCellsAvailable) {//проверяем, можно ли вписать вправо
+                insertedWordsList.add(writeRight());
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
                 //записываем в horCount и в список использованных
-                return true;
             } else if (areBottomCellsAvailable) {
                 //иначе, если нельзя вписать вправо, проверяем возможность вписать вниз
-                ArrayList<Cell> a2 = writeBottom();
-                insertedWordsList.add(a2);
-                Log.d(TAG, "writeBottom() = " + a2.toString());
+                insertedWordsList.add(writeBottom());
                 verCount++; //если прошло успешно, записываем в verCount и в список использованных
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
-                return true;
             }
 
             //УСЛОВИЕ 2. Если подстрока substr2 пустая
         } else if (!substr1.equals("") && substr2.equals("")) { //если пустая substr2
             //если оба направления недоступны, возвращаем false
-            if ((!isLeftDirectionAvailable || !areLeftCellsAvailable)
-                    && (!isTopDirectionAvailable || !areTopCellsAvailable)) {
-                return false;
-            } else if (areLeftCellsAvailable) {//проверяем, можно ли вписать влево
-                ArrayList<Cell> a3 = writeLeft();
-                insertedWordsList.add(a3);
-                Log.d(TAG, "writeLeft() = " + a3.toString());
+            if (areLeftCellsAvailable) {//проверяем, можно ли вписать влево
+                insertedWordsList.add(writeLeft());
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
                 //записываем в horCount и в список использованных
-                return true;
-            } else if (areTopCellsAvailable) {
-                //иначе, если нельзя вписать влево, вписываем вверх
-                ArrayList<Cell> a4 = writeTop();
-                insertedWordsList.add(a4);
-                Log.d(TAG, "writeTop() = " + a4.toString()); //одновременно вносим результат в список
+            } else if (areTopCellsAvailable) { //иначе, если нельзя вписать влево, вписываем вверх
+                insertedWordsList.add(writeTop()); //одновременно вносим результат в список
                 // insertedWordsList
                 verCount++; //если прошло успешно, записываем в verCount и в список использованных
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
-                return true;
             }
 
             //УСЛОВИЕ 3. Если обе подстроки не пустые
         } else {
             //если оба направления недоступны, возвращаем false
-            if ((!isBottomDirectionAvailable || !isTopDirectionAvailable
-                    || !areBottomCellsAvailable || !areTopCellsAvailable)
-                    && (!isRightDirectionAvailable || !isLeftDirectionAvailable
-                    || !areRightCellsAvailable || !areLeftCellsAvailable)) {
-                return false;
-            } else if (areLeftCellsAvailable && areRightCellsAvailable) { //если можно вписать слева и справа, то
-               /* ArrayList<Cell> a = (writeLeft());
+            if (areLeftCellsAvailable && areRightCellsAvailable) { //если можно вписать слева и справа, то
+                ArrayList<Cell> a = (writeLeft());
                 a.remove(a.size()-1);
                 a.addAll(writeRight());
-                insertedWordsList.add(a);*/
-                ArrayList<Cell> a5 = writeLeft();
-                insertedWordsList.add(a5);
-                Log.d(TAG, "writeLeft() = " + a5.toString());
-                ArrayList<Cell> a6 = writeRight();
-                a6.remove(a6.size()-1);
-                insertedWordsList.add(a6);
-                Log.d(TAG, "writeRight() = " + a6.toString());
-
+                insertedWordsList.add(a);
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
                 //записываем в horCount и в список использованных
-                return true;
            } else if (areTopCellsAvailable && areBottomCellsAvailable) {
                 //если возможность, то вписываем вверх и вниз
-                /*ArrayList<Cell> a = (writeTop());
+                ArrayList<Cell> a = (writeTop());
                 a.remove(a.size()-1);
                 a.addAll(writeBottom());
-                insertedWordsList.add(a);*/
+                insertedWordsList.add(a);
                 verCount++;
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
-                return true;
            }
         }
-        return false;
     }
 
     public boolean checkTop() {
@@ -915,16 +872,6 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 break;
         }
         return true;
-    }
-
-    public boolean checkIfSame (Cell a, ArrayList<Cell> list) {
-        for (int k = 0; k < list.size(); k++) {
-            Cell item = list.get(k);
-            if (item.getCellId() == a.getCellId()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
