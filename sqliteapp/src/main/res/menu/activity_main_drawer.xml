@@ -6,23 +6,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/addFragment"
-            android:icon="@drawable/ic_menu_gallery"
             android:title="@string/addWord" />
         <item
             android:id="@+id/studyActivity"
-            android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/studyMode" />
         <item
             android:id="@+id/testActivity"
-            android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/testMode" />
         <item
             android:id="@+id/wordSearchFragment"
-            android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/wsMode" />
         <item
             android:id="@+id/listFragment"
-            android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/toList" />
     </group>
 </menu>
