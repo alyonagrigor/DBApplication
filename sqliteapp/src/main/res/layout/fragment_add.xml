@@ -9,53 +9,53 @@
         android:id="@+id/targetBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enterTarget"
         android:layout_marginStart="@dimen/button_margin_left_right"
         android:layout_marginEnd="@dimen/button_margin_left_right"
+        android:hint="@string/enterTarget"
         android:textSize="@dimen/edit_text_size"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15"/>
+        app:layout_constraintGuide_percent="0.15" />
 
 
     <EditText
         android:id="@+id/nativeBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enterNative"
         android:layout_marginStart="@dimen/button_margin_left_right"
         android:layout_marginEnd="@dimen/button_margin_left_right"
+        android:hint="@string/enterNative"
         android:textSize="@dimen/edit_text_size"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@id/guideline2"  />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline2" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"/>
+        app:layout_constraintGuide_percent="0.3" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:layout_marginEnd="@dimen/save_button_margin"
         android:layout_marginStart="@dimen/save_button_margin"
+        android:layout_marginEnd="@dimen/save_button_margin"
+        android:text="@string/save"
         android:textSize="@dimen/button_text_size"
-        app:layout_constraintVertical_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline3"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintVertical_bias="0.1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

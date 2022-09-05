@@ -9,37 +9,37 @@
         android:id="@+id/textViewList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:text="@string/listEmpty"
         android:textAlignment="center"
         android:textSize="@dimen/alert_text_size"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/listButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/listButton"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/listButton"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/save_button_margin"
         android:layout_marginEnd="@dimen/save_button_margin"
-        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:textSize="@dimen/button_text_size"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/list"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewList"
-        app:layout_constraintBottom_toTopOf="@id/list"
-        android:textSize="@dimen/button_text_size"
-        android:text="@string/add" />
+        app:layout_constraintTop_toBottomOf="@id/textViewList" />
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listButton"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/listButton">
 
 
     </ListView>

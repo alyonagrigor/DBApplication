@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/conLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".WordSearchFragment"
-    android:id="@+id/conLayout">
+    tools:context=".WordSearchFragment">
 
     <TextView
         android:id="@+id/wsImpossible"
@@ -25,29 +25,30 @@
 
     <TextView
         android:id="@+id/wsText"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wsImpossible"
-        app:layout_constraintBottom_toTopOf="@id/tableLayout"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/button_margin_left_right"
-        android:layout_marginEnd="@dimen/button_margin_left_right"/>
+        android:layout_marginEnd="@dimen/button_margin_left_right"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/tableLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wsImpossible" />
 
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_height="0dp"
         android:layout_width="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/wsText"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
         android:layout_marginStart="@dimen/button_margin_left_right"
-        android:layout_marginEnd="@dimen/button_margin_left_right">
+        android:layout_marginEnd="@dimen/button_margin_left_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wsText">
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v0h0"
                 style="@style/CellStyle" />
@@ -75,9 +76,11 @@
             <TextView
                 android:id="@+id/v0h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v0h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v0h8"
                 style="@style/CellStyle" />
@@ -88,6 +91,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v1h0"
                 style="@style/CellStyle" />
@@ -115,9 +119,11 @@
             <TextView
                 android:id="@+id/v1h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v1h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v1h8"
                 style="@style/CellStyle" />
@@ -128,6 +134,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v2h0"
                 style="@style/CellStyle" />
@@ -155,9 +162,11 @@
             <TextView
                 android:id="@+id/v2h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v2h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v2h8"
                 style="@style/CellStyle" />
@@ -169,6 +178,7 @@
 
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v3h0"
                 style="@style/CellStyle" />
@@ -196,9 +206,11 @@
             <TextView
                 android:id="@+id/v3h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v3h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v3h8"
                 style="@style/CellStyle" />
@@ -210,6 +222,7 @@
 
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v4h0"
                 style="@style/CellStyle" />
@@ -237,9 +250,11 @@
             <TextView
                 android:id="@+id/v4h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v4h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v4h8"
                 style="@style/CellStyle" />
@@ -251,6 +266,7 @@
 
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v5h0"
                 style="@style/CellStyle" />
@@ -278,9 +294,11 @@
             <TextView
                 android:id="@+id/v5h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v5h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v5h8"
                 style="@style/CellStyle" />
@@ -291,6 +309,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v6h0"
                 style="@style/CellStyle" />
@@ -318,9 +337,11 @@
             <TextView
                 android:id="@+id/v6h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v6h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v6h8"
                 style="@style/CellStyle" />
@@ -331,6 +352,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v7h0"
                 style="@style/CellStyle" />
@@ -358,9 +380,11 @@
             <TextView
                 android:id="@+id/v7h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v7h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v7h8"
                 style="@style/CellStyle" />
@@ -371,6 +395,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v8h0"
                 style="@style/CellStyle" />
@@ -398,9 +423,11 @@
             <TextView
                 android:id="@+id/v8h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v8h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v8h8"
                 style="@style/CellStyle" />
@@ -411,6 +438,7 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:id="@+id/v9h0"
                 style="@style/CellStyle" />
@@ -438,9 +466,11 @@
             <TextView
                 android:id="@+id/v9h6"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v9h7"
                 style="@style/CellStyle" />
+
             <TextView
                 android:id="@+id/v9h8"
                 style="@style/CellStyle" />

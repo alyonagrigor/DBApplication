@@ -10,16 +10,16 @@
         android:id="@+id/studyImpossible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/studyImpossible"
-        android:visibility="gone"
-        android:textAlignment="center"
-        android:textSize="@dimen/alert_text_size"
         android:layout_marginStart="@dimen/margin_left_right"
         android:layout_marginEnd="@dimen/margin_left_right"
+        android:text="@string/studyImpossible"
+        android:textAlignment="center"
+        android:textSize="@dimen/alert_text_size"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/counter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/counter"
@@ -41,9 +41,9 @@
         android:layout_marginEnd="@dimen/margin_left_right"
         android:layout_marginBottom="20dp"
         android:textSize="@dimen/field_text_size"
-        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintBottom_toTopOf="@+id/fieldBottom"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/counter" />
 
@@ -53,7 +53,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/margin_left_right"
         android:layout_marginEnd="@dimen/margin_left_right"
-         android:textSize="@dimen/field_text_size"
+        android:textSize="@dimen/field_text_size"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.2"
@@ -64,51 +64,51 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/fieldBottom"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@+id/fieldBottom">
 
-    <Button
-        android:id="@+id/btnShow"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="@dimen/margin_left_right"
-        android:layout_marginEnd="@dimen/margin_left_right"
-        android:text="@string/showAnswer"
-        android:textSize="@dimen/button_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/btnNext"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fieldBottom" />
+        <Button
+            android:id="@+id/btnShow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_weight="1"
+            android:text="@string/showAnswer"
+            android:textSize="@dimen/button_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/btnNext"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fieldBottom" />
 
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="@dimen/margin_left_right"
-        android:layout_marginEnd="@dimen/margin_left_right"
-        android:text="@string/nextWord"
-        android:textSize="@dimen/button_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/btnRestart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnShow" />
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_weight="1"
+            android:text="@string/nextWord"
+            android:textSize="@dimen/button_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/btnRestart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnShow" />
 
-    <Button
-        android:id="@+id/btnRestart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="@dimen/margin_left_right"
-        android:layout_marginEnd="@dimen/margin_left_right"
-        android:textSize="@dimen/button_text_size"
-        android:text="@string/restart"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNext" />
+        <Button
+            android:id="@+id/btnRestart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_left_right"
+            android:layout_marginEnd="@dimen/margin_left_right"
+            android:layout_weight="1"
+            android:text="@string/restart"
+            android:textSize="@dimen/button_text_size"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnNext" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
