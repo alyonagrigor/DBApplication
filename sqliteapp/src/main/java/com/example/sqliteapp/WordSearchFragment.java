@@ -23,30 +23,30 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
 
     private static final String TAG = "myLogs";
     private FragmentWordSearchBinding binding;
+    final int CELLS_AMOUNT = 10; // количество ячеек по горизонтали и по вертикали
+    final int LIMIT = 3; // минимальная длина слова
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor wordsCursor;
-    int linesCount = 0, ver = 0, hor = 0, horCount = 0, verCount = 0, direction = 1;
-    final int CELLS_AMOUNT = 10; // количество ячеек по горизонтали и по вертикали
-    final int LIMIT = 3; // минимальная длина слова
     boolean isTheSame;
-    String currentWord, substr1, substr2;
     char letter;
+    int linesCount = 0, ver = 0, hor = 0, horCount = 0, verCount = 0, direction = 1;
+    String currentWord, substr1, substr2;
     Random rand = new Random();
     Cell appropriateCell;
     Cell[] cellsArray = new Cell[CELLS_AMOUNT * CELLS_AMOUNT]; //массив для хранения ячеек
-    ArrayList<Integer> usedList = new ArrayList<Integer>(); //коллекция для хранения уже
+    ArrayList<Integer> usedList = new ArrayList<>(); //коллекция для хранения уже
     // использованных слов по айди в бд
-    ArrayList<ArrayList<Cell>> insertedWordsList = new ArrayList<ArrayList<Cell>>();//коллекция
+    ArrayList<ArrayList<Cell>> insertedWordsList = new ArrayList<>();//коллекция
     // вставленных слов (их объектов Cells)
     float tableX, tableY, cellX, cellY;
     Float[] leftBordersArray = new Float[CELLS_AMOUNT];
     Float[] rightBordersArray = new Float[CELLS_AMOUNT];
     Float[] topBordersArray = new Float[CELLS_AMOUNT];
     Float[] bottomBordersArray = new Float[CELLS_AMOUNT];
-    ArrayList<Cell> selectedInterval = new ArrayList<Cell>(); //коллекция для записи текущего
+    ArrayList<Cell> selectedInterval = new ArrayList<>(); //коллекция для записи текущего
     // выделенного слова
-    ArrayList<Cell> earlierSelectedCells = new ArrayList<Cell>(); //список для хранения ячеек,
+    ArrayList<Cell> earlierSelectedCells = new ArrayList<>(); //список для хранения ячеек,
     //выделенных во время предыдущих движений
 
     public WordSearchFragment() {
@@ -91,13 +91,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
             fillArray(); //заполняем массив ячеек объектами
 
             for (Cell item: cellsArray) {
-            /*    item.getCellId().setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        v.performClick();
-                        return mGestureDetector.onTouchEvent(event);
-                    }
-                })*/
+
                 item.getCellId().setOnTouchListener(this);
             }
 
@@ -221,19 +215,17 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         if (x == 0) {
             substr1 = "";
             substr2 = currentWord.substring(1);
-            Log.d(TAG, "первая подстрока = " + substr1);
-            Log.d(TAG, "вторая подстрока = " + substr2);
+
         } else if (x == currentWord.length() - 1) {
             substr1 = currentWord.substring(0, currentWord.length() - 1);
             substr2 = ("");
-            Log.d(TAG, "первая подстрока = " + substr1);
-            Log.d(TAG, "вторая подстрока = " + substr2);
         } else {
             substr1 = currentWord.substring(0, x);
             substr2 = currentWord.substring(x + 1);
-            Log.d(TAG, "первая подстрока = " + substr1);
-            Log.d(TAG, "вторая подстрока = " + substr2);
         }
+
+        Log.d(TAG, "первая подстрока = " + substr1);
+        Log.d(TAG, "вторая подстрока = " + substr2);
 
         //проверяем, не попадет ли последняя буква слова за границы поля
         //назначаем переменные для провреки
@@ -366,7 +358,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     }
 
     public ArrayList<Cell> writeTop() {
-        ArrayList<Cell> insertedLettersList = new ArrayList<Cell>();
+        ArrayList<Cell> insertedLettersList = new ArrayList<>();
         for (int i = appropriateCell.getVer() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
             Log.d(TAG, "входим в цикл для записи в направлении Top");
             letter = substr1.charAt(k); //получаем букву
@@ -406,7 +398,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     }
 
     public ArrayList<Cell> writeLeft() {
-        ArrayList<Cell> insertedLettersList = new ArrayList<Cell>();
+        ArrayList<Cell> insertedLettersList = new ArrayList<>();
         for (int i = appropriateCell.getHor() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
             letter = substr1.charAt(k); //получаем букву
             for (Cell item: cellsArray) {
@@ -445,7 +437,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     }
 
     public ArrayList<Cell> writeRight() {
-        ArrayList<Cell> insertedLettersList = new ArrayList<Cell>();
+        ArrayList<Cell> insertedLettersList = new ArrayList<>();
         insertedLettersList.add(appropriateCell);
         for (int i = appropriateCell.getHor() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
@@ -483,7 +475,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     }
 
     public ArrayList<Cell> writeBottom() {
-        ArrayList<Cell> insertedLettersList = new ArrayList<Cell>();
+        ArrayList<Cell> insertedLettersList = new ArrayList<>();
         insertedLettersList.add(appropriateCell);
         for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
@@ -547,7 +539,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     }
 
     public void writeWordWithoutAppropriate() {
-        ArrayList<Cell> insertedLettersList = new ArrayList<Cell>();
+        ArrayList<Cell> insertedLettersList = new ArrayList<>();
 
         if (direction == 1) { //для гориз.ориентации
             for (int i = hor, k = 0; k < currentWord.length(); i++, k++) {
