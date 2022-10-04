@@ -117,7 +117,7 @@ public class TestActivity extends AppCompatActivity {
                     if (isReversed)  binding.fieldTop.setText(wordsCursor.getString(1));
                     else  binding.fieldTop.setText(wordsCursor.getString(2));
                     currentCount++;
-                    binding.counter.setText(currentCount + " / " + linesCount);
+                    binding.counter.setText(getString(R.string.count, currentCount, linesCount));
                     binding.radioGroup.clearCheck();
                     wrongWords.clear();
                     shownList.add(wordsCursor.getInt(0));
@@ -413,7 +413,7 @@ public class TestActivity extends AppCompatActivity {
         if (isReversed)  binding.fieldTop.setText(wordsCursor.getString(1));
         else  binding.fieldTop.setText(wordsCursor.getString(2));
         currentCount = 1;
-        binding.counter.setText(currentCount + " / " + linesCount);
+        binding.counter.setText(getString(R.string.count, currentCount, linesCount));
         binding.radioGroup.clearCheck();
         wrongWords.clear();
         shownList.add(wordsCursor.getInt(0));

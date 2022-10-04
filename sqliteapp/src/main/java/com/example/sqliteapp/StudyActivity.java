@@ -94,7 +94,7 @@ public class StudyActivity extends AppCompatActivity {
                     else  binding.fieldTop.setText(wordsCursor.getString(2));
                     currentCount++;
                     binding.fieldBottom.setText("");
-                    binding.counter.setText(currentCount + " / " + linesCount);
+                    binding.counter.setText(getString(R.string.count, currentCount, linesCount));
                     shownList.add(wordsCursor.getInt(0));
                     //если все слова в базе уже показаны, то
                     if (shownList.size() == linesCount) {
@@ -185,7 +185,7 @@ public class StudyActivity extends AppCompatActivity {
         else  binding.fieldTop.setText(wordsCursor.getString(2));
         shownList.add(wordsCursor.getInt(0));
         currentCount = 1;
-        binding.counter.setText(currentCount + " / " + linesCount);
+        binding.counter.setText(getString(R.string.count, currentCount, linesCount));
     }
 
     public void swapLangs() {
