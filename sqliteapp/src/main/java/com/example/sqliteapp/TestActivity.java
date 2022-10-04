@@ -1,9 +1,10 @@
+/* Активити с фунцкионалом тестов */
+
 package com.example.sqliteapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,15 +12,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.sqliteapp.databinding.ActivityStudyBinding;
 import com.example.sqliteapp.databinding.ActivityTestBinding;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -53,7 +48,8 @@ public class TestActivity extends AppCompatActivity {
         // открываем подключение
         db = databaseHelper.open();
         //получаем данные из таблицы бд, только те строки, которые не исключены из обучения,
-        wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
+        wordsCursor = db.rawQuery(
+                "select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
 
         //проверяем, чтобы в бд было более 4 слов, иначе скрываем все view, кроме testImpossible
         if (wordsCursor.getCount() < 4) {
@@ -66,11 +62,9 @@ public class TestActivity extends AppCompatActivity {
 
         } else {
             //если в бд более 4 слов, то запускаем ОСНОВНОЙ ФУНКЦИОНАЛ ПРОГРАММЫ
-
             linesCount = wordsCursor.getCount();
             showFirstWord();
 
-// ***********************************************!!!НАЧАЛО СЛУШАТЕЛЕЙ!!!**************************
 
             binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
@@ -152,8 +146,6 @@ public class TestActivity extends AppCompatActivity {
             });
         }
     }
-
-// ***********************************************!!!КОНЕЦ МЕТОДА MAIN!!!**************************
 
     // метод, который выводит правильный и похожие варианты ответа в радиогруп
     public void showOptions () {
@@ -291,12 +283,11 @@ public class TestActivity extends AppCompatActivity {
                     ) {
                         wrongWords.add(curWord);
                     }
-                //    wrongWords.add("Test");
                 } while (wrongWords.size() < 3);
             }
         }
 
-//рандомно выбираем и записываем позицию для правильного ответа
+        //рандомно выбираем и записываем позицию для правильного ответа
         rightWordPosition = r.nextInt(4) + 1;
 
         //выводим полученные ответы в радиогруп
@@ -339,7 +330,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
 
-    //методы для верхнего меню---------------------------------------------------------------------
+    //методы для верхнего меню
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.study_menu, menu);
@@ -362,7 +353,8 @@ public class TestActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-   public void exclude() {
+    //методы для основного функционала
+    public void exclude() {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_STUDY, 0);
         Toast.makeText(this, "Успешно исключено",Toast.LENGTH_LONG).show();
@@ -373,9 +365,7 @@ public class TestActivity extends AppCompatActivity {
         //уменьшаем счетчики на одно слово
         currentCount--;
         linesCount--;
-   }
-
-    //***конец методов верхнего меню---------------------------------------------------------------
+    }
 
     public void checkExclusion() {
         if (excludedList.isEmpty()) {

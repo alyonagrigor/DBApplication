@@ -1,3 +1,6 @@
+/* Класс, определяющий свойства ячейки из WordSearchFragment
+ */
+
 package com.example.sqliteapp;
 
 import android.widget.TextView;

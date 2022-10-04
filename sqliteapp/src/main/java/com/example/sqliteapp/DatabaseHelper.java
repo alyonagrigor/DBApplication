@@ -1,3 +1,6 @@
+/* DatabaseHelper, используемый в каждом фрагменте и активити
+ */
+
 package com.example.sqliteapp;
 
 import android.database.SQLException;
@@ -5,19 +8,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
 import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+
 class DatabaseHelper extends SQLiteOpenHelper {
-  private static String DB_PATH; // полный путь к базе данных
+    private static String DB_PATH; // полный путь к базе данных
 
     private static String DB_NAME = "words5.db";
     private static final int SCHEMA = 1; // версия базы данных
     static final String TABLE = "main"; // название таблицы в бд
+
     // названия столбцов
     static final String COLUMN_ID = "_id";
     static final String COLUMN_TARGET= "target";
@@ -28,8 +32,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
     DatabaseHelper(Context context) {
         super(context, DB_NAME, null, SCHEMA);
         this.myContext=context;
-      DB_PATH =context.getFilesDir().getPath() + DB_NAME;
-
+        DB_PATH =context.getFilesDir().getPath() + DB_NAME;
     }
 
     @Override

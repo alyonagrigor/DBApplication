@@ -75,14 +75,13 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     @Override
     public void onResume() {
         super.onResume();
+        /*открываем БД*/
         db = databaseHelper.open();
-        wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE
-                        // нужно ли исключать слова?
-                        + " WHERE study = 1"
-                , null);
+        wordsCursor = db.rawQuery(
+                "select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
         wordsCursor.moveToFirst();
         linesCount = wordsCursor.getCount();
-        // проверка, что в бд не менее 20 слов
+        /* проверка, что в бд не менее 20 слов*/
         if (wordsCursor.getCount() < 20) {
             binding.wsImpossible.setVisibility(View.VISIBLE);
             binding.wsText.setVisibility(View.GONE);
@@ -95,11 +94,11 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 item.getCellId().setOnTouchListener(this);
             }
 
-            //в цикле по очереди вставляем слова двумя разными способами: один добавляет слова так,
-            //чтобы они не пересекались с другими, второй сработает только если есть совпадающие
-            // буквы с другим словом
+            /* в цикле по очереди вставляем слова двумя разными способами: один добавляет слова так,
+            чтобы они не пересекались с другими, второй сработает только если есть совпадающие
+            буквы с другим словом */
             for (int j = 0; j < CELLS_AMOUNT * CELLS_AMOUNT; j++) {
-                //ДЛЯ ДОБАВЛЕНИЯ СЛОВ БЕЗ ПЕРЕСЕЧЕНИЙ
+                /* ДЛЯ ДОБАВЛЕНИЯ СЛОВ БЕЗ ПЕРЕСЕЧЕНИЙ*/
                 clearVariables();
                 getRandomDirection();
                 getRandomWord();
@@ -108,23 +107,23 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                     writeWordWithoutAppropriate();
                 }
 
-                //ДЛЯ ДОБАВЛЕНИЯ СЛОВ С ПЕРЕСЕЧЕНИЯМИ
+                /*ДЛЯ ДОБАВЛЕНИЯ СЛОВ С ПЕРЕСЕЧЕНИЯМИ*/
                 clearVariables();
                 appropriateCell = null;
                 getRandomWord(); // получаем рандомное слово
-                //подбираем ячейку, в которой вставлена буква, совпадающая с буквой в новом слове -
-                //объект appropriateCell
+                /* подбираем ячейку, в которой вставлена буква, совпадающая с буквой в новом слове
+                 объект appropriateCell */
                 appropriateCell = getAppropriateCell();
                 if (appropriateCell != null) { //если были найдены совпадающие буквы
                     placeWordWithAppropriate();
                     }
                 }
 
-            //в конце выводим количество слов по гор. и вертикали в textView
+            /* в конце выводим количество слов по гор. и вертикали в textView */
             binding.wsText.setText(getString(R.string.findWords, horCount, verCount));
 
-            //заполняем оставшиеся ячейки случайными буквами, чтобы выглядело естественно, чередуем
-            //гласные и согласные, также убираем редко встречающиеся буквы
+            /* Заполняем оставшиеся ячейки случайными буквами, чтобы выглядело естественно, чередуем
+            гласные и согласные, также убираем редко встречающиеся буквы */
             String consonants = "BCDFGHJKLMNPRST";
             String vowels = "AEIOU";
             char c;
@@ -142,37 +141,34 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 }
             }
 
-            // для обработки движений строим 4 массива, хранящих абсолютные границы столбцов и строк
-            // в пикселях. Делаем это после проверки, что tableLayout отрисован
+            /* для обработки движений строим 4 массива, хранящих абсолютные границы столбцов и строк
+            в пикселях. Делаем это после проверки, что tableLayout отрисован */
             ViewTreeObserver viewTreeObserver = binding.tableLayout.getViewTreeObserver();
             if (viewTreeObserver.isAlive()) {
-                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                viewTreeObserver.addOnGlobalLayoutListener(
+                        new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        //получаем границы tableLayout
-                        tableX = binding.tableLayout.getX(); //в пикселях
-                        tableY = binding.tableLayout.getY(); //в пикселях
-                        Log.d(TAG, "tableX " + tableX);
-                        Log.d(TAG, "tableY " + tableY);
+                        /* получаем границы tableLayout */
+                        tableX = binding.tableLayout.getX(); //в px
+                        tableY = binding.tableLayout.getY(); //в px
 
-                        //получаем ширину столбцов и высоту строк
-                        float cellsHeight = cellsArray[0].getCellId().getHeight(); //в пикселях
-                        float cellsWidth = cellsArray[0].getCellId().getWidth(); //в пикселях
-                        Log.d(TAG, "cellsHeight " + cellsHeight);
-                        Log.d(TAG, "cellsWidth " + cellsWidth);
+                        /* получаем ширину столбцов и высоту строк */
+                        float cellsHeight = cellsArray[0].getCellId().getHeight(); //в px
+                        float cellsWidth = cellsArray[0].getCellId().getWidth(); //в px
 
-                        //получаем левые границы стобцов
+                        /* получаем левые границы стобцов */
                         for (int m = 0; m < CELLS_AMOUNT; m++) {
                             leftBordersArray[m] = tableX + cellsWidth * m; //к левой границе таблицы
                             //прибавляем количество ячеек слева от текущей * на их ширину
                         }
-                        //получаем правые границы стобцов
+                        /* получаем правые границы стобцов */
                         for (int m = 0; m < CELLS_AMOUNT; m++) {
                             rightBordersArray[m] = tableX + cellsWidth * (m + 1); //к левой границе таблицы
                             //прибавляем количество ячеек слева от текущей * на их ширину + еще одна ширина ячейки
                         }
 
-                        //аналогично с верхними и нижними границами
+                        /*аналогично с верхними и нижними границами */
                         for (int m = 0; m < CELLS_AMOUNT; m++) {
                             topBordersArray[m] = tableY + cellsHeight * m;
                         }
@@ -190,11 +186,11 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 });
             }
         }
-    } // конец ONRESUME
+    }
 
 
     public Cell getAppropriateCell() {
-        //проверяем, есть ли совпадающие буквы в таблице
+        /* проверяем, есть ли совпадающие буквы в таблице */
         for (Cell item: cellsArray) { //проверяем совпадение букв в уже заполненных ячейках с новым словом
             if (item.getLetter() != '0') { //проверка что ячейка не пустая
                 for (int i = 0; i < currentWord.length(); i++) {
@@ -208,9 +204,9 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
     }
 
     public void placeWordWithAppropriate() {
-        //разрезаем слово на 2 подстроки, до и после совпадающей буквы, не включая эту букву;
-        //если сопадает первая или последняя буква, то первая или вторая подстрока может оказаться
-        // пустой, в этом случае мы явно прописываем подстроки как пустые
+        /* разрезаем слово на 2 подстроки, до и после совпадающей буквы, не включая эту букву;
+        если совпадает первая или последняя буква, то первая или вторая подстрока может оказаться
+        пустой, в этом случае мы явно прописываем подстроки как пустые */
         int x = currentWord.indexOf(appropriateCell.getLetter());
         if (x == 0) {
             substr1 = "";
@@ -227,33 +223,35 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         Log.d(TAG, "первая подстрока = " + substr1);
         Log.d(TAG, "вторая подстрока = " + substr2);
 
-        //проверяем, не попадет ли последняя буква слова за границы поля
-        //назначаем переменные для провреки
+        /* проверяем, не попадет ли последняя буква слова за границы поля
+        /* назначаем переменные для проверки */
         boolean isTopDirectionAvailable = false,
                 isLeftDirectionAvailable = false,
                 isBottomDirectionAvailable = false,
                 isRightDirectionAvailable = false;
 
         if (!substr1.equals("")) {
-            //проверяем верхнее направление
+            /* проверяем верхнее направление */
             isTopDirectionAvailable = appropriateCell.getVer() - substr1.length() > -1;
             Log.d(TAG, "isTopDirectionAvailable = " + isTopDirectionAvailable);
-            //левое направление
+            /* левое направление */
             isLeftDirectionAvailable = appropriateCell.getHor() - substr1.length() > -1;
             Log.d(TAG, "isLeftDirectionAvailable = " + isLeftDirectionAvailable);
         }
         if (!substr2.equals("")) {//substr2
-            //проверяем нижнее направление
+            /* проверяем нижнее направление */
             isBottomDirectionAvailable = appropriateCell.getVer() + substr2.length() < CELLS_AMOUNT;
             Log.d(TAG, "isBottomDirectionAvailable = " + isBottomDirectionAvailable);
 
-            //правое направление
+            /* правое направление */
             isRightDirectionAvailable = appropriateCell.getHor() + substr2.length() < CELLS_AMOUNT;
             Log.d(TAG, "isRightDirectionAvailable = " + isRightDirectionAvailable);
         }
 
-        //вычисляем, можно ли записать слово влево, вправо, вверх или вниз, только при условии, что
-        // доступно это направление, иначе оставляем false
+        /*вычисляем, можно ли записать слово влево, вправо, вверх или вниз - все ли ячейки,
+        в которые мы собираемся вставлять буквы, пустые */
+        /* производим вычисление только при условии, что последняя буква слова не будет находиться
+        за границами поля, иначе оставляем false */
         boolean areLeftCellsAvailable = false,
                 areTopCellsAvailable = false,
                 areRightCellsAvailable = false,
@@ -272,33 +270,31 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
             areTopCellsAvailable = checkTop();
         }
 
-        //запускаем функции, которые вписывают буквы в ячейки
-        //УСЛОВИЕ 1. Если подстрока substr1 пустая, то вписываем substr2 вправо или вниз
+        /* запускаем функции, которые вписывают буквы в ячейки */
+        /* УСЛОВИЕ 1. Если подстрока substr1 пустая, то вписываем substr2 вправо или вниз */
         if (substr1.equals("") && !substr2.equals("")) {
-            //если оба направления недоступны, возвращаем false
             if (areRightCellsAvailable) {//проверяем, можно ли вписать вправо
+                /*записываем в horCount и в список использованных */
                 insertedWordsList.add(writeRight());
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
-                //записываем в horCount и в список использованных
+
             } else if (areBottomCellsAvailable) {
-                //иначе, если нельзя вписать вправо, проверяем возможность вписать вниз
+                /* иначе, если нельзя вписать вправо, проверяем возможность вписать вниз */
                 insertedWordsList.add(writeBottom());
                 verCount++; //если прошло успешно, записываем в verCount и в список использованных
                 Log.d(TAG, "verCount++ = " + verCount);
                 usedList.add(wordsCursor.getInt(0));
             }
 
-            //УСЛОВИЕ 2. Если подстрока substr2 пустая
+            /* УСЛОВИЕ 2. Если подстрока substr2 пустая */
         } else if (!substr1.equals("") && substr2.equals("")) { //если пустая substr2
-            //если оба направления недоступны, возвращаем false
             if (areLeftCellsAvailable) {//проверяем, можно ли вписать влево
                 insertedWordsList.add(writeLeft());
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
-                //записываем в horCount и в список использованных
             } else if (areTopCellsAvailable) { //иначе, если нельзя вписать влево, вписываем вверх
                 insertedWordsList.add(writeTop()); //одновременно вносим результат в список
                 // insertedWordsList
@@ -307,10 +303,9 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 usedList.add(wordsCursor.getInt(0));
             }
 
-            //УСЛОВИЕ 3. Если обе подстроки не пустые
+            /*УСЛОВИЕ 3. Если обе подстроки не пустые*/
         } else {
-            //если оба направления недоступны, возвращаем false
-            if (areLeftCellsAvailable && areRightCellsAvailable) { //если можно вписать слева и справа, то
+            if (areLeftCellsAvailable && areRightCellsAvailable) { //если можно вписать слева и справа
                 ArrayList<Cell> a = (writeLeft());
                 a.remove(a.size()-1);
                 a.addAll(writeRight());
@@ -318,9 +313,8 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 horCount++;
                 Log.d(TAG, "horCount++ = " + horCount);
                 usedList.add(wordsCursor.getInt(0));
-                //записываем в horCount и в список использованных
-           } else if (areTopCellsAvailable && areBottomCellsAvailable) {
-                //если возможность, то вписываем вверх и вниз
+
+           } else if (areTopCellsAvailable && areBottomCellsAvailable) { //если возможность, то вписываем вверх и вниз
                 ArrayList<Cell> a = (writeTop());
                 a.remove(a.size()-1);
                 a.addAll(writeBottom());
@@ -332,20 +326,12 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         }
     }
 
+    /*проверка, свободны ли ячейки в верхнем направлении */
     public boolean checkTop() {
-        Log.d(TAG, "слово для вставки " + currentWord);
-        Log.d(TAG, "строка для размещения сверху " + substr1);
-        Log.d(TAG, "substr1.length() = " + substr1.length());
-        Log.d(TAG, "коорд. appropriateCell по гор " + appropriateCell.getHor() + ", по верт. " + appropriateCell.getVer());
-
         for (int i = appropriateCell.getVer() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
-            Log.d(TAG, "входим в цикл для проверки в направлении Top");
-            Log.d(TAG, "i = " + i + ", k = " + k);
             letter = substr1.charAt(k); //получаем букву
-            Log.d(TAG, "буква для размещения " + letter);
             for (Cell item: cellsArray) {
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
-                    Log.d(TAG, "коорд ячейки по гор: " + i + ", по верт. " + appropriateCell.getVer());
                     if (item.getLetter() != '0' && item.getLetter() != letter) {
                         //если вставлена другая буква, то выходим из метода
                         return false;
@@ -353,18 +339,16 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 }
             }
         }
-        Log.d(TAG, "вернулся flagTop = " + true);
         return true;
     }
 
+    /*вставляем буквы в верхнем направлении */
     public ArrayList<Cell> writeTop() {
         ArrayList<Cell> insertedLettersList = new ArrayList<>();
         for (int i = appropriateCell.getVer() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
-            Log.d(TAG, "входим в цикл для записи в направлении Top");
             letter = substr1.charAt(k); //получаем букву
             for (Cell item: cellsArray) {
                 if (item.getVer() == i && item.getHor() == appropriateCell.getHor()) {
-                    Log.d(TAG, "записываем в ячейку по гор: " + appropriateCell.getHor() + ", по верт. " + i);
                     item.getCellId().setText(Character.toString(letter)); // в ячейку
                     item.setLetter(letter);// и в объект
                     insertedLettersList.add(item);
@@ -375,20 +359,21 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return(insertedLettersList);
     }
 
+    /* проверка, свободны ли ячейки в левом направлении */
     public boolean checkLeft() {
         for (int i = appropriateCell.getHor() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
             letter = substr1.charAt(k); //получаем букву
             for (Cell item: cellsArray) {
                 if (item.getVer() == appropriateCell.getVer() && item.getHor() == i) {
-                    if (item.getLetter() == '0') {// проверка на незанятость ячейки
-                        //если ячейка пустая, идем проверять следующую
+                    if (item.getLetter() == '0') {// проверка на незанятость ячейки, если
+                        // ячейка пустая, идем проверять следующую
                         break;
                     } else if (item.getLetter() == letter) {
                         //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                         // идем проверять следующую
                         break;
                     } else if (item.getLetter() != '0' && item.getLetter() != letter) {
-                        //если вставлена другая буква, то метод возвращает true
+                        //если вставлена другая буква, то метод возвращает false
                         return false;
                     }
                 }
@@ -397,6 +382,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return true;
     }
 
+    /*вставляем буквы в левом направлении */
     public ArrayList<Cell> writeLeft() {
         ArrayList<Cell> insertedLettersList = new ArrayList<>();
         for (int i = appropriateCell.getHor() - substr1.length(), k = 0; k < substr1.length(); i++, k++) {
@@ -413,6 +399,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return(insertedLettersList);
     }
 
+    /*проверка, свободны ли ячейки в правом направлении */
     public boolean checkRight() {
         for (int i = appropriateCell.getHor() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
@@ -436,6 +423,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return true;
     }
 
+    /*вставляем буквы в правом направлении */
     public ArrayList<Cell> writeRight() {
         ArrayList<Cell> insertedLettersList = new ArrayList<>();
         insertedLettersList.add(appropriateCell);
@@ -452,6 +440,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return(insertedLettersList);
     }
 
+    /*проверка, свободны ли ячейки в нижнем направлении */
     public boolean checkBottom() {
         for (int i = appropriateCell.getVer() + 1, k = 0; k < substr2.length(); i++, k++) {
             letter = substr2.charAt(k); //получаем букву
@@ -465,7 +454,6 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                         // то выходим из цикла и проверяем дальше
                         break;
                     } else if (item.getLetter() != '0' && item.getLetter() != letter) {
-                        //выходим из метода
                         return false;
                     }
                 }
@@ -474,6 +462,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return true;
     }
 
+    /*вставляем буквы в нижнем направлении */
     public ArrayList<Cell> writeBottom() {
         ArrayList<Cell> insertedLettersList = new ArrayList<>();
         insertedLettersList.add(appropriateCell);
@@ -490,22 +479,20 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return(insertedLettersList);
     }
 
+    /*проверка для вставки слов без поиска пересечений */
     public boolean checkWordWithoutAppropriate() {
-        Log.d(TAG, "checkWordWithoutAppropriate() ");
         if (direction == 1) { //для гориз.ориентации
             for (int i = hor, k = 0; k < currentWord.length(); i++, k++) {
                 letter = currentWord.charAt(k); //получаем букву
                 for (Cell item: cellsArray) { //находим объект cell с координатами i и ver
                     if (item.getHor() == i && item.getVer() == ver) {
                         if (item.getLetter() == '0') {// проверка на незанятость ячейки
-                            Log.d(TAG, "пустая ячйека по горизонтали ");
                             break; //выходим из цикла и переходим к следующей ячейке
                         } else if (item.getLetter() == letter) {
                             //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                             // то переходим к следующей ячейке на пути - выходим из цикла
-                            Log.d(TAG, "пропустили совпадающую букву по горизонтали " + letter);
                             break;
-                        } else {  //если вставлена другая буква, то отдаем флаг
+                        } else {
                             return false;
                         }
                     }
@@ -519,16 +506,12 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 for (Cell item: cellsArray) { //находим объект cell с координатами hor и i
                     if (item.getVer() == i && item.getHor() == hor) {
                         if (item.getLetter() == '0') {// проверка на незанятость ячейки
-                            Log.d(TAG, "разметсили букву по вертикали " + letter);
-                            Log.d(TAG, "hor = " + i);
-                            Log.d(TAG, "ver = " + item.getHor());
                             break; //выходим из цикла и переходим к следующей ячейке
                         } else if (item.getLetter() == letter) {
-                            Log.d(TAG, "буквы совпадают " + letter);
                             //проверяем, совпадают ли буквы уже вставленная и буква нового слова
                             // то переходим к следующей ячейке на пути - выходим из цикла
                             break;
-                        } else {  //если вставлена другая буква, то стираем записанные буквы
+                        } else {
                             return false;
                         }
                     }
@@ -538,6 +521,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         return true;
     }
 
+    /*вставляем слово без поиска пересечений */
     public void writeWordWithoutAppropriate() {
         ArrayList<Cell> insertedLettersList = new ArrayList<>();
 
@@ -549,9 +533,6 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                         item.getCellId().setText(Character.toString(letter));
                         item.setLetter(letter);
                         insertedLettersList.add(item);
-                        Log.d(TAG, "разметсили букву по горизонтали " + letter);
-                        Log.d(TAG, "hor = " + item.getHor());
-                        Log.d(TAG, "ver = " + i);
                     }
                 }
             }
@@ -564,26 +545,24 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                         item.getCellId().setText(Character.toString(letter));
                         item.setLetter(letter);
                         insertedLettersList.add(item);
-                        Log.d(TAG, "разметсили букву по вертикали " + letter);
-                        Log.d(TAG, "hor = " + i);
-                        Log.d(TAG, "ver = " + item.getHor());
                     }
                 }
             }
         }
-        // в конце записываем в коллекцию использованных
+        /* в конце записываем в коллекцию использованных */
         usedList.add(wordsCursor.getInt(0));
         insertedWordsList.add(insertedLettersList);
-        // и в количество горизонтально или вертикально расположенных слов
+        /* и в количество горизонтально или вертикально расположенных слов */
         if (direction == 1) {
             horCount++;
-            Log.d(TAG, "horCount++ = " + horCount);
+            Log.d(TAG, "horCount = " + horCount);
         } else if (direction == 2) {
             verCount++;
-            Log.d(TAG, "verCount++ = " + verCount);
+            Log.d(TAG, "verCount = " + verCount);
         }
     }
 
+    /*получаем рандомное слово из курсора */
     public void getRandomWord() {
         do {
             wordsCursor.moveToPosition(rand.nextInt(linesCount));
@@ -609,6 +588,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         currentWord = currentWord.toUpperCase(); //во избежание путаницы используем всегда заглавные буквы
     }
 
+    /*получаем случайную ячейку для вставки слова без поиска пересечений */
     public void getRandomPosition() {
         // генерируем координаты для первой буквы
         if (direction == 1) { //если ориент. гориз.
@@ -623,10 +603,12 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         }
     }
 
+    /*случайно генерируем направление - вверх или вниз */
     public void getRandomDirection() {
         direction = rand.nextInt(2) + 1;
     }
 
+    /* проверяем, было ли уже использовано это слово в этом туре игры */
     public boolean checkUsed() {
         boolean isUsed = false;
         for (int i = 0, usedSize = usedList.size(); i < usedSize; i++) {
@@ -751,10 +733,11 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
         cellsArray[99] = new Cell(9, 9, binding.v9h9, '0');
     }
 
+    /* окрашиваем ячейки, когда пользователь заводит палец в ячейку */
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         view.performClick();
-        Cell firstCell = new Cell();//создаем объект, указывающий на первую ячейку, с
+        Cell firstCell = new Cell();//объект указывает на первую ячейку, с
         // которой пользователь начал введение слова
         //когда пользователь проводит по слову, нужно изменить фон ячеек. Чтобы получить view ячеек,
         // возьмем координаты их границ
@@ -793,8 +776,8 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 break;
 
             case MotionEvent.ACTION_MOVE: // движение
-                //при каждом событии перемещения рассчитываем ячейку, в которой находится палец,
-                // по координатам
+                /* при каждом событии перемещения рассчитываем ячейку, в которой находится палец,
+                по координатам */
                 float p = motionEvent.getX() + cellX; //получаем координаты точки по оси X
                 // на экране, прибавляя координаты первой ячейки
                 float q = motionEvent.getY() + cellY;
@@ -818,7 +801,7 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 }
                 Log.d(TAG, "ACTION_MOVE Cell " + curCellVer + "," + curCellHor);
 
-                //окрашиваем ячейку, в которую завели палец
+                /*окрашиваем ячейку, в которую завели палец */
                 for (Cell cell: cellsArray) {
                     if (cell.getVer() == curCellVer && cell.getHor() == curCellHor) { //находим
                         // ячейку перебором массива
@@ -841,16 +824,16 @@ public class WordSearchFragment extends Fragment implements View.OnTouchListener
                 Log.d(TAG, "selectedInterval.size() " + selectedInterval.size());
                 Log.d(TAG, "selectedInterval.toString " + selectedInterval.toString());
                 Log.d(TAG, "earlierSelectedCells.size() " + earlierSelectedCells.size());
-                //проверяем, совпадает ли список selectedInterval с каким-нибудь списком
-                // в insertedWordsList
-                if (!insertedWordsList.contains(selectedInterval)) { //если не совпадает
-                    //выводим сообщение об ошибке
+                /* проверяем, совпадает ли список selectedInterval с каким-нибудь списком
+                в insertedWordsList */
+                if (!insertedWordsList.contains(selectedInterval)) {
+                    /* выводим сообщение об ошибке */
                     Toast.makeText(getActivity(), "Ошибка", Toast.LENGTH_SHORT).show();
-                    //заменяем зеленый фон у выделенных ячеек на первоначальный
+                    /* заменяем зеленый фон у выделенных ячеек на первоначальный */
                     for (Cell cell: selectedInterval) {
                         cell.getCellId().setBackgroundResource(R.drawable.cell_border);
-                        //кроме тех, которые были выделены раньше в составе других слов, они
-                        // хранятся в earlierSelectedCells
+                        /*кроме тех, которые были выделены раньше в составе других слов, они
+                        хранятся в earlierSelectedCells */
                         if (earlierSelectedCells.size() != 0) {
                             for (Cell item: earlierSelectedCells) {
                                 item.getCellId().setBackgroundColor(getResources()

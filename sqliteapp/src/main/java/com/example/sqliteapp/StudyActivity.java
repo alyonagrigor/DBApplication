@@ -1,3 +1,5 @@
+/* Активити для запоминания слов по принципу flashcard */
+
 package com.example.sqliteapp;
 
 import androidx.annotation.NonNull;
@@ -10,12 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.sqliteapp.databinding.ActivityStudyBinding;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -49,7 +47,8 @@ public class StudyActivity extends AppCompatActivity {
         // открываем подключение
         db = databaseHelper.open();
         //получаем данные из таблицы бд, только те строки, которые не исключены из обучения,
-        wordsCursor = db.rawQuery("select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
+        wordsCursor = db.rawQuery(
+                "select * from " + DatabaseHelper.TABLE + " WHERE study = 1", null);
 
 
         //проверяем, чтобы в бд есть слова, иначе скрываем все view, кроме studyImpossible
@@ -115,9 +114,7 @@ public class StudyActivity extends AppCompatActivity {
                 }
             });
         }
-
     }
-    //КОНЕЦ МЕТОДА MAIN
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {

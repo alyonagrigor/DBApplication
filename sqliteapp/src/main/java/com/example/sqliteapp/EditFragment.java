@@ -1,3 +1,5 @@
+/* Фрагмент с фунцкионалом редактирования слов и удаления из базы*/
+
 package com.example.sqliteapp;
 
 import android.content.ContentValues;
@@ -5,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,14 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.sqliteapp.databinding.FragmentEditBinding;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import org.apache.commons.lang3.StringUtils;
 
 public class EditFragment extends Fragment implements CompoundButton.OnCheckedChangeListener {
+
     private FragmentEditBinding binding;
     String targetLangWord;
     int checkedDigit;
@@ -111,7 +111,8 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
                     cv.put(DatabaseHelper.COLUMN_STUDY, checkedDigit);
 
                     if (wordId > 0) {
-                        db.update(DatabaseHelper.TABLE, cv, DatabaseHelper.COLUMN_ID + "=" + wordId, null);
+                        db.update(DatabaseHelper.TABLE, cv,
+                                DatabaseHelper.COLUMN_ID + "=" + wordId, null);
                     } else {
                         db.insert(DatabaseHelper.TABLE, null, cv);
                     }
@@ -126,7 +127,7 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
     }
 
     private void goHome() {
-        // закрываем подключение
+        // закрываем подключение к БД
         db.close();
         navController.navigate(R.id.action_global_listFragment);
     }
@@ -148,7 +149,8 @@ public class EditFragment extends Fragment implements CompoundButton.OnCheckedCh
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.delete(DatabaseHelper.TABLE, "_id = ?", new String[]{String.valueOf(wordId)});
+                db.delete(DatabaseHelper.TABLE, "_id = ?",
+                        new String[]{String.valueOf(wordId)});
                 bottomSheetDialog.dismiss();
                 goHome();
             }
