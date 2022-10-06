@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sqliteapp</string>
+    <string name="app_name">Memorize Words</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="enterTarget">Введите cлово на изучаемом языке</string>
     <string name="enterNative">Введите cлово на родном языке</string>
@@ -16,7 +16,7 @@
     <string name="yes">Да</string>
     <string name="add">Добавить</string>
     <string name="addWord">Добавить слово</string>
-    <string name="studyMode">Режим просмотра</string>
+    <string name="studyMode">Режим Flashcard</string>
     <string name="testMode">Режим теста</string>
     <string name="wsMode">Режим Word Search</string>
     <string name="listEmpty">Здесь пока ничего нет! \n Добавьте первое слово</string>
